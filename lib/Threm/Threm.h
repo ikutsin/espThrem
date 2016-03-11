@@ -1,0 +1,6 @@
+#ifndef FILE_THREM_SEEN
+#define FILE_THREM_SEEN
+
+#define JSON_BUFFER_SIZE 4096
+
+#endif /* !FILE_THREM_SEEN */
