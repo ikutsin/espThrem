@@ -19,6 +19,7 @@ Serial.println("Boot:");
 Serial.println("Rest:");
 
     Serial.printf("getChipId=%u\n", ESP.getChipId());
+    Serial.printf("getChipId(X)=%x\n", ESP.getChipId());
     Serial.printf("getFreeHeap=%u\n", ESP.getFreeHeap());
     Serial.printf("getFreeSketchSpace=%u\n", ESP.getFreeSketchSpace());
     Serial.printf("getVcc=%u\n",ESP.getVcc());

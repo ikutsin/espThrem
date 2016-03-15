@@ -1,15 +1,17 @@
 #ifndef FILE_THREMPLUGIN_SEEN
 #define FILE_THREMPLUGIN_SEEN
 
-#include <ESP8266WebServer.h>
-#include "Threm.h"
+#include "ThremContext.h"
+#include "ThremConfig.h"
 
-class IThermPlugin {
+class IThremPlugin {
 public:
-    IThermPlugin() {};
-    virtual ~IThermPlugin() {};
-    virtual bool initialize(ESP8266WebServer* server, );
-}
+    virtual bool init(ThremContext* context);
+    virtual void readData(ThremContext* context);
+    virtual void writeData(ThremNotification* notification);
 
+    virtual int getUniqueId();
+    virtual char* getName();
+};
 
 #endif /* !FILE_THREMPLUGIN_SEEN */

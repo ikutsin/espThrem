@@ -264,6 +264,8 @@ void setupSSDP() {
                 SSDP.schema(server.client());
         });
 
+        
+
         SSDP.setSchemaURL("description.xml");
         SSDP.setHTTPPort(80);
         SSDP.setName("IIoT");
