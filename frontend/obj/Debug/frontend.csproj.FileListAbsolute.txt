@@ -1,0 +1,6 @@
+C:\_pub\Closed\espThrem\frontend\bin\frontend.dll
+C:\_pub\Closed\espThrem\frontend\bin\frontend.pdb
+C:\_pub\Closed\espThrem\frontend\obj\Debug\frontend.csprojResolveAssemblyReference.cache
+C:\_pub\Closed\espThrem\frontend\obj\Debug\frontend.dll
+C:\_pub\Closed\espThrem\frontend\obj\Debug\frontend.pdb
+C:\_pub\Closed\espThrem\frontend\bin\frontend.dll.config

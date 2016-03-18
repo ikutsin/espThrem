@@ -1,0 +1,11 @@
+﻿<script id="header" class="def" type="text/x-dot-template">
+    <h1>{{=it.title}}-title</h1>
+</script>
+<script id="index" type="text/x-dot-template">
+    <h2>Here is the page using a header template</h2>
+    {{#def.header}}
+    {{=it.name}}
+</script>
+<script id="notFound" type="text/x-dot-template">
+    <h2>Page not found</h2>
+</script>

@@ -9,7 +9,6 @@ var concat = require("gulp-concat");
 var less = require('gulp-less');
 var path = require('path');
 
-var typescript = require('gulp-tsc');
 var ts = require('gulp-typescript');
 var useref = require('gulp-useref');
 

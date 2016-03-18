@@ -1,0 +1,10 @@
+﻿[
+  {
+    "outputFile": "src/css/style.css",
+    "inputFile": "src/css/style.less"
+  },
+  {
+    "outputFile": "src/js/lib/doT.min.es5.js",
+    "inputFile": "src/js/lib/doT.min.js"
+  }
+]

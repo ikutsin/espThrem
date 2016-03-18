@@ -1,5 +1,30 @@
 //out: style.css
 
 @import "reset.less";
-
 @import "elements.less";
+
+
+/*---------------------------------------------------
+    Threm styles
+  ---------------------------------------------------
+*/
+body {
+    
+}
+
+.page {
+  display: inline-block;
+  position:absolute;
+}
+
+.window-manager {
+    text-align: center;
+
+    :before {
+        content: '.';
+        display: inline-block;
+        height: 100%;
+        width: 0;
+        overflow: hidden;
+    }
+}
