@@ -9,22 +9,31 @@
   ---------------------------------------------------
 */
 body {
-    
-}
+    height: 100%;
+    width: 100%;
+    background: green;
 
-.page {
-  display: inline-block;
-  position:absolute;
-}
-
-.window-manager {
-    text-align: center;
-
-    :before {
-        content: '.';
-        display: inline-block;
+    .content {
+        width: 100%;
         height: 100%;
-        width: 0;
-        overflow: hidden;
+
+        position: absolute;
+
+        .header, .footer {
+            height: 100px;
+            width: 100%;
+            background: red;
+        }
+
+        .window-manager {
+             height: 100px;
+            width: 100%;
+            position: relative;
+            background: blue;
+
+            .page {
+                position: absolute;
+            }
+        }
     }
 }

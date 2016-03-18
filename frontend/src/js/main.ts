@@ -3,11 +3,8 @@ class Program {
         console.log("Starting program");
 
 
-        var windowManagerContainer = <HTMLElement>d3.select("body").append("div")
-            .attr("id", "windowManager")
-            .classed("window-manager", true)
-            .node();
-
+        var windowManagerContainer = <HTMLElement>d3.select("div.window-manager").node();
+        console.log(windowManagerContainer);
         var thremContext = new ThremNavigation.ThremContext();
         var windowManager = new ThremNavigation.WindowManager(thremContext, windowManagerContainer, new PageBuilders.IndexBuilder(), new PageBuilders.NotFoundBuilder());
 

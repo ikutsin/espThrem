@@ -125,10 +125,8 @@ var ThremNavigation;
             var _this = this;
             var newElement = d3.select(this.containerElement).append("div").classed("page", true)
                 .style('opacity', 0)
-                .style('margin-left', "-200px")
                 .transition()
-                .duration(250)
-                .style('margin-left', "0px")
+                .duration(500)
                 .style('opacity', 1)
                 .node();
             return nextPage.spawn(newElement, this.context)
@@ -145,7 +143,6 @@ var ThremNavigation;
                     d3.select(_this.currentPageElement)
                         .transition()
                         .duration(500)
-                        .style('margin-left', "200px")
                         .style('opacity', 0)
                         .remove();
                 }

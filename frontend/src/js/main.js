@@ -3,10 +3,8 @@ var Program = (function () {
     }
     Program.prototype.main = function () {
         console.log("Starting program");
-        var windowManagerContainer = d3.select("body").append("div")
-            .attr("id", "windowManager")
-            .classed("window-manager", true)
-            .node();
+        var windowManagerContainer = d3.select("div.window-manager").node();
+        console.log(windowManagerContainer);
         var thremContext = new ThremNavigation.ThremContext();
         var windowManager = new ThremNavigation.WindowManager(thremContext, windowManagerContainer, new PageBuilders.IndexBuilder(), new PageBuilders.NotFoundBuilder());
         windowManager.addOrUpdateRoute("test", new PageBuilders.AnalyzeBuilder());

@@ -144,17 +144,28 @@ a:hover {
     Threm styles
   ---------------------------------------------------
 */
-.page {
-  display: inline-block;
+body {
+  height: 100%;
+  width: 100%;
+  background: green;
+}
+body .content {
+  width: 100%;
+  height: 100%;
   position: absolute;
 }
-.window-manager {
-  text-align: center;
+body .content .header,
+body .content .footer {
+  height: 100px;
+  width: 100%;
+  background: red;
 }
-.window-manager :before {
-  content: '.';
-  display: inline-block;
-  height: 100%;
-  width: 0;
-  overflow: hidden;
+body .content .window-manager {
+  height: 100px;
+  width: 100%;
+  position: relative;
+  background: blue;
+}
+body .content .window-manager .page {
+  position: absolute;
 }
