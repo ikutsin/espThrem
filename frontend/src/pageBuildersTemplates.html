@@ -1,10 +1,36 @@
 ﻿<script id="header" class="def" type="text/x-dot-template">
     <h1>{{=it.title}}-title</h1>
 </script>
+
+<script id="lipsum" class="def" type="text/x-dot-template">
+    <div class="lipsum">
+        <h2>{{=k}}</h2>
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus placerat consectetur interdum. Suspendisse eu scelerisque magna. Aliquam eu justo sagittis, pellentesque lorem in, feugiat diam. Aenean eget metus eu enim facilisis finibus. Sed fermentum fringilla pulvinar. Mauris facilisis, quam sit amet dictum aliquam, erat risus fringilla felis, non pellentesque ex ipsum in mi. Suspendisse sed odio elit. Ut sollicitudin bibendum ligula, vel mattis ante finibus ac. Aenean eget aliquam leo. Etiam fringilla lectus ut augue iaculis, vitae mattis justo pharetra. Proin pellentesque varius tortor sit amet scelerisque. In hac habitasse platea dictumst. Fusce lacinia efficitur velit quis euismod.
+        </p>
+        <p>
+            Sed eget scelerisque sapien. Aliquam quis nibh et ante porttitor rhoncus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vivamus volutpat lectus nec augue porta finibus. Quisque porttitor finibus lacus vitae commodo. Fusce accumsan hendrerit dui, vitae feugiat nibh placerat porttitor. Nam accumsan leo id neque consequat dignissim. Proin interdum, dui a semper venenatis, urna augue elementum orci, sit amet volutpat velit libero nec nulla. Nullam odio mi, condimentum et sapien ut, posuere posuere diam. Nulla facilisi. Curabitur posuere porttitor diam, a bibendum justo tempus nec. Cras nec felis vel ligula auctor pharetra. Ut condimentum facilisis nulla, ultrices varius lacus euismod vitae. Proin tristique orci at fringilla sagittis.
+        </p>
+        <p>
+            Aliquam nisl augue, malesuada rhoncus aliquam eget, blandit eu dui. Donec dapibus id ex non porttitor. Praesent malesuada accumsan tempus. Donec in sem nibh. In egestas mattis est, a aliquam risus auctor in. Morbi accumsan lectus nec enim interdum tempor. Nam et suscipit turpis. Morbi scelerisque imperdiet quam ac sollicitudin. Quisque egestas rutrum enim.
+        </p>
+        <p>
+            Nam scelerisque malesuada dolor, accumsan semper turpis commodo et. Praesent et quam iaculis, bibendum elit et, tristique velit. Sed a auctor nunc. Praesent nec tempus risus. Etiam eget lectus non massa vulputate ullamcorper. Etiam maximus nibh nec lacus ullamcorper pulvinar. Mauris ut elit ligula. Proin tristique ex semper tortor suscipit scelerisque. Vivamus et fermentum turpis, eu dictum nisi. Fusce eget aliquam diam. Aliquam tempor sit amet erat ut tempus. Fusce consectetur semper bibendum. Sed libero nibh, bibendum at commodo ac, mollis nec metus. Proin vestibulum eleifend libero, eget scelerisque eros egestas a.
+        </p>
+        <p>
+            Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Quisque pretium lorem ut risus posuere, sit amet pellentesque leo egestas. Suspendisse elit neque, sodales in porttitor nec, dictum at erat. Sed viverra bibendum erat ut cursus. Nullam lorem nunc, ornare et nisi sollicitudin, egestas suscipit ipsum. Suspendisse varius sem a nunc viverra, ac congue purus scelerisque. Ut purus neque, suscipit eget diam sed, tincidunt tempus ex. Nunc eget commodo est. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget auctor nunc. Morbi ut enim condimentum, maximus nisi sit amet, ultrices nisl. Vestibulum sodales dui purus, ut porta lectus rutrum eget.
+        </p>
+    </div>
+</script>
+
+
 <script id="index" type="text/x-dot-template">
     <h2>Here is the page using a header template</h2>
-    {{#def.header}}
-    {{=it.name}}
+    <p>{{#def.header}}</p>
+    <p>{{=it.name}}</p>
+    {{~ (function(){ return [1,2,3,1,1]})() :k}}
+    {{#def.lipsum}}
+    {{~}}
 </script>
 <script id="notFound" type="text/x-dot-template">
     <h2>Page not found</h2>

@@ -40,17 +40,20 @@ module ThremNavigation {
                             var namespaceSelector = d3.select("body").select(`div.templates.${namespace}`);
                             var defs = {};
 
+                            console.log("Compiling template:", namespace, name);
+
                             //first put global
-                            d3.select("body").select("div.templates").select("script.def-global")[0].forEach(v => {
+                            d3.select("body").select("div.templates").selectAll("script.def-global")[0].forEach(v => {
                                 if (!v) return;
                                 var element = (<HTMLElement>v);
-                                console.log(v);
+                                console.log("Add global def:", element.id);
                                 defs[element.id] = element.innerHTML;
                             });
 
                             //so it can be overriden inside namespace
-                            namespaceSelector.select("script.def")[0].forEach(v => {
+                            namespaceSelector.selectAll("script.def")[0].forEach(v => {
                                 var element = (<HTMLElement>v);
+                                console.log("Add def:", element.id);
                                 defs[element.id] = element.innerHTML;
                             });
 

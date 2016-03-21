@@ -25,8 +25,6 @@ module Charting {
         }
 
         // https://bost.ocks.org/mike/path/
-
-
         private prepareChart() {
             var margin = { top: 20, right: 20, bottom: 20, left: 40 },
                 width = 800 - margin.left - margin.right,
@@ -100,6 +98,123 @@ module Charting {
                 .attr("transform", "translate(" + this.x(-1) + ",0)");
             // pop the old data point off the front
             this.data.shift();
+        }
+    }
+    //http://bl.ocks.org/mbostock/4060954
+    export class Background {
+        private element: HTMLElement;
+
+        layers0: any;
+        layers1: any;
+        area: any;
+        svg: any;
+        x: any;
+        y: any;
+
+        n = 20; // number of layers
+        m = 200; // number of samples per layer
+
+        constructor(element: HTMLElement) {
+            this.element = element;
+
+            console.log("constructing background");
+
+
+            var stack = d3.layout.stack().offset("wiggle");
+            this.layers0 = stack(d3.range(this.n).map(() => this.bumpLayer(this.m)));
+            this.layers1 = stack(d3.range(this.n).map(() => this.bumpLayer(this.m)));
+
+            var width = parseInt(d3.select(this.element).style("width"), 10),
+                height = parseInt(d3.select(this.element).style("height"), 10);
+
+            this.x = d3.scale.linear()
+                .domain([0, this.m - 1])
+                .range([0, 200]);
+
+            this.y = d3.scale.linear()
+                .domain([0, d3.max(this.layers0.concat(this.layers1), layer => d3.max(<any[]>layer, d => (d.y0 + d.y)))])
+                .range([0, 200]);
+
+            var color = (<any>d3.scale.linear()).range(['#aad', '#556']);
+
+            this.area = <any>d3.svg.area();
+            this.area.x(d => this.x(d.x))
+                .y0(d => this.y(d.y0))
+                .y1(d => this.y(d.y0 + d.y));
+
+            this.svg = d3.select("body").append("svg")
+                .attr("opacity", 0.2)
+                .attr("width", width)
+                .attr("height", height)
+                .attr('viewBox', '0 0 200 200')
+                .attr('preserveAspectRatio', 'none');
+
+            this.svg.selectAll("path")
+                .data(this.layers0)
+                .enter().append("path")
+                .attr("d", this.area)
+                .style("fill", () => color(Math.random() + ""));
+
+            d3.select(window).on('resize', this.resize.bind(this));
+            this.transition();
+        }
+
+        resize() {
+            var width = parseInt(d3.select(this.element).style("width"), 10),
+                height = parseInt(d3.select(this.element).style("height"), 10);
+
+            console.log("resize:", width, height);
+            this.svg.attr("width", width).attr("height", height);
+
+        }
+
+        transition(): void {
+
+            console.log("transition:");
+
+            d3.selectAll("path")
+                .data(() => {
+                    var d = this.layers1;
+                    this.layers1 = this.layers0;
+
+                    var stack = d3.layout.stack().offset("wiggle");
+                    this.layers1 = stack(d3.range(this.n).map(() => this.bumpLayer(this.m)));
+
+                    return this.layers0 = d;
+                })
+                .transition()
+                .duration(5000)
+                .attr("d", this.area)
+                .call(this.endAll, () => {
+                    this.transition();
+                });
+        }
+
+        endAll(transition, callback) {
+            var n = 0;
+            transition.each(() => { ++n; })
+                .each('end', function () {
+                    if (!--n) callback.apply(this, arguments);
+                });
+        }
+
+        // Inspired by Lee Byron's test data generator.
+        bumpLayer(n): any {
+
+            function bump(a) {
+                var x = 1 / (.1 + Math.random()),
+                    y = 2 * Math.random() - .5,
+                    z = 10 / (.1 + Math.random());
+                for (var i = 0; i < n; i++) {
+                    var w = (i / n - y) * z;
+                    a[i] += x * Math.exp(-w * w);
+                }
+            }
+
+            var a = [], i;
+            for (i = 0; i < n; ++i) a[i] = 0;
+            for (i = 0; i < 5; ++i) bump(a);
+            return a.map((d, i) => { return { x: i, y: Math.max(0, d) }; });
         }
     }
 }

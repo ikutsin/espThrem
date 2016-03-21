@@ -4,12 +4,13 @@ class Program {
 
 
         var windowManagerContainer = <HTMLElement>d3.select("div.window-manager").node();
-        console.log(windowManagerContainer);
         var thremContext = new ThremNavigation.ThremContext();
         var windowManager = new ThremNavigation.WindowManager(thremContext, windowManagerContainer, new PageBuilders.IndexBuilder(), new PageBuilders.NotFoundBuilder());
 
         windowManager.addOrUpdateRoute("test", new PageBuilders.AnalyzeBuilder());
         windowManager.updateLocation();
+
+        var bg = new Charting.Background(<HTMLElement>d3.select(".overlay-background").node());
     }
 
     private registerThermElement() {

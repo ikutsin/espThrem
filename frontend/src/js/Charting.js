@@ -78,5 +78,92 @@ var Charting;
         return StreamingLineChart;
     })();
     Charting.StreamingLineChart = StreamingLineChart;
+    //http://bl.ocks.org/mbostock/4060954
+    var Background = (function () {
+        function Background(element) {
+            var _this = this;
+            this.n = 20; // number of layers
+            this.m = 200; // number of samples per layer
+            this.element = element;
+            console.log("constructing background");
+            var stack = d3.layout.stack().offset("wiggle");
+            this.layers0 = stack(d3.range(this.n).map(function () { return _this.bumpLayer(_this.m); }));
+            this.layers1 = stack(d3.range(this.n).map(function () { return _this.bumpLayer(_this.m); }));
+            var width = parseInt(d3.select(this.element).style("width"), 10), height = parseInt(d3.select(this.element).style("height"), 10);
+            this.x = d3.scale.linear()
+                .domain([0, this.m - 1])
+                .range([0, 200]);
+            this.y = d3.scale.linear()
+                .domain([0, d3.max(this.layers0.concat(this.layers1), function (layer) { return d3.max(layer, function (d) { return (d.y0 + d.y); }); })])
+                .range([0, 200]);
+            var color = d3.scale.linear().range(['#aad', '#556']);
+            this.area = d3.svg.area();
+            this.area.x(function (d) { return _this.x(d.x); })
+                .y0(function (d) { return _this.y(d.y0); })
+                .y1(function (d) { return _this.y(d.y0 + d.y); });
+            this.svg = d3.select("body").append("svg")
+                .attr("opacity", 0.2)
+                .attr("width", width)
+                .attr("height", height)
+                .attr('viewBox', '0 0 200 200')
+                .attr('preserveAspectRatio', 'none');
+            this.svg.selectAll("path")
+                .data(this.layers0)
+                .enter().append("path")
+                .attr("d", this.area)
+                .style("fill", function () { return color(Math.random() + ""); });
+            d3.select(window).on('resize', this.resize.bind(this));
+            this.transition();
+        }
+        Background.prototype.resize = function () {
+            var width = parseInt(d3.select(this.element).style("width"), 10), height = parseInt(d3.select(this.element).style("height"), 10);
+            console.log("resize:", width, height);
+            this.svg.attr("width", width).attr("height", height);
+        };
+        Background.prototype.transition = function () {
+            var _this = this;
+            console.log("transition:");
+            d3.selectAll("path")
+                .data(function () {
+                var d = _this.layers1;
+                _this.layers1 = _this.layers0;
+                var stack = d3.layout.stack().offset("wiggle");
+                _this.layers1 = stack(d3.range(_this.n).map(function () { return _this.bumpLayer(_this.m); }));
+                return _this.layers0 = d;
+            })
+                .transition()
+                .duration(5000)
+                .attr("d", this.area)
+                .call(this.endAll, function () {
+                _this.transition();
+            });
+        };
+        Background.prototype.endAll = function (transition, callback) {
+            var n = 0;
+            transition.each(function () { ++n; })
+                .each('end', function () {
+                if (!--n)
+                    callback.apply(this, arguments);
+            });
+        };
+        // Inspired by Lee Byron's test data generator.
+        Background.prototype.bumpLayer = function (n) {
+            function bump(a) {
+                var x = 1 / (.1 + Math.random()), y = 2 * Math.random() - .5, z = 10 / (.1 + Math.random());
+                for (var i = 0; i < n; i++) {
+                    var w = (i / n - y) * z;
+                    a[i] += x * Math.exp(-w * w);
+                }
+            }
+            var a = [], i;
+            for (i = 0; i < n; ++i)
+                a[i] = 0;
+            for (i = 0; i < 5; ++i)
+                bump(a);
+            return a.map(function (d, i) { return { x: i, y: Math.max(0, d) }; });
+        };
+        return Background;
+    })();
+    Charting.Background = Background;
 })(Charting || (Charting = {}));
 //# sourceMappingURL=Charting.js.map
