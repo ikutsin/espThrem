@@ -7,7 +7,7 @@ var EventAggregator;
             this.callback = callback;
         }
         return Subscription;
-    })();
+    }());
     var Message = (function () {
         function Message(message) {
             this.message = message;
@@ -31,7 +31,7 @@ var EventAggregator;
             }
         };
         return Message;
-    })();
+    }());
     // Class
     var EventManager = (function () {
         function EventManager() {
@@ -54,7 +54,7 @@ var EventAggregator;
             }
         };
         return EventManager;
-    })();
+    }());
     EventAggregator.EventManager = EventManager;
 })(EventAggregator || (EventAggregator = {}));
 //# sourceMappingURL=EventAggregator.js.map

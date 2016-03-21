@@ -20,12 +20,10 @@ module PageBuilders {
     export class NotFoundBuilder implements PageBuilder {
         spawn(element:HTMLElement, context: ThremNavigation.ThremContext): Promise<any> {
             var data = {};
-            console.log("spawn NotFoundBuilder");
             return context.doT.renderTo(element, "pageBuildersTemplates", "notFound", data);
         }
 
         die(): Promise<any> {
-            console.log("Die NotFoundBuilder");
             return Promise.resolve({});
         }
     }   
@@ -33,7 +31,11 @@ module PageBuilders {
     export class AnalyzeBuilder implements PageBuilder {
         spawn(element:HTMLElement, context: ThremNavigation.ThremContext): Promise<any> {
             console.log("Spawn AnalyzeBuilder");
-            return Promise.resolve({});
+            var result = new Promise<any>((resolve, reject)=> {
+                setTimeout(() => resolve(), 2000);
+            });
+
+            return result;
         }
 
         die(): Promise<any> {

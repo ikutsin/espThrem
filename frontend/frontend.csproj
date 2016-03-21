@@ -10,7 +10,7 @@
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <TypeScriptToolsVersion>1.7</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>1.8</TypeScriptToolsVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -23,6 +23,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="gulpfile.js" />
+    <Content Include="src\css\menu.css">
+      <DependentUpon>menu.less</DependentUpon>
+    </Content>
+    <Content Include="src\css\menu.min.css">
+      <DependentUpon>menu.css</DependentUpon>
+    </Content>
     <Content Include="src\css\style.css">
       <DependentUpon>style.less</DependentUpon>
     </Content>
@@ -67,6 +73,13 @@
       <DependentUpon>compilerconfig.json</DependentUpon>
     </None>
     <Content Include="packages.config" />
+    <Content Include="src\css\style.css.map">
+      <DependentUpon>style.css</DependentUpon>
+    </Content>
+    <Content Include="src\css\menu.less" />
+    <Content Include="src\css\menu.css.map">
+      <DependentUpon>menu.css</DependentUpon>
+    </Content>
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

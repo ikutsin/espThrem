@@ -41,7 +41,7 @@ void setup() {
   threm->addPlugin(plugin);
 
   plugin = new ThremCaptivePortalPlugin();
-  threm->addPlugin(plugin);  
+  threm->addPlugin(plugin);
 
   threm->start();
 

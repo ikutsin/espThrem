@@ -4,10 +4,14 @@ var Program = (function () {
     Program.prototype.main = function () {
         console.log("Starting program");
         var windowManagerContainer = d3.select("div.window-manager").node();
+        var menuContainer = d3.select("#limenu").node();
         var thremContext = new ThremNavigation.ThremContext();
-        var windowManager = new ThremNavigation.WindowManager(thremContext, windowManagerContainer, new PageBuilders.IndexBuilder(), new PageBuilders.NotFoundBuilder());
-        windowManager.addOrUpdateRoute("test", new PageBuilders.AnalyzeBuilder());
-        windowManager.updateLocation();
+        var notFoundBuilder = new PageBuilders.NotFoundBuilder();
+        var indexBuilder = new PageBuilders.IndexBuilder();
+        var windowManager = new ThremNavigation.WindowManager(thremContext, windowManagerContainer, menuContainer, new Charting.Loader(d3.select(".overlay-loader").node()), indexBuilder, notFoundBuilder);
+        windowManager.addOrUpdateRoute("test", "Test", new PageBuilders.AnalyzeBuilder());
+        windowManager.addOrUpdateRoute("notFoundBuilder", "notFoundBuilder", notFoundBuilder);
+        windowManager.start();
         var bg = new Charting.Background(d3.select(".overlay-background").node());
     };
     Program.prototype.registerThermElement = function () {
@@ -34,7 +38,7 @@ var Program = (function () {
         //});
     };
     return Program;
-})();
+}());
 var program = new Program();
 program.main();
 //# sourceMappingURL=main.js.map

@@ -4,6 +4,62 @@ module Charting {
     import DataStreamElement = DataRepository.DataStreamElement;
     import DataStreamProvider = DataRepository.IDataStreamProvider;
 
+    //http://bl.ocks.org/Mattwoelk/6132258
+    export class Loader {
+        element: HTMLElement;
+
+        width = 100;
+        height = 100;
+
+        constructor(element: HTMLElement) {
+            this.element = element;
+
+            var radius = Math.min(this.width, this.height) / 2;
+            var tau = 2 * Math.PI;
+
+            var arc = d3.svg.arc()
+                .innerRadius(radius * 0.5)
+                .outerRadius(radius * 0.9)
+                .startAngle(0);
+
+            var svg = d3.select(this.element).append("svg")
+                //.attr("id", config.id)
+                .attr("width", this.width)
+                .attr("height", this.height)
+                .append("g")
+                .attr("transform", "translate(" + this.width / 2 + "," + this.height / 2 + ")");
+
+            var background = svg.append("path")
+                .datum({ endAngle: 0.33 * tau })
+                .style("fill", "#4D4D4D")
+                .attr("d", arc)
+                .call(this.spin.bind(this), 1500);
+        }
+        show() {
+            d3.select(this.element).style("display", "block");
+        }
+        hide() {
+            console.log("hide loader");
+            d3.select(this.element).style("display", "none");
+        }
+
+        private spin(selection, duration) {
+            selection.transition()
+                .ease("linear")
+                .duration(duration)
+                .attrTween("transform", ()=> d3.interpolateString("rotate(0)", "rotate(360)"));
+
+            setTimeout(()=> { this.spin(selection, duration); }, duration);
+        }
+
+        //private transitionFunction(path) {
+        //    path.transition()
+        //        .duration(7500)
+        //        //.attrTween("stroke-dasharray", tweenDash)
+        //        .each("end", function () { d3.select(this).call(this.transitionFunction); });
+        //}
+    }
+
     export class StreamingLineChart {
         size: number = 60;
         private provider: DataStreamProvider;
@@ -35,7 +91,7 @@ module Charting {
                 .range([0, width]);
 
             this.y = d3.scale.linear()
-                .domain([d3.min(this.data, i=> i.value) - 5, d3.max(this.data, i=> i.value) + 5])
+                .domain([d3.min(this.data, i => i.value) - 5, d3.max(this.data, i => i.value) + 5])
                 .range([height, 0]);
 
             this.line = d3.svg.line<DataStreamElement>()
@@ -142,7 +198,7 @@ module Charting {
                 .y0(d => this.y(d.y0))
                 .y1(d => this.y(d.y0 + d.y));
 
-            this.svg = d3.select("body").append("svg")
+            this.svg = d3.select(this.element).append("svg")
                 .attr("opacity", 0.2)
                 .attr("width", width)
                 .attr("height", height)

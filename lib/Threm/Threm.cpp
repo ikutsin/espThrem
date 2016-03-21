@@ -30,6 +30,8 @@ void Threm::start() {
                 meta = _pluginMeta->get(i);
                 meta->isEnabled = canEnable;
                 _pluginMeta->set(i, meta);
+
+                yield();
         }
         #ifdef DEBUG
         DEBUG << "Plugins declared: " <<  _plugins->size() << endl;

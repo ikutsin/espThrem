@@ -14,32 +14,28 @@
     <script type="text/javascript" src="js/lib/d3.min.js"></script>
     <script type="text/javascript" src="js/lib/doT.min.js"></script>
     <!-- endbuild -->
-    <!--<div class="templates global">
-            <script id="header" class="def-global" type="text/x-dot-template">
-                    <div>
-                        global header
-                    </div>
-                </script>
-        </div>-->
+    <div class="templates global">
+        <script id="menuitem" class="def-global" type="text/x-dot-template">
+            <li class="{{? it.isActive }}active{{?}}"><a href="#{{=it.hash}}">{{=it.header}}</a></li>
+        </script>
+    </div>
 
     <div class="content">
         <div class="header">
-            <h3>Header</h3>
-            <a href="#aa">Not found</a>
-            <a href="#">Index</a>
-            <a href="#test">test</a>
+            <nav>
+                <ul id="limenu">
+                </ul>
+            </nav>
         </div>
 
         <div class="window-manager"></div>
 
         <div class="footer">
-            <h3>Footer</h3>
-            <a href="#aa">Not found</a>
-            <a href="#">Index</a>
-            <a href="#test">test</a>
+            <p>Copyright @ ikutsin</p>
         </div>
     </div>
-    <div class="overlay-background" >&nbsp;</div>
+    <div class="overlay-background">&nbsp;</div>
+    <div class="overlay-loader">&nbsp;</div>
 
     <!-- build:js js/custom.js -->
     <script type="text/javascript" src="js/DataRepository.js"></script>

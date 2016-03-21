@@ -99,48 +99,109 @@ module ThremNavigation {
         die(): Promise<any>;
     }
 
+    class RouteElement {
+        hash: string;
+        header: string;
+        page: IPageBuilder;
+        isActive: boolean = false;
+        constructor(hashStart: string, header: string, page: IPageBuilder) {
+            this.hash = hashStart;
+            this.header = header;
+            this.page = page;
+        }
+    }
+
     export class WindowManager {
-        private notfoundPage: IPageBuilder;
-        private indexPage: IPageBuilder;
+        private notfoundPage: RouteElement;
+        private indexPage: RouteElement;
         private routes: any = {};
-        private currentPage: IPageBuilder;
+        private builtMenuItems: Array<RouteElement>;
+        private currentPage: RouteElement;
         private currentPageElement: HTMLElement;
         private containerElement: HTMLElement;
+        private menuElement: HTMLElement;
+        private loader: Charting.Loader;
         context: ThremContext;
 
-        constructor(context: ThremContext, element: HTMLElement, indexPage: IPageBuilder, notfoundPage: IPageBuilder) {
-            this.notfoundPage = notfoundPage;
-            this.indexPage = indexPage;
+        constructor(context: ThremContext, element: HTMLElement, menuElement: HTMLElement, loader: Charting.Loader, indexPage: IPageBuilder, notfoundPage: IPageBuilder) {
+            this.notfoundPage = new RouteElement(undefined, undefined, notfoundPage);
+            this.indexPage = new RouteElement("", "Home", indexPage);
+            this.routes["index"] = this.indexPage;
             this.context = context;
             this.containerElement = element;
+            this.menuElement = menuElement;
+            this.loader = loader;
 
             window.onhashchange = (ev: HashChangeEvent) => { this.updateLocation() };
+
+            //build menu
         }
 
-        addOrUpdateRoute(hashStart: string, page: IPageBuilder) {
+        addOrUpdateRoute(hashStart: string, header: string, page: IPageBuilder) {
             console.log("Route added:", hashStart);
-            this.routes[hashStart] = page;
+            this.routes[hashStart] = new RouteElement(hashStart, header, page);
+        }
+
+        start() {
+            this.loader.hide();
+
+            //build menu
+            this.builtMenuItems = Object.keys(this.routes).map(key => this.routes[key]);
+
+            var renderers = this.builtMenuItems.map(d => {
+                return this.context.doT.render("global", "menuitem", d)
+                    .then(dd => {
+                        this.menuElement.innerHTML = dd + this.menuElement.innerHTML;
+                        return d;
+                    });
+            });
+
+            Promise.all(renderers).then(p => {
+                this.updateLocation();
+            });
+
         }
 
         updateLocation() {
-            let hash = location.hash.trim().substr(1);
-            console.log("handle location change: '", hash, "'");
 
-            if (!hash) {
-                this.handleNextPage(this.indexPage);
-                return;
+            this.loader.show();
+
+            let hash = location.hash.trim().substr(1);
+            console.log(`handle location change: ${hash}`);
+
+            var handleNextPagePromise: Promise<any>;
+
+            if (!hash) hash = "index";
+
+            if (this.currentPage) {
+                this.currentPage.isActive = false;
             }
 
             for (let key in this.routes) {
                 if ((<any>hash).startsWith(key)) {
-                    this.handleNextPage(this.routes[key]);
-                    return;
+                    handleNextPagePromise = this.handleNextPage(<RouteElement>this.routes[key]);
+                    break;
                 }
             }
-            this.handleNextPage(this.notfoundPage);
+
+            if (!handleNextPagePromise) handleNextPagePromise = this.handleNextPage(this.notfoundPage);
+
+            handleNextPagePromise
+                .then(p => {
+                    d3.select(this.menuElement).selectAll("li")
+                        .data(this.builtMenuItems)
+                        .attr("class", d => {
+                            return (d.isActive ? "active" : "inactive");
+                        });
+                    this.loader.hide();
+                })
+                .catch(p => {
+                    this.onPromiseError(p);
+                    this.loader.hide();
+                });
         }
 
-        private handleNextPage(nextPage: IPageBuilder): Promise<any> {
+        private handleNextPage(nextRoute: RouteElement): Promise<any> {
 
             let newElement = <HTMLElement>d3.select(this.containerElement).append("div").classed("page", true)
                 .style('opacity', 0)
@@ -148,10 +209,10 @@ module ThremNavigation {
                 .duration(500)
                 .style('opacity', 1)
                 .node();
-            return nextPage.spawn(newElement, this.context)
+            return nextRoute.page.spawn(newElement, this.context)
                 .then(p => {
                     if (this.currentPage) {
-                        return this.currentPage.die();
+                        return this.currentPage.page.die();
                     } else {
                         return Promise.resolve();
                     }
@@ -165,9 +226,9 @@ module ThremNavigation {
                             .remove();
                     }
                     this.currentPageElement = newElement;
-                    this.currentPage = nextPage;
-                })
-                .catch(this.onPromiseError);
+                    this.currentPage = nextRoute;
+                    this.currentPage.isActive = true;
+                });
         }
 
         private onPromiseError(p: any) {

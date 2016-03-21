@@ -2,6 +2,47 @@
 var Charting;
 (function (Charting) {
     var DataStreamElement = DataRepository.DataStreamElement;
+    //http://bl.ocks.org/Mattwoelk/6132258
+    var Loader = (function () {
+        function Loader(element) {
+            this.width = 100;
+            this.height = 100;
+            this.element = element;
+            var radius = Math.min(this.width, this.height) / 2;
+            var tau = 2 * Math.PI;
+            var arc = d3.svg.arc()
+                .innerRadius(radius * 0.5)
+                .outerRadius(radius * 0.9)
+                .startAngle(0);
+            var svg = d3.select(this.element).append("svg")
+                .attr("width", this.width)
+                .attr("height", this.height)
+                .append("g")
+                .attr("transform", "translate(" + this.width / 2 + "," + this.height / 2 + ")");
+            var background = svg.append("path")
+                .datum({ endAngle: 0.33 * tau })
+                .style("fill", "#4D4D4D")
+                .attr("d", arc)
+                .call(this.spin.bind(this), 1500);
+        }
+        Loader.prototype.show = function () {
+            d3.select(this.element).style("display", "block");
+        };
+        Loader.prototype.hide = function () {
+            console.log("hide loader");
+            d3.select(this.element).style("display", "none");
+        };
+        Loader.prototype.spin = function (selection, duration) {
+            var _this = this;
+            selection.transition()
+                .ease("linear")
+                .duration(duration)
+                .attrTween("transform", function () { return d3.interpolateString("rotate(0)", "rotate(360)"); });
+            setTimeout(function () { _this.spin(selection, duration); }, duration);
+        };
+        return Loader;
+    }());
+    Charting.Loader = Loader;
     var StreamingLineChart = (function () {
         function StreamingLineChart(provider) {
             this.size = 60;
@@ -52,8 +93,8 @@ var Charting;
                 .attr("fill", "none");
         };
         StreamingLineChart.prototype.notifyNewItems = function (item) {
-            for (var _i = 0; _i < item.length; _i++) {
-                var i = item[_i];
+            for (var _i = 0, item_1 = item; _i < item_1.length; _i++) {
+                var i = item_1[_i];
                 this.notifyNewItem(i);
             }
         };
@@ -76,7 +117,7 @@ var Charting;
             this.data.shift();
         };
         return StreamingLineChart;
-    })();
+    }());
     Charting.StreamingLineChart = StreamingLineChart;
     //http://bl.ocks.org/mbostock/4060954
     var Background = (function () {
@@ -101,7 +142,7 @@ var Charting;
             this.area.x(function (d) { return _this.x(d.x); })
                 .y0(function (d) { return _this.y(d.y0); })
                 .y1(function (d) { return _this.y(d.y0 + d.y); });
-            this.svg = d3.select("body").append("svg")
+            this.svg = d3.select(this.element).append("svg")
                 .attr("opacity", 0.2)
                 .attr("width", width)
                 .attr("height", height)
@@ -163,7 +204,7 @@ var Charting;
             return a.map(function (d, i) { return { x: i, y: Math.max(0, d) }; });
         };
         return Background;
-    })();
+    }());
     Charting.Background = Background;
 })(Charting || (Charting = {}));
 //# sourceMappingURL=Charting.js.map

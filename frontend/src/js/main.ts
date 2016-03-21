@@ -4,11 +4,21 @@ class Program {
 
 
         var windowManagerContainer = <HTMLElement>d3.select("div.window-manager").node();
+        var menuContainer = <HTMLElement>d3.select("#limenu").node();
         var thremContext = new ThremNavigation.ThremContext();
-        var windowManager = new ThremNavigation.WindowManager(thremContext, windowManagerContainer, new PageBuilders.IndexBuilder(), new PageBuilders.NotFoundBuilder());
+        var notFoundBuilder = new PageBuilders.NotFoundBuilder();
+        var indexBuilder = new PageBuilders.IndexBuilder();
+        var windowManager = new ThremNavigation.WindowManager(
+            thremContext,
+            windowManagerContainer,
+            menuContainer,
+            new Charting.Loader(<HTMLElement>d3.select(".overlay-loader").node()),
+            indexBuilder,
+            notFoundBuilder);
 
-        windowManager.addOrUpdateRoute("test", new PageBuilders.AnalyzeBuilder());
-        windowManager.updateLocation();
+        windowManager.addOrUpdateRoute("test", "Test", new PageBuilders.AnalyzeBuilder());
+        windowManager.addOrUpdateRoute("notFoundBuilder", "notFoundBuilder", notFoundBuilder);
+        windowManager.start();
 
         var bg = new Charting.Background(<HTMLElement>d3.select(".overlay-background").node());
     }
@@ -25,7 +35,7 @@ class Program {
         //});
 
 
-        
+
         //var listener = new WebSockets.EspSocketListener(el, "ws://192.168.1.106:81/threm");
 
         //d3.json('http://192.168.1.106:80/data.json', data => {

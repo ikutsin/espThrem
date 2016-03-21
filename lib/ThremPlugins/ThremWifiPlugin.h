@@ -35,7 +35,8 @@ class ThremWifiPlugin: public IThremPlugin {
     const char* ssid = "HUAWEI-E5172-5793";
     const char* password = "Q1HEB8EDE0Q";
 
-    int connectStatus = connectWifi(NULL, NULL); //ssid, password);
+    //int connectStatus = connectWifi(NULL, NULL);
+    int connectStatus = connectWifi(ssid, password);
 
 
     #ifdef LOG

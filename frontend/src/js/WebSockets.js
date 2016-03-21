@@ -34,7 +34,7 @@ var WebSockets;
             }
         };
         return EspSocketListener;
-    })();
+    }());
     WebSockets.EspSocketListener = EspSocketListener;
     var ReconnectingWebSocket = (function () {
         function ReconnectingWebSocket(url, protocols) {
@@ -141,6 +141,6 @@ var WebSockets;
             return false;
         };
         return ReconnectingWebSocket;
-    })();
+    }());
 })(WebSockets || (WebSockets = {}));
 //# sourceMappingURL=WebSockets.js.map
