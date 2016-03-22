@@ -7,3 +7,4 @@ frontend/src/js/*.js
 frontend/src/js/*.map
 frontend/src-unused/*.js
 frontend/src-unused/*.map
+*.cache
