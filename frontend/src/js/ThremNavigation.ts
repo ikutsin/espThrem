@@ -151,7 +151,8 @@ module ThremNavigation {
             var renderers = this.builtMenuItems.map(d => {
                 return this.context.doT.render("global", "menuitem", d)
                     .then(dd => {
-                        this.menuElement.innerHTML = dd + this.menuElement.innerHTML;
+                        //this.menuElement.innerHTML = dd + this.menuElement.innerHTML;
+                        this.menuElement.innerHTML += dd;
                         return d;
                     });
             });
