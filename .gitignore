@@ -3,6 +3,9 @@
 .gcc-flags.json
 /frontend/build
 /frontend/node_modules
+/frontend/bin
+/frontend/obj
+/frontend/.vs
 frontend/src/js/*.js
 frontend/src/js/*.map
 frontend/src-unused/*.js
