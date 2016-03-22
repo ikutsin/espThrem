@@ -8,3 +8,4 @@ frontend/src/js/*.map
 frontend/src-unused/*.js
 frontend/src-unused/*.map
 *.cache
+*.suo
