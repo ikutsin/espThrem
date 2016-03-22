@@ -23,8 +23,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="gulpfile.js" />
+    <Content Include="src\css\menu - Copy.css">
+      <DependentUpon>threm-forms.less</DependentUpon>
+    </Content>
+    <Content Include="src\css\menu - Copy.min.css">
+      <DependentUpon>menu - Copy.css</DependentUpon>
+    </Content>
     <Content Include="src\css\menu.css">
-      <DependentUpon>menu.less</DependentUpon>
+      <DependentUpon>threm-menu.less</DependentUpon>
     </Content>
     <Content Include="src\css\menu.min.css">
       <DependentUpon>menu.css</DependentUpon>
@@ -38,7 +44,9 @@
     <Content Include="src\index.html" />
     <Content Include="src\js\lib\d3.min.js" />
     <Content Include="src\js\lib\doT.min.js" />
-    <Content Include="src\pageBuildersTemplates.html" />
+    <Content Include="src\templates\basic.html" />
+    <Content Include="src\templates\global.html" />
+    <Content Include="src\templates\test.html" />
     <Content Include="webserver.js" />
     <Content Include="websocket.js" />
   </ItemGroup>
@@ -76,9 +84,13 @@
     <Content Include="src\css\style.css.map">
       <DependentUpon>style.css</DependentUpon>
     </Content>
-    <Content Include="src\css\menu.less" />
+    <Content Include="src\css\threm-menu.less" />
     <Content Include="src\css\menu.css.map">
       <DependentUpon>menu.css</DependentUpon>
+    </Content>
+    <Content Include="src\css\threm-forms.less" />
+    <Content Include="src\css\menu - Copy.css.map">
+      <DependentUpon>menu - Copy.css</DependentUpon>
     </Content>
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
@@ -86,6 +98,9 @@
     <None Include="web.Release.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\config\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>

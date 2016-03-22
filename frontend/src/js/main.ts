@@ -2,7 +2,6 @@ class Program {
     main() {
         console.log("Starting program");
 
-
         var windowManagerContainer = <HTMLElement>d3.select("div.window-manager").node();
         var menuContainer = <HTMLElement>d3.select("#limenu").node();
         var thremContext = new ThremNavigation.ThremContext();
@@ -16,6 +15,7 @@ class Program {
             indexBuilder,
             notFoundBuilder);
 
+        windowManager.addOrUpdateRoute("setup", "Setup", new PageBuilders.SetupBuilder());
         windowManager.addOrUpdateRoute("test", "Test", new PageBuilders.AnalyzeBuilder());
         windowManager.addOrUpdateRoute("notFoundBuilder", "notFoundBuilder", notFoundBuilder);
         windowManager.start();

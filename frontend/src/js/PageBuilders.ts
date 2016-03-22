@@ -3,24 +3,33 @@
 module PageBuilders {
 
     import PageBuilder = ThremNavigation.IPageBuilder;
-    export class IndexBuilder implements PageBuilder {
-        spawn(element:HTMLElement, context: ThremNavigation.ThremContext):Promise<any> {
-            console.log("Spawn index");
 
-            var data = { name: "namaaaa" };
-            return context.doT.renderTo(element, "pageBuildersTemplates", "index", data);
+    export class NotFoundBuilder implements PageBuilder {
+        spawn(element: HTMLElement, context: ThremNavigation.ThremContext): Promise<any> {
+            var data = {};
+            return context.doT.renderTo(element, "global", "notFound", data);
         }
 
         die(): Promise<any> {
-            console.log("Die index");
             return Promise.resolve({});
         }
     }
 
-    export class NotFoundBuilder implements PageBuilder {
-        spawn(element:HTMLElement, context: ThremNavigation.ThremContext): Promise<any> {
+    export class IndexBuilder implements PageBuilder {
+        spawn(element:HTMLElement, context: ThremNavigation.ThremContext):Promise<any> {
+            var data = { name: "namaaaa" };
+            return context.doT.renderTo(element, "basic", "index", data);
+        }
+
+        die(): Promise<any> {
+            return Promise.resolve({});
+        }
+    }
+
+    export class SetupBuilder implements PageBuilder {
+        spawn(element: HTMLElement, context: ThremNavigation.ThremContext): Promise<any> {
             var data = {};
-            return context.doT.renderTo(element, "pageBuildersTemplates", "notFound", data);
+            return context.doT.renderTo(element, "basic", "setup", data);
         }
 
         die(): Promise<any> {
@@ -30,16 +39,11 @@ module PageBuilders {
 
     export class AnalyzeBuilder implements PageBuilder {
         spawn(element:HTMLElement, context: ThremNavigation.ThremContext): Promise<any> {
-            console.log("Spawn AnalyzeBuilder");
-            var result = new Promise<any>((resolve, reject)=> {
-                setTimeout(() => resolve(), 2000);
-            });
-
-            return result;
+            var data = {};
+            return context.doT.renderTo(element, "test", "test", data);
         }
 
         die(): Promise<any> {
-            console.log("Die AnalyzeBuilder");
             return Promise.resolve({});
         }
     }   

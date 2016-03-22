@@ -1,16 +1,12 @@
 //out: style.css
 
-@import "reset.less";
-@import "elements.less";
-
-
-
 /*---------------------------------------------------
     Threm styles
   ---------------------------------------------------
 */
 
-@import "menu.less";
+@import "threm-menu.less";
+@import "threm-forms.less";
 @header-height: 70px;
 @footer-height: 20px;
 
@@ -58,6 +54,9 @@ body {
             height: @footer-height;
             background-color: white;
             text-align: right;
+            p {
+                margin: 0 10px;
+            }
         }
 
         .window-manager {

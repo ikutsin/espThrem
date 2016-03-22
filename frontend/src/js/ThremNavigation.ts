@@ -76,7 +76,7 @@ module ThremNavigation {
         private ensureNamespace(namespace: string): Promise<any> {
             return new Promise<any>((resolve, reject) => {
                 if (d3.select("body").select("div.templates." + namespace).empty()) {
-                    let url = namespace + ".html";
+                    let url = "templates/" + namespace + ".html";
                     console.log("Loading", url);
                     d3.html(url, data => {
                         if (!data) {
