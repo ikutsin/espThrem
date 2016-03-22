@@ -26,16 +26,19 @@ module PageBuilders {
         }
     }
 
-    export class SetupBuilder implements PageBuilder {
+    export class StaticTemplateBuilder implements PageBuilder {
+        constructor(private tn: string, private name: string, private data: any) {
+        }
         spawn(element: HTMLElement, context: ThremNavigation.ThremContext): Promise<any> {
-            var data = {};
-            return context.doT.renderTo(element, "basic", "setup", data);
+            return context.doT.renderTo(element, this.tn, this.name, this.data);
         }
 
         die(): Promise<any> {
             return Promise.resolve({});
         }
     }   
+
+
 
     export class AnalyzeBuilder implements PageBuilder {
         spawn(element:HTMLElement, context: ThremNavigation.ThremContext): Promise<any> {

@@ -53,19 +53,6 @@ nav.align-right > ul > li > a {
   margin-right: 0;
   margin-left: -4px;
 }
-nav > ul > li > a {
-  z-index: 2;
-  padding: 2vw 3vw 1vh 3vw;
-  font-size: 2vw;
-  text-decoration: none;
-  color: #444444;
-  -webkit-transition: all .2s ease;
-  -moz-transition: all .2s ease;
-  -ms-transition: all .2s ease;
-  -o-transition: all .2s ease;
-  transition: all .2s ease;
-  margin-right: -4px;
-}
 nav > ul > li.active > a,
 nav > ul > li:hover > a,
 nav > ul > li > a:hover {
@@ -96,6 +83,30 @@ nav > ul > li.active > a:after,
 nav > ul > li:hover > a:after,
 nav > ul > li > a:hover:after {
   background: #47c9af;
+}
+@media (min-width: 500px) {
+  nav > ul > li > a {
+    z-index: 2;
+    padding: 18px 25px 12px 25px;
+    font-size: 15px;
+  }
+}
+@media (max-width: 500px) {
+  nav > ul > li > a {
+    z-index: 2;
+    padding: 2vw 3vw 1vh 3vw;
+    font-size: 2vw;
+  }
+}
+nav > ul > li > a {
+  text-decoration: none;
+  color: #444444;
+  -webkit-transition: all .2s ease;
+  -moz-transition: all .2s ease;
+  -ms-transition: all .2s ease;
+  -o-transition: all .2s ease;
+  transition: all .2s ease;
+  margin-right: -4px;
 }
 /*---------------------------------------------------
     LESS Elements 0.9
@@ -145,12 +156,12 @@ form textarea:hover {
 form button,
 form input[type=submit],
 form input[type=reset] {
-  background: #6CB1EE;
-  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #4F85B2), color-stop(1, #BCE6FF));
-  background: -ms-linear-gradient(bottom, #4F85B2, #BCE6FF);
-  background: -moz-linear-gradient(center bottom, #4F85B2 0%, #BCE6FF 100%);
-  background: -o-linear-gradient(#BCE6FF, #4F85B2);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#BCE6FF', endColorstr='#4F85B2', GradientType=0);
+  background: #6cb1ee;
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #4f85b2), color-stop(1, #bce6ff));
+  background: -ms-linear-gradient(bottom, #4f85b2, #bce6ff);
+  background: -moz-linear-gradient(center bottom, #4f85b2 0%, #bce6ff 100%);
+  background: -o-linear-gradient(#bce6ff, #4f85b2);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#bce6ff', endColorstr='#4f85b2', GradientType=0);
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
@@ -163,22 +174,22 @@ form input[type=reset] {
 form button:hover,
 form input[type=submit]:hover,
 form input[type=reset]:hover {
-  background: #6CB1EE;
-  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #4F85B2), color-stop(1, #bcfbff));
-  background: -ms-linear-gradient(bottom, #4F85B2, #bcfbff);
-  background: -moz-linear-gradient(center bottom, #4F85B2 0%, #bcfbff 100%);
-  background: -o-linear-gradient(#bcfbff, #4F85B2);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#bcfbff', endColorstr='#4F85B2', GradientType=0);
+  background: #6cb1ee;
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #4f85b2), color-stop(1, #bcfbff));
+  background: -ms-linear-gradient(bottom, #4f85b2, #bcfbff);
+  background: -moz-linear-gradient(center bottom, #4f85b2 0%, #bcfbff 100%);
+  background: -o-linear-gradient(#bcfbff, #4f85b2);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#bcfbff', endColorstr='#4f85b2', GradientType=0);
 }
 form button:active,
 form input[type=submit]:active,
 form input[type=reset]:active {
-  background: #6CB1EE;
-  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #BCE6FF), color-stop(1, #4F85B2));
-  background: -ms-linear-gradient(bottom, #BCE6FF, #4F85B2);
-  background: -moz-linear-gradient(center bottom, #BCE6FF 0%, #4F85B2 100%);
-  background: -o-linear-gradient(#4F85B2, #BCE6FF);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4F85B2', endColorstr='#BCE6FF', GradientType=0);
+  background: #6cb1ee;
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #bce6ff), color-stop(1, #4f85b2));
+  background: -ms-linear-gradient(bottom, #bce6ff, #4f85b2);
+  background: -moz-linear-gradient(center bottom, #bce6ff 0%, #4f85b2 100%);
+  background: -o-linear-gradient(#4f85b2, #bce6ff);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4f85b2', endColorstr='#bce6ff', GradientType=0);
 }
 form input[type=checkbox] {
   width: 20px;
@@ -254,3 +265,4 @@ body .content .window-manager .page {
   min-height: 200px;
   padding: 0 5px 25px 5px;
 }
+/*# sourceMappingURL=style.css.map */

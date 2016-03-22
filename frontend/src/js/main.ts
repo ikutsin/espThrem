@@ -15,8 +15,9 @@ class Program {
             indexBuilder,
             notFoundBuilder);
 
-        windowManager.addOrUpdateRoute("setup", "Setup", new PageBuilders.SetupBuilder());
-        windowManager.addOrUpdateRoute("test", "Test", new PageBuilders.AnalyzeBuilder());
+        windowManager.addOrUpdateRoute("lipsum", "Lipsum", new PageBuilders.StaticTemplateBuilder("test", "lipsum", {}));
+        windowManager.addOrUpdateRoute("setup", "Setup", new PageBuilders.StaticTemplateBuilder("test", "form", {}));
+        windowManager.addOrUpdateRoute("test", "Test", new PageBuilders.StaticTemplateBuilder("test", "test", {}));
         windowManager.addOrUpdateRoute("notFoundBuilder", "notFoundBuilder", notFoundBuilder);
         windowManager.start();
 
