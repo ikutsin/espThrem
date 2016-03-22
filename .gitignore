@@ -12,3 +12,6 @@ frontend/src-unused/*.js
 frontend/src-unused/*.map
 *.cache
 *.suo
+packages
+device/Debug
+*.user
