@@ -7,6 +7,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "frontend", "frontend\fronte
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "platformio", "device\platformio.vcxproj", "{0FA9C3A8-452B-41EF-A418-9102B170F49F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Batches", "Batches", "{29520511-9187-47BB-9D07-FCF63F61AA35}"
+	ProjectSection(SolutionItems) = preProject
+		decodeerror.bat = decodeerror.bat
+		here.bat = here.bat
+		path.bat = path.bat
+		serialmonitor.bat = serialmonitor.bat
+		serialtofile.bat = serialtofile.bat
+		upload.bat = upload.bat
+		uploadSpiffs.bat = uploadSpiffs.bat
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

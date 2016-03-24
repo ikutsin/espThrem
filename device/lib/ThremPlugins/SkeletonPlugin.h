@@ -9,36 +9,38 @@ set uniqueid
 #include "IThremPlugin.h"
 #include "Streaming.h"
 
-class ThremNamePluginPlugin: public IThremPlugin {
-  virtual int getUniqueId()
-  {
-    return uniqueid;
-  }
-  virtual char* getName()
-  {
-    return "NamePlugin";
-  }
+class ThremNamePluginPlugin : public IThremPlugin {
+	virtual int getUniqueId()
+	{
+		return uniqueid;
+	}
+	virtual char* getName()
+	{
+		return "NamePlugin";
+	}
 
-  virtual bool init(ThremContext* context)
-  {
-    #ifdef LOG
-    LOG << "ThremNamePluginPlugin init" << endl;
-    #endif
+	virtual bool init(ThremContext* context)
+	{
+#ifdef LOG
+		LOG << "ThremNamePluginPlugin init" << endl;
+#endif
 
-    ESP8266WebServer* server = context->getServer();
+		ESP8266WebServer* server = context->getServer();
 
-    return true;
-  }
-  virtual void readData(ThremContext* context)
-  {
+		return true;
+	}
+	virtual void readData(ThremContext* context)
+	{
 
-  }
-  virtual void writeData(ThremNotification* notification)
-  {
+	}
+	virtual void writeData(ThremNotification* notification)
+	{
 
-  }
+	}
 
-
+	virtual bool handleNotFound(ThremContext* context, String uri) {
+		return false;
+	}
 };
 
 

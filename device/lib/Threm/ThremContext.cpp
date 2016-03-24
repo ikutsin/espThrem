@@ -9,12 +9,12 @@ void ThremContext::beforeLoop() {
 void ThremContext::afterLoop() {
   #ifdef DEBUG
   DEBUG << "ThremContext::afterLoop " << _notifications->size() << " " << endl;
-  DEBUG << "Free heap" << ESP.getFreeHeap() << endl;
+  //DEBUG << "Free heap " << ESP.getFreeHeap() << endl;
   #endif
 
   _notifications->clear();
   
   #ifdef DEBUG
-  DEBUG << "Freed heap" << ESP.getFreeHeap() << endl;
-  #endif
+  DEBUG << "Free heap " << ESP.getFreeHeap() << endl;
+#endif
 }

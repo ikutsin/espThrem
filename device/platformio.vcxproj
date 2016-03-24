@@ -59,8 +59,28 @@
     <None Include="platformio.ini" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="lib\ThremPlugins\ThremCaptivePortalPlugin.cpp" />
+    <ClCompile Include="lib\ThremPlugins\ThremSpiffsPlugin.cpp" />
+    <ClCompile Include="lib\ThremPlugins\ThremWifiPlugin.cpp" />
+    <ClCompile Include="lib\Threm\Threm.cpp" />
+    <ClCompile Include="lib\Threm\ThremContext.cpp" />
     <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="lib\ThremPlugins\SkeletonPlugin.h" />
+    <ClInclude Include="lib\ThremPlugins\ThremCaptivePortalPlugin.h" />
+    <ClInclude Include="lib\ThremPlugins\ThremCoreApiPlugin.h" />
+    <ClInclude Include="lib\ThremPlugins\ThremDiagPlugin.h" />
+    <ClInclude Include="lib\ThremPlugins\ThremInfoApiPlugin.h" />
+    <ClInclude Include="lib\ThremPlugins\ThremSpiffsPlugin.h" />
+    <ClInclude Include="lib\ThremPlugins\ThremSsdpPlugin.h" />
+    <ClInclude Include="lib\ThremPlugins\ThremWebSocketPlugin.h" />
+    <ClInclude Include="lib\ThremPlugins\ThremWifiPlugin.h" />
+    <ClInclude Include="lib\Threm\IThremPlugin.h" />
+    <ClInclude Include="lib\Threm\Threm.h" />
+    <ClInclude Include="lib\Threm\ThremConfig.h" />
+    <ClInclude Include="lib\Threm\ThremContext.h" />
   </ItemGroup>
 </Project>

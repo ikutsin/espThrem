@@ -11,6 +11,7 @@
 #include "ThremCoreApiPlugin.h"
 #include "ThremInfoApiPlugin.h"
 #include "ThremCaptivePortalPlugin.h"
+#include "ThremSpiffsPlugin.h"
 
 
 Threm* threm = new Threm();
@@ -41,6 +42,9 @@ void setup() {
   threm->addPlugin(plugin);
 
   plugin = new ThremCaptivePortalPlugin();
+  threm->addPlugin(plugin);
+
+  plugin = new ThremSpiffsPlugin();
   threm->addPlugin(plugin);
 
   threm->start();

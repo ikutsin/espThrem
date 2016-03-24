@@ -1,4 +1,6 @@
 ﻿///<reference path="../../Scripts/typings/d3/d3.d.ts" />
+///<reference path="../../Scripts/typings/dot/dot.d.ts" />
+
 module ThremNavigation {
     export class ThremContext {
         public doT: DoTWrapper;

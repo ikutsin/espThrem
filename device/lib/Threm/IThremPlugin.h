@@ -12,6 +12,8 @@ public:
 
     virtual int getUniqueId();
     virtual char* getName();
+
+	virtual bool handleNotFound(ThremContext* context, String uri);
 };
 
 #endif /* !FILE_THREMPLUGIN_SEEN */

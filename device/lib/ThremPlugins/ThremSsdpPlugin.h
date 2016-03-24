@@ -6,65 +6,67 @@
 
 #include <ESP8266SSDP.h>
 
-class ThremSsdpPlugin: public IThremPlugin {
+class ThremSsdpPlugin : public IThremPlugin {
 
-  virtual int getUniqueId()
-  {
-    return 21;
-  }
-  virtual char* getName()
-  {
-    return "SSDP";
-  }
-  
-  virtual bool init(ThremContext* context)
-  {
-    #ifdef LOG
-    LOG << "ThremSsdpPlugin init" << endl;
-    #endif
+	virtual int getUniqueId()
+	{
+		return 21;
+	}
+	virtual char* getName()
+	{
+		return "SSDP";
+	}
 
-    ESP8266WebServer* server = context->getServer();
+	virtual bool init(ThremContext* context)
+	{
+#ifdef LOG
+		LOG << "ThremSsdpPlugin init" << endl;
+#endif
 
-    server->on("/description.xml", HTTP_GET, [=](){
-      #ifdef LOG
-      LOG << "SSDP handle descr" << endl;
-      #endif
+		ESP8266WebServer* server = context->getServer();
 
-      SSDP.schema(server->client());
-    });
+		server->on("/description.xml", HTTP_GET, [=](){
+#ifdef LOG
+			LOG << "SSDP handle descr" << endl;
+#endif
 
-    String chipid = String(ESP.getChipId(), HEX);
-    String flashchipid = String(ESP.getFlashChipId(), HEX);
-    String name = "Sensor_"+chipid;
+			SSDP.schema(server->client());
+		});
 
-    SSDP.setSchemaURL("description.xml");
-    SSDP.setHTTPPort(80);
-    SSDP.setName(name.c_str());
-    SSDP.setSerialNumber(chipid.c_str());
-    SSDP.setURL("index.html");
-    SSDP.setModelName(name.c_str());
-    SSDP.setModelNumber(flashchipid.c_str());
-    SSDP.setModelURL("http://usanov.net/");
-    SSDP.setManufacturer("Ikutsin");
-    SSDP.setManufacturerURL("http://usanov.net/");
-    SSDP.begin();
+		String chipid = String(ESP.getChipId(), HEX);
+		String flashchipid = String(ESP.getFlashChipId(), HEX);
+		String name = "Sensor_" + chipid;
 
-    #ifdef LOG
-   LOG << "SSDP: " << name.c_str() << " " << chipid.c_str() << " " << flashchipid.c_str() << endl;
-   #endif
+		SSDP.setSchemaURL("description.xml");
+		SSDP.setHTTPPort(80);
+		SSDP.setName(name.c_str());
+		SSDP.setSerialNumber(chipid.c_str());
+		SSDP.setURL("index.html");
+		SSDP.setModelName(name.c_str());
+		SSDP.setModelNumber(flashchipid.c_str());
+		SSDP.setModelURL("http://usanov.net/");
+		SSDP.setManufacturer("Ikutsin");
+		SSDP.setManufacturerURL("http://usanov.net/");
+		SSDP.begin();
 
-    return true;
-  }
-  virtual void readData(ThremContext* context)
-  {
+#ifdef LOG
+		LOG << "SSDP: " << name.c_str() << " " << chipid.c_str() << " " << flashchipid.c_str() << endl;
+#endif
 
-  }
-  virtual void writeData(ThremNotification* notification)
-  {
+		return true;
+	}
+	virtual void readData(ThremContext* context)
+	{
 
-  }
+	}
+	virtual void writeData(ThremNotification* notification)
+	{
 
+	}
 
+	virtual bool handleNotFound(ThremContext* context, String uri) {
+		return false;
+	}
 };
 
 

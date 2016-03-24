@@ -6,84 +6,90 @@
 
 #include <ESP8266WiFi.h>
 
-class ThremCoreApiPlugin: public IThremPlugin {
-  bool isResetRequest = false;
-  bool isRestartRequest = false;
+class ThremCoreApiPlugin : public IThremPlugin {
+	bool isResetRequest = false;
+	bool isRestartRequest = false;
 
-  virtual int getUniqueId()
-  {
-    return 31;
-  }
-  virtual char* getName()
-  {
-    return "Core API";
-  }
-  
-  virtual bool init(ThremContext* context)
-  {
-    #ifdef LOG
-    LOG << "ThremCoreApiPlugin init" << endl;
-    #endif
+	virtual int getUniqueId()
+	{
+		return 31;
+	}
+	virtual char* getName()
+	{
+		return "Core API";
+	}
 
-    ESP8266WebServer* server = context->getServer();
+	virtual bool init(ThremContext* context)
+	{
+#ifdef LOG
+		LOG << "ThremCoreApiPlugin init" << endl;
+#endif
 
-    server->on("/restart", [ = ](){
-      #ifdef LOG
-      LOG << "CORE API handle restart" << endl;
-      #endif
-      isRestartRequest = true;
-      server->send(200, "text/plain", "OK (restart)");
-    });
+		ESP8266WebServer* server = context->getServer();
 
-    server->on("/reset", [ = ](){
-      #ifdef LOG
-      LOG << "CORE API handle reset" << endl;
-      #endif
-      isResetRequest = true;
-      isRestartRequest = true;
-      server->send(200, "text/plain", "OK (reset)");
-    });
+		server->on("/restart", [=](){
+#ifdef LOG
+			LOG << "CORE API handle restart" << endl;
+#endif
+			isRestartRequest = true;
+			server->send(200, "text/plain", "OK (restart)");
+		});
 
-    return true;
-  }
-  virtual void readData(ThremContext* context)
-  {
-    if (isResetRequest)
-      {
-        context->addNotification(getUniqueId(), 1, 25);
-        isResetRequest = false;
-      }
+		server->on("/reset", [=](){
+#ifdef LOG
+			LOG << "CORE API handle reset" << endl;
+#endif
+			isResetRequest = true;
+			isRestartRequest = true;
+			server->send(200, "text/plain", "OK (reset)");
+		});
 
-    if (isRestartRequest)
-      {
-        context->addNotification(getUniqueId(), 1, 10);
-        isRestartRequest = false;
-      }
-  }
-  virtual void writeData(ThremNotification* notification)
-  {
-    if (notification->senderId == getUniqueId())
-      {
-        if (notification->type == 1)
-          {
-            int ntype = notification->value;
-            switch (ntype)
-              {
-              case 25:
-                //reset
-                //ESP.eraseConfig();
-                // WiFi.disconnect(true);
-                //as in wifimanager
-                break;
+		return true;
+	}
+	virtual void readData(ThremContext* context)
+	{
+		if (isResetRequest)
+		{
+			context->addNotification(getUniqueId(), 1, 25);
+			isResetRequest = false;
+		}
 
-              case 10:
-                ESP.restart();
-                //ESP.reset();
-                break;
-              }
-          }
-      }
-  }
+		if (isRestartRequest)
+		{
+			context->addNotification(getUniqueId(), 1, 10);
+			isRestartRequest = false;
+		}
+	}
+	virtual void writeData(ThremNotification* notification)
+	{
+		if (notification->senderId == getUniqueId())
+		{
+			if (notification->type == 1)
+			{
+				int ntype = notification->value;
+				switch (ntype)
+				{
+				case 25:
+					//reset
+					ESP.eraseConfig();
+					//as in wifimanager
+					WiFi.disconnect(true);
+					//what does it do?
+					ESP.reset();
+					break;
+
+				case 10:
+					ESP.restart();
+					//ESP.reset();
+					break;
+				}
+			}
+		}
+	}
+
+	virtual bool handleNotFound(ThremContext* context, String uri) {
+		return false;
+	}
 
 };
 

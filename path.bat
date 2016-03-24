@@ -1,0 +1,1 @@
+set PATH=%PATH%;c:\Users\Oleg\.platformio\packages\toolchain-xtensa\bin\

@@ -15,3 +15,7 @@ frontend/src-unused/*.map
 packages
 device/Debug
 *.user
+device/data
+node_modules
+out.txt
+out.txt

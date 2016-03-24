@@ -11,6 +11,7 @@
 #include "ThremCoreApiPlugin.h"
 #include "ThremInfoApiPlugin.h"
 #include "ThremCaptivePortalPlugin.h"
+#include "ThremSpiffsPlugin.h"
 
 
 Threm* threm = new Threm();
@@ -18,7 +19,7 @@ Threm* threm = new Threm();
 void setup() {
 	Serial.begin(115200);
 	Serial.print("\n");
-	//Serial.setDebugOutput(true);
+	Serial.setDebugOutput(true);
 
 	//add plugins
 	IThremPlugin* plugin;
@@ -27,6 +28,12 @@ void setup() {
 	threm->addPlugin(plugin);
 
 	plugin = new ThremWifiPlugin();
+	threm->addPlugin(plugin);
+
+	plugin = new ThremCaptivePortalPlugin();
+	threm->addPlugin(plugin);
+
+	plugin = new ThremSpiffsPlugin();
 	threm->addPlugin(plugin);
 
 	plugin = new ThremSsdpPlugin();
@@ -39,9 +46,6 @@ void setup() {
 	threm->addPlugin(plugin);
 
 	plugin = new ThremInfoApiPlugin();
-	threm->addPlugin(plugin);
-
-	plugin = new ThremCaptivePortalPlugin();
 	threm->addPlugin(plugin);
 
 	threm->start();
