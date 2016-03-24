@@ -42,7 +42,7 @@ void setup() {
 	plugin = new ThremWebSocketPlugin();
 	threm->addPlugin(plugin);
 
-	plugin = new ThremCoreApiPlugin();
+	plugin = new ThremCoreApiPlugin(threm);
 	threm->addPlugin(plugin);
 
 	plugin = new ThremInfoApiPlugin();

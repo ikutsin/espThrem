@@ -10,6 +10,12 @@ class ThremCoreApiPlugin : public IThremPlugin {
 	bool isResetRequest = false;
 	bool isRestartRequest = false;
 
+	Threm* threm;
+public:
+	ThremCoreApiPlugin(Threm* thremm) {
+		threm = thremm;
+	}
+
 	virtual int getUniqueId()
 	{
 		return 31;
@@ -42,6 +48,40 @@ class ThremCoreApiPlugin : public IThremPlugin {
 			isResetRequest = true;
 			isRestartRequest = true;
 			server->send(200, "text/plain", "OK (reset)");
+		});
+
+		server->on("/info/threm.json", [=](){
+			if (!server->hasArg("id")) {
+				String json = threm->getJsonState();
+				server->send(200, "text/json", json);
+			}
+			else {
+#ifdef LOG
+				LOG << "Respond config for " << server->arg("id") << endl;
+#endif
+				String json = threm->getJsonStateFor(server->arg("id").toInt());
+				server->send(200, "text/json", json);
+			}
+		});
+
+		server->on("/configure", HTTP_POST, [=](){
+
+			if (!server->hasArg("id") || !server->hasArg("data")) {
+				server->send(500, "text/plain", "BAD ARGS");
+				return;
+			}
+
+			String filename = "/config/" + server->arg("id") + ".json";
+#ifdef LOG
+			LOG << "handleFileUpload Name: " << filename << endl;
+#endif
+			File configFile = SPIFFS.open(filename, "w");
+
+			String data = server->arg("data");
+			configFile.write((uint8_t*)data.c_str(), data.length());
+			configFile.close();
+
+			server->send(200, "text/plain", "(OK) " + filename);
 		});
 
 		return true;

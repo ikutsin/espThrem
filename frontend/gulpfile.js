@@ -49,11 +49,14 @@ gulp.task('compile', [], function () {
       .pipe(useref())
       .pipe(gulp.dest('./build/compiled/'));
 
+    gulp.src('./src/templates/*.html')
+      .pipe(gulp.dest('./build/compiled/templates/'));
+
 
 });
 
 gulp.task('compress', ['compile'], function () {
-    gulp.src('./build/compiled/*.html')
+    gulp.src('./build/compiled/**/*.html')
       .pipe(gulp.dest('./build/compressed/'));
 
     gulp.src('./build/compiled/css/*.css')
@@ -63,7 +66,8 @@ gulp.task('compress', ['compile'], function () {
       .pipe(gulp.dest('./build/compressed/js'));
 });
 
-gulp.task('gzip', ['compress'], function () {
+//gulp.task('gzip', ['compress'], function () {
+gulp.task('gzip', function () {
     gulp.src('./build/compressed/**/*.*')
       .pipe(pako.gzip())
       //.pipe(rename({extname: ""}))

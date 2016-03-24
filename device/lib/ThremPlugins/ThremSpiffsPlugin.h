@@ -36,7 +36,10 @@ class ThremSpiffsPlugin : public IThremPlugin {
 		ESP8266WebServer* server = context->getServer();
 
 		server->on("/list", HTTP_GET, [=]() {
-			if (!server->hasArg("dir")) { server->send(500, "text/plain", "BAD ARGS"); return; }
+			if (!server->hasArg("dir")) {
+				server->send(500, "text/plain", "BAD ARGS");
+				return;
+			}
 
 			String path = server->arg("dir");
 #ifdef LOG
@@ -80,7 +83,7 @@ class ThremSpiffsPlugin : public IThremPlugin {
 #endif
 		ESP8266WebServer* server = context->getServer();
 
-		if (uri.endsWith("/")) uri += "index.htm";
+		if (uri.endsWith("/")) uri += "index.html";
 		String contentType = getContentType(uri);
 		String pathWithGz = uri + ".gz";
 		if (SPIFFS.exists(pathWithGz) || SPIFFS.exists(uri)) {
