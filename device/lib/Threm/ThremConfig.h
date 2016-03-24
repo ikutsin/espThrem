@@ -1,6 +1,4 @@
-
-
 #define LOG Serial
 //#define DEBUG Serial
 
-#define JSON_BUFFER_SIZE 4096
+#define JSON_BUFFER_SIZE 1000

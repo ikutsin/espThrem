@@ -20,7 +20,7 @@ class ThremSpiffsPlugin : public IThremPlugin {
 		return "Spiffs";
 	}
 
-	virtual bool init(ThremContext* context)
+	virtual bool init(ThremContext* context, JsonObject& root)
 	{
 #ifdef LOG
 		LOG << "ThremSpiffsPlugin init" << endl;
@@ -37,7 +37,7 @@ class ThremSpiffsPlugin : public IThremPlugin {
 
 		server->on("/list", HTTP_GET, [=]() {
 			if (!server->hasArg("dir")) {
-				server->send(500, "text/plain", "BAD ARGS");
+				server->send(500, "text/plain", "BAD ARGS (dir)");
 				return;
 			}
 
@@ -67,14 +67,6 @@ class ThremSpiffsPlugin : public IThremPlugin {
 		});
 
 		return true;
-	}
-	virtual void readData(ThremContext* context)
-	{
-	}
-
-	virtual void writeData(ThremNotification* notification)
-	{
-
 	}
 
 	virtual bool handleNotFound(ThremContext* context, String uri) {

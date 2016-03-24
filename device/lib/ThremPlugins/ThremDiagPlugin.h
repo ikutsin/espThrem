@@ -17,7 +17,7 @@ class ThremDiagPlugin : public IThremPlugin {
 		return "Serial diagnostics";
 	}
 
-	virtual bool init(ThremContext* context)
+	virtual bool init(ThremContext* context, JsonObject& root)
 	{
 #ifdef LOG
 		LOG << "ThremDiagPlugin init" << endl;
@@ -47,10 +47,6 @@ class ThremDiagPlugin : public IThremPlugin {
 #ifdef LOG
 		LOG << "writeData: " << notification->senderId << " " << notification->type << " " << notification->value << endl;
 #endif
-	}
-
-	virtual bool handleNotFound(ThremContext* context, String uri) {
-		return false;
 	}
 
 };

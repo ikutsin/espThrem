@@ -4,10 +4,10 @@
 #include "ThremContext.h"
 #include "IThremPlugin.h"
 #include "LinkedList.h"
-
-#include "ThremConfig.h"
+#include "ArduinoJson.h"
 #include <FS.h>
 
+#include "ThremConfig.h"
 
 struct PluginMeta {
 	bool isEnabled;
@@ -24,40 +24,11 @@ public:
 	void start();
 	void loop();
 
-	String getJsonStateFor(int id) {
-		String configLocation = "/config/" + String(id) + ".json";
-		if (SPIFFS.exists(configLocation)) {
-			File file = SPIFFS.open(configLocation, "r");
-			String content = file.readString();
-			return content;
-		}
-#ifdef LOG
-		LOG << "Config not found at " << configLocation << endl;
-#endif
-		return "{}";
-	}
+	String getJsonState();
+	String getJsonStateFor(int id);
+	void setJsonStateFor(int id, String data);
 
-	String getJsonState() {
-		String result = "[";
-
-		IThremPlugin* plugin;
-		PluginMeta* meta;
-		for (int i = 0; i < _plugins->size(); i++) {
-			plugin = _plugins->get(i);
-			meta = _pluginMeta->get(i);
-
-			result += "{\"id\":\"" + String(plugin->getUniqueId());
-			result += "\",\"name\":\"" + String(plugin->getName());
-			result += "\",\"running\":\"" + String(meta->isEnabled);
-
-			result += "\",\"config\":" + getJsonStateFor(plugin->getUniqueId());
-
-			result += "}";
-		}
-
-		result += "]";
-		return result;
-	}
+	IThremPlugin* getPluginById(int id);
 };
 
 #endif /* !FILE_THREM_SEEN */

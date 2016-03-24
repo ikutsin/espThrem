@@ -10,7 +10,7 @@
 //TODO: smart config.... wps
 
 class ThremWifiPlugin : public IThremPlugin {
-	int _connectTimeout = 8000;
+	int _connectTimeout = 12000;
 
 	int connectWifi(const char* ssid, const char* pass);
 	uint8_t waitForConnectResult();
@@ -25,20 +25,19 @@ class ThremWifiPlugin : public IThremPlugin {
 		return "Wifi connection";
 	}
 
-	virtual bool init(ThremContext* context)
+	virtual bool init(ThremContext* context, JsonObject& root)
 	{
 #ifdef LOG
 		LOG << "ThremWifiPlugin init" << endl;
 #endif
 
 		WiFi.mode(WIFI_STA);
-		//int connectStatus = connectWifi(NULL, NULL);
 
+		int connectStatus = connectWifi(NULL, NULL);
 
-		//TODO: drop it!!!
-		const char* ssid = "HUAWEI-E5172-5793";
-		const char* password = "Q1HEB8EDE0Q";
-		int connectStatus = connectWifi(ssid, password);
+		if (WiFi.status() != WL_CONNECTED && root.containsKey("ssid")) {
+			int connectStatus = connectWifi(root["ssid"], root["pwd"]);
+		}
 
 
 #ifdef LOG
@@ -114,11 +113,15 @@ class ThremWifiPlugin : public IThremPlugin {
 			context->addNotification(getUniqueId(), 1, WiFi.status());
 		}
 	}
-	virtual void writeData(ThremNotification* notification)
-	{
-	}
-	virtual bool handleNotFound(ThremContext* context, String uri) {
-		return false;
+
+	virtual void finalizeConfig(JsonObject& jsonObject) {
+		//if (!jsonObject.containsKey("pwd")) {
+		//}
+		if (!jsonObject.containsKey("ssid")) {
+			
+			//TODO: dtop it
+			jsonObject["pwd"] = NULL;
+		}
 	}
 };
 

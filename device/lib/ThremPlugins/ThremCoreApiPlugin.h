@@ -5,6 +5,7 @@
 #include "Streaming.h"
 
 #include <ESP8266WiFi.h>
+#include <FS.h>
 
 class ThremCoreApiPlugin : public IThremPlugin {
 	bool isResetRequest = false;
@@ -25,7 +26,7 @@ public:
 		return "Core API";
 	}
 
-	virtual bool init(ThremContext* context)
+	virtual bool init(ThremContext* context, JsonObject& root)
 	{
 #ifdef LOG
 		LOG << "ThremCoreApiPlugin init" << endl;
@@ -67,21 +68,12 @@ public:
 		server->on("/configure", HTTP_POST, [=](){
 
 			if (!server->hasArg("id") || !server->hasArg("data")) {
-				server->send(500, "text/plain", "BAD ARGS");
+				server->send(500, "text/plain", "BAD ARGS (id, data)");
 				return;
 			}
-
-			String filename = "/config/" + server->arg("id") + ".json";
-#ifdef LOG
-			LOG << "handleFileUpload Name: " << filename << endl;
-#endif
-			File configFile = SPIFFS.open(filename, "w");
-
-			String data = server->arg("data");
-			configFile.write((uint8_t*)data.c_str(), data.length());
-			configFile.close();
-
-			server->send(200, "text/plain", "(OK) " + filename);
+			int pluginid = server->arg("id").toInt();
+			threm->setJsonStateFor(pluginid, server->arg("data"));
+			server->send(200, "text/plain", "(OK) " + server->arg("id"));
 		});
 
 		return true;
@@ -110,6 +102,12 @@ public:
 				switch (ntype)
 				{
 				case 25:
+				{
+					//delete config
+					Dir dir = SPIFFS.openDir("/config");
+					while (dir.next()) {
+						SPIFFS.remove(dir.fileName());
+					}
 					//reset
 					ESP.eraseConfig();
 					//as in wifimanager
@@ -117,7 +115,7 @@ public:
 					//what does it do?
 					ESP.reset();
 					break;
-
+				}
 				case 10:
 					ESP.restart();
 					//ESP.reset();
@@ -125,10 +123,6 @@ public:
 				}
 			}
 		}
-	}
-
-	virtual bool handleNotFound(ThremContext* context, String uri) {
-		return false;
 	}
 
 };

@@ -19,7 +19,7 @@ class ThremNamePluginPlugin : public IThremPlugin {
 		return "NamePlugin";
 	}
 
-	virtual bool init(ThremContext* context)
+	virtual bool init(ThremContext* context, JsonObject& root)
 	{
 #ifdef LOG
 		LOG << "ThremNamePluginPlugin init" << endl;
@@ -29,18 +29,20 @@ class ThremNamePluginPlugin : public IThremPlugin {
 
 		return true;
 	}
-	virtual void readData(ThremContext* context)
-	{
+	//virtual void readData(ThremContext* context)
+	//{
+	//}
 
-	}
-	virtual void writeData(ThremNotification* notification)
-	{
+	//virtual void writeData(ThremNotification* notification)
+	//{
+	//}
 
-	}
+	//virtual void finalizeConfig(JsonObject& jsonObject) {
+	//}
 
-	virtual bool handleNotFound(ThremContext* context, String uri) {
-		return false;
-	}
+	//virtual bool handleNotFound(ThremContext* context, String uri) {
+	//	return false;
+	//}
 };
 
 

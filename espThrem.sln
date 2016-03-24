@@ -16,6 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Batches", "Batches", "{2952
 		serialtofile.bat = serialtofile.bat
 		upload.bat = upload.bat
 		uploadSpiffs.bat = uploadSpiffs.bat
+		uploadwatch.bat = uploadwatch.bat
 	EndProjectSection
 EndProject
 Global

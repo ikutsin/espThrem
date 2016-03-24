@@ -52,7 +52,7 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t lenght
 }
 
 class ThremWebSocketPlugin : public IThremPlugin {
-	virtual bool init(ThremContext* context)
+	virtual bool init(ThremContext* context, JsonObject& root)
 	{
 #ifdef LOG
 		LOG << "ThremWebSocketPlugin init" << endl;
@@ -89,10 +89,6 @@ class ThremWebSocketPlugin : public IThremPlugin {
 		output += notification->value;
 		output += "}";
 		webSocket.broadcastTXT(output);
-	}
-
-	virtual bool handleNotFound(ThremContext* context, String uri) {
-		return false;
 	}
 };
 

@@ -17,7 +17,7 @@ class ThremSsdpPlugin : public IThremPlugin {
 		return "SSDP";
 	}
 
-	virtual bool init(ThremContext* context)
+	virtual bool init(ThremContext* context, JsonObject& root)
 	{
 #ifdef LOG
 		LOG << "ThremSsdpPlugin init" << endl;
@@ -54,18 +54,6 @@ class ThremSsdpPlugin : public IThremPlugin {
 #endif
 
 		return true;
-	}
-	virtual void readData(ThremContext* context)
-	{
-
-	}
-	virtual void writeData(ThremNotification* notification)
-	{
-
-	}
-
-	virtual bool handleNotFound(ThremContext* context, String uri) {
-		return false;
 	}
 };
 

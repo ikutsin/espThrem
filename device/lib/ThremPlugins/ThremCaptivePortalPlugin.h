@@ -27,7 +27,7 @@ class ThremCaptivePortalPlugin : public IThremPlugin {
 		return "CaptivePortal";
 	}
 
-	virtual bool init(ThremContext* context)
+	virtual bool init(ThremContext* context, JsonObject& root)
 	{
 #ifdef LOG
 		LOG << "ThremCaptivePortalPlugin init" << endl;
@@ -60,9 +60,6 @@ class ThremCaptivePortalPlugin : public IThremPlugin {
 	virtual void readData(ThremContext* context)
 	{
 		dnsServer->processNextRequest();
-	}
-	virtual void writeData(ThremNotification* notification)
-	{
 	}
 
 	virtual bool handleNotFound(ThremContext* context, String uri) {

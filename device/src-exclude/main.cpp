@@ -4,6 +4,7 @@
 #include <ESP8266WebServer.h>
 
 #include "Threm.h"
+#include "ThremConfig.h"
 #include "ThremDiagPlugin.h"
 #include "ThremSsdpPlugin.h"
 #include "ThremWifiPlugin.h"
@@ -17,45 +18,51 @@
 Threm* threm = new Threm();
 
 void setup() {
-  Serial.begin(115200);
-  Serial.print("\n");
-  //Serial.setDebugOutput(true);
 
-  //add plugins
-  IThremPlugin* plugin;
-  plugin = new ThremDiagPlugin();
-  threm->addPlugin(plugin);
+#ifdef LOG | DEBUG
+	Serial.begin(115200);
+	Serial.print("\n");
+	Serial.setDebugOutput(true);
+#else
+	Serial.setDebugOutput(false);
+#endif
 
-  plugin = new ThremWifiPlugin();
-  threm->addPlugin(plugin);
 
-  plugin = new ThremSsdpPlugin();
-  threm->addPlugin(plugin);
+	//add plugins
+	IThremPlugin* plugin;
+	plugin = new ThremDiagPlugin();
+	threm->addPlugin(plugin);
 
-  plugin = new ThremWebSocketPlugin();
-  threm->addPlugin(plugin);
+	plugin = new ThremWifiPlugin();
+	threm->addPlugin(plugin);
 
-  plugin = new ThremCoreApiPlugin();
-  threm->addPlugin(plugin);
+	plugin = new ThremSsdpPlugin();
+	threm->addPlugin(plugin);
 
-  plugin = new ThremInfoApiPlugin();
-  threm->addPlugin(plugin);
+	plugin = new ThremWebSocketPlugin();
+	threm->addPlugin(plugin);
 
-  plugin = new ThremCaptivePortalPlugin();
-  threm->addPlugin(plugin);
+	plugin = new ThremCoreApiPlugin();
+	threm->addPlugin(plugin);
 
-  plugin = new ThremSpiffsPlugin();
-  threm->addPlugin(plugin);
+	plugin = new ThremInfoApiPlugin();
+	threm->addPlugin(plugin);
 
-  threm->start();
+	plugin = new ThremCaptivePortalPlugin();
+	threm->addPlugin(plugin);
 
-  //delay(5000);
-  //Serial.println("start");
+	plugin = new ThremSpiffsPlugin();
+	threm->addPlugin(plugin);
+
+	threm->start();
+
+	//delay(5000);
+	//Serial.println("start");
 }
 
 void loop()
 {
-  threm->loop();
-  //delay(500);
-  //Serial.println("loop");
+	threm->loop();
+	//delay(500);
+	//Serial.println("loop");
 }
