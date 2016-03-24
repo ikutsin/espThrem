@@ -41,6 +41,19 @@ class ThremInfoApiPlugin : public IThremPlugin {
 			json += WiFi.RSSI();
 			//https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266WiFi/src/ESP8266WiFiType.h
 			//https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266WiFi/src/ESP8266WiFiSTA.h
+
+			//TODO
+			//typedef enum {
+			//	WL_NO_SHIELD = 255,   // for compatibility with WiFi Shield library
+			//	WL_IDLE_STATUS = 0,
+			//	WL_NO_SSID_AVAIL = 1,
+			//	WL_SCAN_COMPLETED = 2,
+			//	WL_CONNECTED = 3,
+			//	WL_CONNECT_FAILED = 4,
+			//	WL_CONNECTION_LOST = 5,
+			//	WL_DISCONNECTED = 6
+			//} wl_status_t;
+
 			json += "\",\"status\":\""; //wl_status_t TODO: stringify
 			json += WiFi.status();
 			json += "\",\"softAPIP\":\"";
@@ -49,8 +62,8 @@ class ThremInfoApiPlugin : public IThremPlugin {
 			json += WiFi.softAPmacAddress();
 			json += "\",\"macAddress\":\"";
 			json += WiFi.macAddress();
-			json += "\",\"psk\":\"";
-			json += WiFi.psk();
+			//json += "\",\"psk\":\"";
+			//json += WiFi.psk();
 			json += "\",\"BSSIDstr\":\"";
 			json += WiFi.BSSIDstr();
 
@@ -65,7 +78,9 @@ class ThremInfoApiPlugin : public IThremPlugin {
 		server->on("/info/status.json", HTTP_GET, [=](){
 			String json = "{";
 
-			json += "\"cycleCount\":";
+			json += "\"vcc\":";
+			json += ESP.getVcc();
+			json += ",\"cycleCount\":";
 			json += ESP.getCycleCount();
 			json += ",\"millis\":";
 			json += millis();
@@ -97,14 +112,10 @@ class ThremInfoApiPlugin : public IThremPlugin {
 			json += ESP.getFlashChipSize();
 			json += ",\"flashChipSizeByChipId\":";
 			json += ESP.getFlashChipSizeByChipId();
-			json += ",\"flashChipSizeByChipId\":";
-			json += ESP.getFlashChipSizeByChipId();
 			json += ",\"freeSketchSpace\":";
 			json += ESP.getFreeSketchSpace();
 			json += ",\"sketchSize\":";
 			json += ESP.getSketchSize();
-			json += ",\"vcc\":";
-			json += ESP.getVcc();
 			FlashMode_t ideMode = ESP.getFlashChipMode();
 			json += ",\"flashChipMode\":";
 			json += (ideMode == FM_QIO ? "QIO" : ideMode == FM_QOUT ? "QOUT" : ideMode == FM_DIO ? "DIO" : ideMode == FM_DOUT ? "DOUT" : "UNKNOWN");

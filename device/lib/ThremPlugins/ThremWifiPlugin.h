@@ -86,13 +86,24 @@ class ThremWifiPlugin : public IThremPlugin {
 				json += WiFi.SSID(indices[i]);
 				json += "\",\"rssi\":\"";
 				json += WiFi.RSSI(indices[i]);
-				// json+= "\",\"BSSIDstr\":\"";
-				// json+= WiFi.BSSIDstr(indices[i]);
-				// json+= "\",\"channel\":\"";
-				// json+= WiFi.channel(indices[i]);
-				// json+= "\",\"isHidden\":\"";
-				// json+= WiFi.isHidden(indices[i]);
+				json += "\",\"BSSIDstr\":\"";
+				json += WiFi.BSSIDstr(indices[i]);
+				json += "\",\"channel\":\"";
+				json += WiFi.channel(indices[i]);
+				json += "\",\"isHidden\":\"";
+				json += WiFi.isHidden(indices[i]);
 				json += "\",\"e\":\"";
+
+				//TODO
+				//enum wl_enc_type {  /* Values map to 802.11 encryption suites... */
+				//	ENC_TYPE_WEP = 5,
+				//	ENC_TYPE_TKIP = 2,
+				//	ENC_TYPE_CCMP = 4,
+				//	/* ... except these two, 7 and 8 are reserved in 802.11-2007 */
+				//	ENC_TYPE_NONE = 7,
+				//	ENC_TYPE_AUTO = 8
+				//};
+
 				json += WiFi.encryptionType(indices[i]);
 				json += "\",\"q\":\"";
 				int quality = getRSSIasQuality(WiFi.RSSI(indices[i]));
@@ -118,7 +129,7 @@ class ThremWifiPlugin : public IThremPlugin {
 		//if (!jsonObject.containsKey("pwd")) {
 		//}
 		if (!jsonObject.containsKey("ssid")) {
-			
+
 			//TODO: dtop it
 			jsonObject["pwd"] = NULL;
 		}
