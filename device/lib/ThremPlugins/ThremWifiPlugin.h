@@ -133,6 +133,8 @@ class ThremWifiPlugin : public IThremPlugin {
 			//TODO: dtop it
 			jsonObject["pwd"] = NULL;
 		}
+		//never off
+		jsonObject["off"] = 0;
 	}
 };
 

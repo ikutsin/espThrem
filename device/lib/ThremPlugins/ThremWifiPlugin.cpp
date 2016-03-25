@@ -47,6 +47,7 @@ uint8_t ThremWifiPlugin::waitForConnectResult() {
 				keepConnecting = false;
 			}
 			delay(100);
+			yield();
 		}
 		return status;
 	}

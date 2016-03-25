@@ -34,7 +34,7 @@ public:
 
 		ESP8266WebServer* server = context->getServer();
 
-		server->on("/restart", [=](){
+		server->on("/restart", HTTP_POST, [=](){
 #ifdef LOG
 			LOG << "CORE API handle restart" << endl;
 #endif
@@ -42,7 +42,7 @@ public:
 			server->send(200, "text/plain", "OK (restart)");
 		});
 
-		server->on("/reset", [=](){
+		server->on("/reset", HTTP_POST, [=](){
 #ifdef LOG
 			LOG << "CORE API handle reset" << endl;
 #endif
@@ -123,6 +123,11 @@ public:
 				}
 			}
 		}
+	}
+
+	virtual void finalizeConfig(JsonObject& jsonObject) {
+		//never off
+		jsonObject["off"] = 0;
 	}
 
 };

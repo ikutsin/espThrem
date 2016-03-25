@@ -2,13 +2,6 @@
 ///<reference path="../../Scripts/typings/dot/dot.d.ts" />
 
 module ThremNavigation {
-    export class ThremContext {
-        public doT: DoTWrapper;
-        constructor() {
-            this.doT = new DoTWrapper();
-        }
-    }
-
     //documenation
     //https://github.com/olado/doT/blob/master/examples/browsersample.html
     //https://github.com/olado/doT/blob/master/examples/advancedsnippet.txt
@@ -25,59 +18,53 @@ module ThremNavigation {
         }
 
         render(namespace: string, name: string, data: any): Promise<string> {
-            return new Promise<string>((resolve, reject) => {
-                this.getTemplate(namespace, name)
-                    .then(p => {
-                        resolve(<string>p(data));
-                    })
-                    .catch(p => reject(p));
-            });
+            return this.getTemplate(namespace, name)
+                .then(p => new Promise<string>((resolve) => {
+                    resolve(<string>p(data));
+                }));
         }
 
-        private getTemplate(namespace: string, name: string): Promise<Function> {
-            return new Promise<Function>((resolve, reject) => {
-                this.ensureNamespace(namespace)
-                    .then(p => {
-                        if (!this.templateRepo[name]) {
-                            var namespaceSelector = d3.select("body").select(`div.templates.${namespace}`);
-                            var defs = {};
+        getTemplate(namespace: string, name: string): Promise<(any)=>string> {
+            return this.ensureNamespace(namespace)
+                .then(p => new Promise<Function>((resolve, reject) => {
+                    if (!this.templateRepo[name]) {
+                        var namespaceSelector = d3.select("body").select(`div.templates.${namespace}`);
+                        var defs = {};
 
-                            console.log("Compiling template:", namespace, name);
+                        console.log("Compiling template:", namespace, name);
 
-                            //first put global
-                            d3.select("body").select("div.templates").selectAll("script.def-global")[0].forEach(v => {
-                                if (!v) return;
-                                var element = (<HTMLElement>v);
-                                console.log("Add global def:", element.id);
-                                defs[element.id] = element.innerHTML;
-                            });
+                        //first put global
+                        d3.select("body").select("div.templates").selectAll("script.def-global")[0].forEach(v => {
+                            if (!v) return;
+                            var element = (<HTMLElement>v);
+                            console.log("Add global def:", element.id);
+                            defs[element.id] = element.innerHTML;
+                        });
 
-                            //so it can be overriden inside namespace
-                            namespaceSelector.selectAll("script.def")[0].forEach(v => {
-                                var element = (<HTMLElement>v);
-                                console.log("Add def:", element.id);
-                                defs[element.id] = element.innerHTML;
-                            });
+                        //so it can be overriden inside namespace
+                        namespaceSelector.selectAll("script.def")[0].forEach(v => {
+                            var element = (<HTMLElement>v);
+                            console.log("Add def:", element.id);
+                            defs[element.id] = element.innerHTML;
+                        });
 
-                            var templtaHtml = namespaceSelector.select("#" + name);
-                            if (!templtaHtml.empty()) {
-                                var tempFn = doT.template(templtaHtml.html(), undefined, defs);
-                                this.templateRepo[name] = tempFn;
-                            }
+                        var templtaHtml = namespaceSelector.select("#" + name);
+                        if (!templtaHtml.empty()) {
+                            var tempFn = doT.template(templtaHtml.html(), undefined, defs);
+                            this.templateRepo[name] = tempFn;
                         }
-                        if (!this.templateRepo[name]) {
-                            reject({ error: `Template not found: ${namespace}.${name}` });
-                            return;
-                        }
-                        resolve(this.templateRepo[name]);
-                    })
-                    .catch(p => reject(p));
-            });
+                    }
+                    if (!this.templateRepo[name]) {
+                        reject({ error: `Template not found: ${namespace}.${name}` });
+                        return;
+                    }
+                    resolve(this.templateRepo[name]);
+                }));
         }
 
         private ensureNamespace(namespace: string): Promise<any> {
             return new Promise<any>((resolve, reject) => {
-                if (d3.select("body").select("div.templates." + namespace).empty()) {
+                if (d3.select("body").select(".templates." + namespace).empty()) {
                     let url = "templates/" + namespace + ".html";
                     console.log("Loading", url);
                     d3.html(url, data => {
@@ -97,7 +84,7 @@ module ThremNavigation {
     }
 
     export interface IPageBuilder {
-        spawn(element: HTMLElement, context: ThremContext): Promise<any>;
+        spawn(element: HTMLElement, context: Threm.ThremContext): Promise<any>;
         die(): Promise<any>;
     }
 
@@ -123,9 +110,9 @@ module ThremNavigation {
         private containerElement: HTMLElement;
         private menuElement: HTMLElement;
         private loader: Charting.Loader;
-        context: ThremContext;
+        context: Threm.ThremContext;
 
-        constructor(context: ThremContext, element: HTMLElement, menuElement: HTMLElement, loader: Charting.Loader, indexPage: IPageBuilder, notfoundPage: IPageBuilder) {
+        constructor(context: Threm.ThremContext, element: HTMLElement, menuElement: HTMLElement, loader: Charting.Loader, indexPage: IPageBuilder, notfoundPage: IPageBuilder) {
             this.notfoundPage = new RouteElement(undefined, undefined, notfoundPage);
             this.indexPage = new RouteElement("", "Home", indexPage);
             this.routes["index"] = this.indexPage;
@@ -133,10 +120,6 @@ module ThremNavigation {
             this.containerElement = element;
             this.menuElement = menuElement;
             this.loader = loader;
-
-            window.onhashchange = (ev: HashChangeEvent) => { this.updateLocation() };
-
-            //build menu
         }
 
         addOrUpdateRoute(hashStart: string, header: string, page: IPageBuilder) {
@@ -145,28 +128,32 @@ module ThremNavigation {
         }
 
         start() {
-            this.loader.hide();
+            window.onhashchange = (ev: HashChangeEvent) => { this.updateLocation(); };
+            this.loader.show();
 
             //build menu
             this.builtMenuItems = Object.keys(this.routes).map(key => this.routes[key]);
 
-            var renderers = this.builtMenuItems.map(d => {
-                return this.context.doT.render("global", "menuitem", d)
-                    .then(dd => {
-                        //this.menuElement.innerHTML = dd + this.menuElement.innerHTML;
-                        this.menuElement.innerHTML += dd;
-                        return d;
-                    });
-            });
+            var chain = <any>Promise.resolve({});
 
-            Promise.all(renderers).then(p => {
+            for (var index in this.builtMenuItems) {
+                ((i)=> {
+                    chain = chain
+                        .then(p=> this.context.doT.render("global", "menuitem", this.builtMenuItems[i]))
+                        .then(p=> new Promise<any>((c, d)=> {
+                            this.menuElement.innerHTML += p;
+                            c();
+                        }));
+                })(index);
+            }
+
+            chain.then(p => {
+                console.log("all done");
                 this.updateLocation();
             });
-
         }
 
         updateLocation() {
-
             this.loader.show();
 
             let hash = location.hash.trim().substr(1);
@@ -199,7 +186,7 @@ module ThremNavigation {
                     this.loader.hide();
                 })
                 .catch(p => {
-                    this.onPromiseError(p);
+                    this.context.onPromiseError(p);
                     this.loader.hide();
                 });
         }
@@ -232,11 +219,6 @@ module ThremNavigation {
                     this.currentPage = nextRoute;
                     this.currentPage.isActive = true;
                 });
-        }
-
-        private onPromiseError(p: any) {
-            console.log(p);
-            alert(p.error);
         }
     }
 }

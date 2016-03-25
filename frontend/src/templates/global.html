@@ -2,6 +2,17 @@
     <li class="{{? it.isActive }}active{{?}}"><a href="#{{=it.hash}}">{{=it.header}}</a></li>
 </script>
 
+<script id="contextButton" class="def-global" type="text/x-dot-template">
+    <button>{{=btn.name}}</button>
+</script>
+
+<script id="notification" type="text/x-dot-template">
+    <span>{{=it.text}}</span>
+    {{? it.clickAction }}
+    <button class="action">button</button>
+    {{?}}
+    <button class="close">x</button>
+</script>
 <script id="notFound" type="text/x-dot-template">
     <h1>Page not found</h1>
 </script>

@@ -8,7 +8,6 @@
 @import "threm-menu.less";
 @import "threm-forms.less";
 @header-height: 70px;
-@footer-height: 20px;
 
 .overlay(@zindex) {
     width: 100%;
@@ -51,11 +50,18 @@ body {
 
         .footer {
             bottom: 0;
-            height: @footer-height;
             background-color: white;
-            text-align: right;
-            p {
-                margin: 0 10px;
+            
+            div.notification {
+                div
+                {
+                    display:inline;
+                    clear:none;
+                }
+                button
+                {
+                    clear:none;
+                }
             }
         }
 
@@ -68,7 +74,7 @@ body {
                 left: 5%;
                 width: 90%;
                 min-height: 200px;
-                padding: 0 5px @footer-height+5px 5px;
+                padding: 0 5px 35px 5px;
             }
         }
     }

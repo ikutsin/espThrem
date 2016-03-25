@@ -39,7 +39,6 @@ module Charting {
             d3.select(this.element).style("display", "block");
         }
         hide() {
-            console.log("hide loader");
             d3.select(this.element).style("display", "none");
         }
 
@@ -51,13 +50,6 @@ module Charting {
 
             setTimeout(()=> { this.spin(selection, duration); }, duration);
         }
-
-        //private transitionFunction(path) {
-        //    path.transition()
-        //        .duration(7500)
-        //        //.attrTween("stroke-dasharray", tweenDash)
-        //        .each("end", function () { d3.select(this).call(this.transitionFunction); });
-        //}
     }
 
     export class StreamingLineChart {
@@ -97,7 +89,6 @@ module Charting {
             this.line = d3.svg.line<DataStreamElement>()
                 .x((d, i) => this.x(i))
                 .y((d, i) => this.y(d.value));
-
 
             var svg = d3.select("body").append("svg")
                 .attr("width", width + margin.left + margin.right)
@@ -156,6 +147,7 @@ module Charting {
             this.data.shift();
         }
     }
+
     //http://bl.ocks.org/mbostock/4060954
     export class Background {
         private element: HTMLElement;
@@ -239,8 +231,9 @@ module Charting {
                     return this.layers0 = d;
                 })
                 .transition()
-                .duration(5000)
+                .duration(150000)
                 .attr("d", this.area)
+                .delay(5000)
                 .call(this.endAll, () => {
                     this.transition();
                 });

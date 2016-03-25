@@ -1,8 +1,17 @@
 ﻿<script id="index" type="text/x-dot-template">
     <h1>Index page</h1>
+    <h2>Plugin list</h2>
+    {{~it.apis :a}}
+    <div>
+        <span>{{=a.data.name}}</span>
+        <span>({{=a.data.id}})</span>
+        <span>{{? ~~a.data.running}}Running{{??}}Not running{{?}}</span>
+        <span>{{? ~~a.data.config.off}}OFF{{??}}ON{{?}}</span>
+    </div>
+    {{~}}
 </script>
 
-<script id="setup" type="text/x-dot-template">
-    <h1>ESP setup</h1>
+<script id="wifiSetup" type="text/x-dot-template">
+    <h1>Wifi setup</h1>
 </script>
 

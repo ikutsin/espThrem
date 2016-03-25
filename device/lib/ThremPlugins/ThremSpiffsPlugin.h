@@ -57,8 +57,10 @@ class ThremSpiffsPlugin : public IThremPlugin {
 				output += "{\"type\":\"";
 				output += (isDir) ? "dir" : "file";
 				output += "\",\"name\":\"";
-				output += String(entry.name()).substring(1);
-				output += "\"}";
+				output += String(entry.name());
+				output += "\",\"size\":";
+				output += entry.size();
+				output += "}";
 				entry.close();
 			}
 

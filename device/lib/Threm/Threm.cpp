@@ -18,6 +18,7 @@ void Threm::start() {
 
 #ifdef LOG
 	LOG << "Threm::start" << endl;
+	LOG << "Free heap " << ESP.getFreeHeap() << endl;
 #endif
 
 	if (!SPIFFS.begin()) {
@@ -219,7 +220,7 @@ String Threm::getJsonState() {
 	for (int i = 0; i < _plugins->size(); i++) {
 		plugin = _plugins->get(i);
 		meta = _pluginMeta->get(i);
-
+		if (i > 0) result += ",";
 		result += "{\"id\":\"" + String(plugin->getUniqueId());
 		result += "\",\"name\":\"" + String(plugin->getName());
 		result += "\",\"running\":\"" + String(meta->isEnabled);

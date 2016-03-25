@@ -68,5 +68,10 @@ class ThremCaptivePortalPlugin : public IThremPlugin {
 		}
 		return false;
 	}
+
+	virtual void finalizeConfig(JsonObject& jsonObject) {
+		//never off
+		jsonObject["off"] = 0;
+	}
 };
 #endif /* !FILE_DIAGPLUGIN_SEEN */

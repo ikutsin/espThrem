@@ -4,9 +4,11 @@ class Program {
 
         var windowManagerContainer = <HTMLElement>d3.select("div.window-manager").node();
         var menuContainer = <HTMLElement>d3.select("#limenu").node();
-        var thremContext = new ThremNavigation.ThremContext();
+
+        var thremContext = new Threm.ThremContext();
         var notFoundBuilder = new PageBuilders.NotFoundBuilder();
         var indexBuilder = new PageBuilders.IndexBuilder();
+
         var windowManager = new ThremNavigation.WindowManager(
             thremContext,
             windowManagerContainer,
@@ -15,28 +17,40 @@ class Program {
             indexBuilder,
             notFoundBuilder);
 
+        windowManager.addOrUpdateRoute("wifisetup", "Wifi setup", new PageBuilders.WifisetupBuilder());
+        windowManager.addOrUpdateRoute("analyze", "Info", new PageBuilders.AnalyzeBuilder());
+
+        //test
         windowManager.addOrUpdateRoute("lipsum", "Lipsum", new PageBuilders.StaticTemplateBuilder("test", "lipsum", {}));
         windowManager.addOrUpdateRoute("setup", "Setup", new PageBuilders.StaticTemplateBuilder("test", "form", {}));
         windowManager.addOrUpdateRoute("test", "Test", new PageBuilders.StaticTemplateBuilder("test", "test", {}));
         windowManager.addOrUpdateRoute("notFoundBuilder", "notFoundBuilder", notFoundBuilder);
-        windowManager.start();
 
+        thremContext.addPlugin(new ThremPlugins.AcknowledgePlugin(12)); //diag
+        thremContext.addPlugin(new ThremPlugins.AcknowledgePlugin(1)); //wifi
+        thremContext.addPlugin(new ThremPlugins.AcknowledgePlugin(3)); //captive
+        //thremContext.addPlugin(new ThremPlugins.AcknowledgePlugin(13)); //websocket
+        thremContext.addPlugin(new ThremPlugins.AcknowledgePlugin(6)); //spiffs
+        thremContext.addPlugin(new ThremPlugins.AcknowledgePlugin(21)); //ssdp
+        thremContext.addPlugin(new ThremPlugins.AcknowledgePlugin(31)); //core api
+        thremContext.addPlugin(new ThremPlugins.AcknowledgePlugin(32)); //info api
+
+        thremContext.promiseStart()
+            .then(p => new Promise<any>((c, d) => {
+                windowManager.start();
+
+                thremContext.triggerRestartRerquired();
+
+                thremContext.notifications.addNotification(new ThremNotification.ThremNotificaiton("Copyright @ ikutsin"));
+                c();
+            }))
+            .catch(p => {
+                thremContext.onPromiseError(p);
+            });
         var bg = new Charting.Background(<HTMLElement>d3.select(".overlay-background").node());
     }
 
     private registerThermElement() {
-
-
-
-
-        //Promise.resolve("Success").then(function(value) {
-        //    console.log(value); // "Success"
-        //}, function(value) {
-        //    // not called
-        //});
-
-
-
         //var listener = new WebSockets.EspSocketListener(el, "ws://192.168.1.106:81/threm");
 
         //d3.json('http://192.168.1.106:80/data.json', data => {

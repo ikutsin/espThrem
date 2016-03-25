@@ -66,7 +66,7 @@ class ThremWebSocketPlugin : public IThremPlugin {
 
 	virtual int getUniqueId()
 	{
-		return 3;
+		return 13;
 	}
 	virtual char* getName()
 	{

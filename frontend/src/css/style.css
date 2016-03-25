@@ -248,12 +248,14 @@ body .content .header {
 }
 body .content .footer {
   bottom: 0;
-  height: 20px;
   background-color: white;
-  text-align: right;
 }
-body .content .footer p {
-  margin: 0 10px;
+body .content .footer div.notification div {
+  display: inline;
+  clear: none;
+}
+body .content .footer div.notification button {
+  clear: none;
 }
 body .content .window-manager .page {
   margin-top: 70px;
@@ -263,6 +265,6 @@ body .content .window-manager .page {
   left: 5%;
   width: 90%;
   min-height: 200px;
-  padding: 0 5px 25px 5px;
+  padding: 0 5px 35px 5px;
 }
 /*# sourceMappingURL=style.css.map */

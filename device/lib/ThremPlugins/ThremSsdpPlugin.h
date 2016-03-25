@@ -35,7 +35,7 @@ class ThremSsdpPlugin : public IThremPlugin {
 
 		String chipid = String(ESP.getChipId(), HEX);
 		String flashchipid = String(ESP.getFlashChipId(), HEX);
-		String name = "Sensor_" + chipid;
+		String name = root["name"];
 
 		SSDP.setSchemaURL("description.xml");
 		SSDP.setHTTPPort(80);
@@ -54,6 +54,14 @@ class ThremSsdpPlugin : public IThremPlugin {
 #endif
 
 		return true;
+	}
+
+	virtual void finalizeConfig(JsonObject& jsonObject) {
+		if (!jsonObject.containsKey("name")) {
+			String chipid = String(ESP.getChipId(), HEX);
+			String name = "Sensor_" + chipid;
+			jsonObject["name"] = name;
+		}
 	}
 };
 

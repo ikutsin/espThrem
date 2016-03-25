@@ -50,6 +50,10 @@
     <Content Include="src\index.html" />
     <Content Include="src\js\lib\d3.min.js" />
     <Content Include="src\js\lib\doT.min.js" />
+    <Content Include="src\mocks\info\chip.json" />
+    <Content Include="src\mocks\info\status.json" />
+    <Content Include="src\mocks\info\wifi.json" />
+    <None Include="src\mocks\info\threm.json" />
     <Content Include="src\templates\basic.html" />
     <Content Include="src\templates\global.html" />
     <Content Include="src\templates\test.html" />
@@ -77,6 +81,9 @@
     <TypeScriptCompile Include="src\js\DataRepository.ts" />
     <TypeScriptCompile Include="src\js\main.ts" />
     <TypeScriptCompile Include="src\js\PageBuilders.ts" />
+    <TypeScriptCompile Include="src\js\Threm.ts" />
+    <TypeScriptCompile Include="src\js\ThremNotification.ts" />
+    <TypeScriptCompile Include="src\js\ThremPlugins.ts" />
     <TypeScriptCompile Include="src\js\WebSockets.ts" />
     <TypeScriptCompile Include="src\js\ThremNavigation.ts" />
   </ItemGroup>
@@ -101,6 +108,8 @@
     <Content Include="src\css\threm-menu.css.map">
       <DependentUpon>threm-menu.css</DependentUpon>
     </Content>
+    <Content Include="src\mocks\scan.json" />
+    <Content Include="src\mocks\listRoot.json" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
