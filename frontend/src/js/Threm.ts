@@ -9,7 +9,7 @@ module Threm {
     export interface IThremPluginData {
         id: number;
         name: number;
-        running: boolean;
+        running: number;
         config: any;
     }
 
@@ -20,28 +20,28 @@ module Threm {
 
         notifications: ThremNotification.NotificationsManager;
 
-        constructor() {
+        constructor(public loader: Charting.Loader) {
             this.doT = new ThremNavigation.DoTWrapper();
             this.communication = new DataRepository.Communication();
-            this.apis = [];
-            this.notifications = new ThremNotification.NotificationsManager(this, <HTMLElement>d3.select(".footer").node())
+            this.apis = []; 
+            this.notifications = new ThremNotification.NotificationsManager(this, <HTMLElement>d3.select(".footer").node());
         }
 
         promiseStart(): Promise<any> {
             return this.communication.getJson("/info/threm.json")
                 .then(p => new Promise((c, d) => {
                     var result = <Array<IThremPluginData>>p;
-                    for (let api of this.apis) {
-                        let item = result.filter(conf => conf.id == api.id)[0];
-                        if (!item) {
+                    for (var api of this.apis) {
+                        var item1 = result.filter(conf => conf.id == api.id)[0];
+                        if (!item1) {
                             d({ error: "Plugin not found on device:" + api.id });
                             return;
                         }
-                        api.data = item;
+                        api.data = item1;
                     }
-                    for (let conf of result) {
-                        let item = this.apis.filter(api => conf.id == api.id)[0];
-                        if (!item) {
+                    for (var conf of result) {
+                        var item2 = this.apis.filter(api => conf.id == api.id)[0];
+                        if (!item2) {
                             d({ error: "Plugin not found on frontend:" + conf.id + " " + conf.name });
                             return;
                         }
@@ -50,18 +50,18 @@ module Threm {
                 }));
         }
 
-        GetPlugin<T extends IThremPlugin>(id: number): T {
+        getPlugin<T extends IThremPlugin>(id: number): T {
             return <T>this.apis.filter(a => a.id == id)[0];
         }
 
-        IsPluginRunning(id: number): boolean {
-            return this.GetPlugin(id).data.running;
+        isPluginRunning(id: number): boolean {
+            return this.getPlugin(id).data.running>0;
         }
 
         triggerRestartRerquired() {
             this.notifications.addNotification(new ThremNotification.ThremNotificaiton(
-                "hello",
-                "button",
+                "Device has to be restarted to get new changes.",
+                "Restart",
                 d => {
                     this.reloadFrontend();
                 }));

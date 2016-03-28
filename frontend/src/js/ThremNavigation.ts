@@ -112,14 +112,14 @@ module ThremNavigation {
         private loader: Charting.Loader;
         context: Threm.ThremContext;
 
-        constructor(context: Threm.ThremContext, element: HTMLElement, menuElement: HTMLElement, loader: Charting.Loader, indexPage: IPageBuilder, notfoundPage: IPageBuilder) {
+        constructor(context: Threm.ThremContext, element: HTMLElement, menuElement: HTMLElement, indexPage: IPageBuilder, notfoundPage: IPageBuilder) {
             this.notfoundPage = new RouteElement(undefined, undefined, notfoundPage);
             this.indexPage = new RouteElement("", "Home", indexPage);
             this.routes["index"] = this.indexPage;
             this.context = context;
             this.containerElement = element;
             this.menuElement = menuElement;
-            this.loader = loader;
+            this.loader = context.loader;
         }
 
         addOrUpdateRoute(hashStart: string, header: string, page: IPageBuilder) {
@@ -128,7 +128,8 @@ module ThremNavigation {
         }
 
         start() {
-            window.onhashchange = (ev: HashChangeEvent) => { this.updateLocation(); };
+            //window.onhashchange = (ev: HashChangeEvent) => { this.updateLocation(); };
+            d3.select(window).on('hashchange', this.updateLocation.bind(this));
             this.loader.show();
 
             //build menu

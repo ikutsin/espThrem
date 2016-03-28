@@ -50,9 +50,12 @@ body {
 
         .footer {
             bottom: 0;
-            background-color: white;
-            
             div.notification {
+                border: 1px solid rgba(100,100,100,.5);
+                background: white;
+                margin: 0 20px 6px 0px;
+                padding: 2px;
+                overflow:hidden;
                 div
                 {
                     display:inline;
@@ -61,6 +64,11 @@ body {
                 button
                 {
                     clear:none;
+                }
+                button.close {
+                    float:right;
+                    background:0;
+                    border:0;
                 }
             }
         }

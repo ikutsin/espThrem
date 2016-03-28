@@ -159,8 +159,8 @@ module Charting {
         x: any;
         y: any;
 
-        n = 20; // number of layers
-        m = 200; // number of samples per layer
+        n = 18; // number of layers
+        m = 20; // number of samples per layer
 
         constructor(element: HTMLElement) {
             this.element = element;
@@ -218,7 +218,7 @@ module Charting {
 
         transition(): void {
 
-            console.log("transition:");
+            console.log("BG transition");
 
             d3.selectAll("path")
                 .data(() => {
@@ -231,9 +231,9 @@ module Charting {
                     return this.layers0 = d;
                 })
                 .transition()
-                .duration(150000)
+                .duration(100000)
+                .ease("exp-in-out")
                 .attr("d", this.area)
-                .delay(5000)
                 .call(this.endAll, () => {
                     this.transition();
                 });

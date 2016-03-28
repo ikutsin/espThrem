@@ -2,16 +2,44 @@
     <h1>Index page</h1>
     <h2>Plugin list</h2>
     {{~it.apis :a}}
-    <div>
+    <div class="index-api">
         <span>{{=a.data.name}}</span>
         <span>({{=a.data.id}})</span>
         <span>{{? ~~a.data.running}}Running{{??}}Not running{{?}}</span>
-        <span>{{? ~~a.data.config.off}}OFF{{??}}ON{{?}}</span>
+        <span><button class="toggle-on-off">On/Off</button></span>
     </div>
     {{~}}
 </script>
 
+
+<script id="wifiScan" class="def" type="text/x-dot-template">
+    <span>{{=it.ssid}}</span>
+    <span>({{=it.channel}})</span>
+    <span style="display:none">{{=it.BSSIDstr}}</span>
+    <span>{{=it.q}}%</span>
+</script>
+
 <script id="wifiSetup" type="text/x-dot-template">
     <h1>Wifi setup</h1>
+    <form class="form-wifi">
+        <fieldset>
+            <legend>Scan result</legend>
+            <div class="wifi-scan">
+            </div>
+            <button class="wifi-scan-btn">Scan</button>
+        </fieldset>
+        <fieldset class="wifi-scan">
+            <legend>Selected network</legend>
+            <input type="hidden" name="off" />
+            <div class="pair">
+                <label for="ssid">SSID</label><input name="ssid" />
+            </div>
+            <div class="pair">
+                <label for="pwd">Password</label><input name="pwd" />
+            </div>
+            <input type="submit" />
+        </fieldset>
+    </form>
+
 </script>
 

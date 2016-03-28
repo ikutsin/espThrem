@@ -1,10 +1,11 @@
 ﻿module ThremNotification {
     export class ThremNotificaiton {
+        public key: string;
         constructor(
             public text: string,
             public button?: string,
             public clickAction?: (any) => void) {
-
+            this.key = text;
         }
     }
 
@@ -23,25 +24,38 @@
         }
 
         addNotification(notification: ThremNotificaiton) {
-            this.notifications.push(notification);
-            this.render();
-        }
-        ensureNotification(notification: ThremNotificaiton) {
+            if (this.notifications.filter(n => n.key == notification.key).length) return;
+            console.log("Add notificaiton", notification);
             this.notifications.push(notification);
             this.render();
         }
 
         private render() {
+
+            if (!this.notificationTemplate) {
+                return;
+            }
+
             var data = d3.select(this.element).selectAll("div.notification")
-                .data(this.notifications);
+                .data(this.notifications, d => d.text);
 
-            data.exit().remove();
+            var height = "40px";
 
-            var template = data.enter()
+            data.exit()
+                .style("height", height)
+                .transition()
+                .style("height", "1px").remove();
+
+            var containerEnter = data.enter()
                 .append("div")
-                .classed("notification", true)
-                .html(d=> this.notificationTemplate(d));
+                .classed("notification", true);
 
+            containerEnter
+                .style("height", "1px")
+                .transition()
+                .style("height", height);
+
+            var template = containerEnter.html(d=> this.notificationTemplate(d));
             template.select("button.action")
                 .on('click', (d, i) => this.notifications[i].clickAction(d));
 

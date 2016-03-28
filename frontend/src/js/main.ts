@@ -5,7 +5,7 @@ class Program {
         var windowManagerContainer = <HTMLElement>d3.select("div.window-manager").node();
         var menuContainer = <HTMLElement>d3.select("#limenu").node();
 
-        var thremContext = new Threm.ThremContext();
+        var thremContext = new Threm.ThremContext(new Charting.Loader(<HTMLElement>d3.select(".overlay-loader").node()));
         var notFoundBuilder = new PageBuilders.NotFoundBuilder();
         var indexBuilder = new PageBuilders.IndexBuilder();
 
@@ -13,7 +13,6 @@ class Program {
             thremContext,
             windowManagerContainer,
             menuContainer,
-            new Charting.Loader(<HTMLElement>d3.select(".overlay-loader").node()),
             indexBuilder,
             notFoundBuilder);
 
@@ -38,10 +37,7 @@ class Program {
         thremContext.promiseStart()
             .then(p => new Promise<any>((c, d) => {
                 windowManager.start();
-
-                thremContext.triggerRestartRerquired();
-
-                thremContext.notifications.addNotification(new ThremNotification.ThremNotificaiton("Copyright @ ikutsin"));
+                thremContext.notifications.addNotification(new ThremNotification.ThremNotificaiton("Copyright @ ikutsin"));                
                 c();
             }))
             .catch(p => {
