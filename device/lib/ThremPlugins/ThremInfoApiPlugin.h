@@ -91,7 +91,7 @@ class ThremInfoApiPlugin : public IThremPlugin {
 			json += ",\"gpio\":";
 			json += ((uint32_t)(((GPI | GPO) & 0xFFFF) | ((GP16I & 0x01) << 16)));
 
-			json += "\"}";
+			json += "}";
 			server->send(200, "text/json", json);
 		});
 		server->on("/info/chip.json", HTTP_GET, [=](){
@@ -117,9 +117,9 @@ class ThremInfoApiPlugin : public IThremPlugin {
 			json += ",\"sketchSize\":";
 			json += ESP.getSketchSize();
 			FlashMode_t ideMode = ESP.getFlashChipMode();
-			json += ",\"flashChipMode\":";
+			json += ",\"flashChipMode\":\"";
 			json += (ideMode == FM_QIO ? "QIO" : ideMode == FM_QOUT ? "QOUT" : ideMode == FM_DIO ? "DIO" : ideMode == FM_DOUT ? "DOUT" : "UNKNOWN");
-			json += ",\"sdkVer\":\"";
+			json += "\",\"sdkVer\":\"";
 			json += ESP.getSdkVersion();
 			json += "\",\"resetReason\":\"";
 			json += ESP.getResetReason();

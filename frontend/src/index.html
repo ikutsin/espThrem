@@ -17,18 +17,36 @@
 
     <div class="content">
         <div class="header">
-            <nav>
-                <ul id="limenu">
-                </ul>
-            </nav>
+            <ul id="root-menu"></ul>
         </div>
 
-        <div class="window-manager"></div>
+        <div id="root-content"></div>
 
         <div class="footer"></div>
     </div>
     <div class="overlay-background">&nbsp;</div>
     <div class="overlay-loader">&nbsp;</div>
+
+    <div class="templates global">
+        <script id="tabitem" type="text/x-dot-template">
+            <a href="#{{? it.prefix }}{{=it.prefix}}.{{?}}{{=it.hashPart}}">{{=it.header}}</a>
+        </script>
+
+        <script id="notification" type="text/x-dot-template">
+            <span>{{=it.text}}</span>
+            {{? it.clickAction }}
+            <button class="action">{{= it.button }}</button>
+            {{?}}
+            <button class="close">X</button>
+        </script>
+
+        <script id="tabPage" type="text/x-dot-template">
+            <div>
+                <ul class="tab-navigation"></ul>
+            </div>
+            <div class="tab-content"></div>
+        </script>
+    </div>
 
     <!-- build:js js/custom.js -->
     <script type="text/javascript" src="js/DataRepository.js"></script>

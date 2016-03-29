@@ -5,9 +5,9 @@
   ---------------------------------------------------
 */
 
-@import "threm-menu.less";
+@import "threm-tabs.less";
 @import "threm-forms.less";
-@header-height: 70px;
+@header-height: 30px;
 
 .overlay(@zindex) {
     width: 100%;
@@ -21,7 +21,7 @@
 //structure
 body {
     overflow-y: scroll;
-
+    margin:0;
     .overlay-background {
         .overlay(-100);
     }
@@ -73,17 +73,24 @@ body {
             }
         }
 
-        .window-manager {
-            .page {
-                margin-top: @header-height;
-                clear: none;
-                display: block;
-                position: absolute;
-                left: 5%;
-                width: 90%;
-                min-height: 200px;
-                padding: 0 5px 35px 5px;
-            }
+        .page {
+            margin-top: @header-height;
+            clear: none;
+            display: block;
+            position: absolute;
+            left: 5%;
+            width: 90%;
+            min-height: 200px;
+            padding: 0 5px 35px 5px;
         }
+    }
+}
+
+.kvp {
+    clear:both;
+    width:100%;
+    span:first-child {
+        display:inline-block;
+        min-width:200px;
     }
 }

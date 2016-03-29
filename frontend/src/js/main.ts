@@ -2,43 +2,44 @@ class Program {
     main() {
         console.log("Starting program");
 
-        var windowManagerContainer = <HTMLElement>d3.select("div.window-manager").node();
-        var menuContainer = <HTMLElement>d3.select("#limenu").node();
+        var thremContext = new Threm.ThremContext(
+            new Charting.Loader(<HTMLElement>d3.select(".overlay-loader").node()),
+            <HTMLElement>d3.select(".footer").node());
 
-        var thremContext = new Threm.ThremContext(new Charting.Loader(<HTMLElement>d3.select(".overlay-loader").node()));
-        var notFoundBuilder = new PageBuilders.NotFoundBuilder();
-        var indexBuilder = new PageBuilders.IndexBuilder();
-
-        var windowManager = new ThremNavigation.WindowManager(
+        var rootMenu = new ThremNavigation.TabsManager(
             thremContext,
-            windowManagerContainer,
-            menuContainer,
-            indexBuilder,
-            notFoundBuilder);
+            <HTMLElement>d3.select("ul#root-menu").node(),
+            <HTMLElement>d3.select("div#root-content").node());
 
-        windowManager.addOrUpdateRoute("wifisetup", "Wifi setup", new PageBuilders.WifisetupBuilder());
-        windowManager.addOrUpdateRoute("analyze", "Info", new PageBuilders.AnalyzeBuilder());
+        thremContext.plugins.registerPlugin(new ThremPlugins.AcknowledgePlugin(12)); //diag
+        thremContext.plugins.registerPlugin(new ThremPlugins.AcknowledgePlugin(1)); //wifi
+        thremContext.plugins.registerPlugin(new ThremPlugins.AcknowledgePlugin(3)); //captive
+        //thremContext.registerPlugin(new ThremPlugins.AcknowledgePlugin(13)); //websocket
+        thremContext.plugins.registerPlugin(new ThremPlugins.AcknowledgePlugin(6)); //spiffs
+        thremContext.plugins.registerPlugin(new ThremPlugins.AcknowledgePlugin(21)); //ssdp
+        thremContext.plugins.registerPlugin(new ThremPlugins.AcknowledgePlugin(31)); //core api
+        thremContext.plugins.registerPlugin(new ThremPlugins.AcknowledgePlugin(32)); //info api
 
-        //test
-        windowManager.addOrUpdateRoute("lipsum", "Lipsum", new PageBuilders.StaticTemplateBuilder("test", "lipsum", {}));
-        windowManager.addOrUpdateRoute("setup", "Setup", new PageBuilders.StaticTemplateBuilder("test", "form", {}));
-        windowManager.addOrUpdateRoute("test", "Test", new PageBuilders.StaticTemplateBuilder("test", "test", {}));
-        windowManager.addOrUpdateRoute("notFoundBuilder", "notFoundBuilder", notFoundBuilder);
-
-        thremContext.addPlugin(new ThremPlugins.AcknowledgePlugin(12)); //diag
-        thremContext.addPlugin(new ThremPlugins.AcknowledgePlugin(1)); //wifi
-        thremContext.addPlugin(new ThremPlugins.AcknowledgePlugin(3)); //captive
-        //thremContext.addPlugin(new ThremPlugins.AcknowledgePlugin(13)); //websocket
-        thremContext.addPlugin(new ThremPlugins.AcknowledgePlugin(6)); //spiffs
-        thremContext.addPlugin(new ThremPlugins.AcknowledgePlugin(21)); //ssdp
-        thremContext.addPlugin(new ThremPlugins.AcknowledgePlugin(31)); //core api
-        thremContext.addPlugin(new ThremPlugins.AcknowledgePlugin(32)); //info api
+        
+        ////should move to plugins
+        rootMenu.addOrUpdateElement("index", "Home", new PageBuilders.DefaultPageBuilder());
+        rootMenu.addOrUpdateElement("setup", "Setup", new PageBuilders.TabsBuilder("setup",
+            t => new Promise((c, d) => {
+                t.addOrUpdateElement("wifi", "Wifi setup", new PageBuilders.WifisetupBuilder());
+                t.addOrUpdateElement("index", "Plugins", new PageBuilders.PluginSetupBuilder());
+                c();
+            })));
+        rootMenu.addOrUpdateElement("info", "Analyze", new PageBuilders.TabsBuilder("info",
+            t => new Promise((c, d) => {
+                t.addOrUpdateElement("status", "Status", new PageBuilders.StatusInfoBuilder());
+                t.addOrUpdateElement("chip", "Chip", new PageBuilders.ChipInfoBuilder());
+                t.addOrUpdateElement("wifi", "Wifi", new PageBuilders.WifiInfoBuilder());
+                t.addOrUpdateElement("files", "Files", new PageBuilders.FileListBuilder());
+                c();
+            })));
 
         thremContext.promiseStart()
             .then(p => new Promise<any>((c, d) => {
-                windowManager.start();
-                thremContext.notifications.addNotification(new ThremNotification.ThremNotificaiton("Copyright @ ikutsin"));                
-                c();
             }))
             .catch(p => {
                 thremContext.onPromiseError(p);

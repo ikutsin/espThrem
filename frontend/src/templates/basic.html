@@ -1,45 +1,47 @@
 ﻿<script id="index" type="text/x-dot-template">
-    <h1>Index page</h1>
-    <h2>Plugin list</h2>
-    {{~it.apis :a}}
-    <div class="index-api">
-        <span>{{=a.data.name}}</span>
-        <span>({{=a.data.id}})</span>
-        <span>{{? ~~a.data.running}}Running{{??}}Not running{{?}}</span>
-        <span><button class="toggle-on-off">On/Off</button></span>
+    index
+</script>
+
+<script id="props" class="def" type="text/x-dot-template">    
+    {{~ it.items:kvp}}
+    <div class="kvp">
+        <span>
+            {{=kvp.key}}
+        </span>
+        <span>
+            {{=kvp.value}}
+        </span>
     </div>
     {{~}}
 </script>
 
-
-<script id="wifiScan" class="def" type="text/x-dot-template">
-    <span>{{=it.ssid}}</span>
-    <span>({{=it.channel}})</span>
-    <span style="display:none">{{=it.BSSIDstr}}</span>
-    <span>{{=it.q}}%</span>
+<script id="infoStatus" type="text/x-dot-template">
+    <h1>Status</h1>
+    {{#def.props}}
 </script>
 
-<script id="wifiSetup" type="text/x-dot-template">
-    <h1>Wifi setup</h1>
-    <form class="form-wifi">
-        <fieldset>
-            <legend>Scan result</legend>
-            <div class="wifi-scan">
-            </div>
-            <button class="wifi-scan-btn">Scan</button>
-        </fieldset>
-        <fieldset class="wifi-scan">
-            <legend>Selected network</legend>
-            <input type="hidden" name="off" />
-            <div class="pair">
-                <label for="ssid">SSID</label><input name="ssid" />
-            </div>
-            <div class="pair">
-                <label for="pwd">Password</label><input name="pwd" />
-            </div>
-            <input type="submit" />
-        </fieldset>
-    </form>
+<script id="infoChip" type="text/x-dot-template">
+    <h1>Chip</h1>
+    {{#def.props}}
+</script>
 
+
+<script id="infoWifi" type="text/x-dot-template">
+    <h1>Wifi</h1>
+    {{#def.props}}
+</script>
+
+<script id="infoFiles" type="text/x-dot-template">
+    <h1>Files</h1>
+    {{~ it.items:kvp}}
+    <div class="kvp">
+        <span>
+            {{=kvp.name}}
+        </span>
+        <span>
+            {{=kvp.size}}
+        </span>
+    </div>
+    {{~}}
 </script>
 

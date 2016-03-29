@@ -30,7 +30,7 @@
       <DependentUpon>menu - Copy.css</DependentUpon>
     </Content>
     <Content Include="src\css\menu.css">
-      <DependentUpon>threm-menu.less</DependentUpon>
+      <DependentUpon>threm-tabs.less</DependentUpon>
     </Content>
     <Content Include="src\css\menu.min.css">
       <DependentUpon>menu.css</DependentUpon>
@@ -42,7 +42,7 @@
       <DependentUpon>style.css</DependentUpon>
     </Content>
     <Content Include="src\css\threm-menu.css">
-      <DependentUpon>threm-menu.less</DependentUpon>
+      <DependentUpon>threm-tabs.less</DependentUpon>
     </Content>
     <Content Include="src\css\threm-menu.min.css">
       <DependentUpon>threm-menu.css</DependentUpon>
@@ -55,7 +55,7 @@
     <Content Include="src\mocks\info\wifi.json" />
     <None Include="src\mocks\info\threm.json" />
     <Content Include="src\templates\basic.html" />
-    <Content Include="src\templates\global.html" />
+    <Content Include="src\templates\setup.html" />
     <Content Include="src\templates\test.html" />
     <Content Include="webserver.js" />
     <Content Include="websocket.js" />
@@ -97,7 +97,7 @@
     <Content Include="src\css\style.css.map">
       <DependentUpon>style.css</DependentUpon>
     </Content>
-    <Content Include="src\css\threm-menu.less" />
+    <Content Include="src\css\threm-tabs.less" />
     <Content Include="src\css\menu.css.map">
       <DependentUpon>menu.css</DependentUpon>
     </Content>

@@ -46,9 +46,9 @@ module Charting {
             selection.transition()
                 .ease("linear")
                 .duration(duration)
-                .attrTween("transform", ()=> d3.interpolateString("rotate(0)", "rotate(360)"));
+                .attrTween("transform", () => d3.interpolateString("rotate(0)", "rotate(360)"));
 
-            setTimeout(()=> { this.spin(selection, duration); }, duration);
+            setTimeout(() => { this.spin(selection, duration); }, duration);
         }
     }
 
@@ -184,8 +184,9 @@ module Charting {
                 .range([0, 200]);
 
             var color = (<any>d3.scale.linear()).range(['#aad', '#556']);
+            //var color = d3.scale.ordinal().range(['#aad', '#556']);
 
-            this.area = <any>d3.svg.area();
+            this.area = d3.svg.area().interpolate("basis");
             this.area.x(d => this.x(d.x))
                 .y0(d => this.y(d.y0))
                 .y1(d => this.y(d.y0 + d.y));
@@ -201,7 +202,7 @@ module Charting {
                 .data(this.layers0)
                 .enter().append("path")
                 .attr("d", this.area)
-                .style("fill", () => color(Math.random() + ""));
+                .style("fill", () => color("" + Math.random()));
 
             d3.select(window).on('resize', this.resize.bind(this));
             this.transition();

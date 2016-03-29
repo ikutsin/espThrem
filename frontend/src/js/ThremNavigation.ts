@@ -24,7 +24,7 @@ module ThremNavigation {
                 }));
         }
 
-        getTemplate(namespace: string, name: string): Promise<(any)=>string> {
+        getTemplate(namespace: string, name: string): Promise<(any) => string> {
             return this.ensureNamespace(namespace)
                 .then(p => new Promise<Function>((resolve, reject) => {
                     if (!this.templateRepo[name]) {
@@ -85,141 +85,138 @@ module ThremNavigation {
 
     export interface IPageBuilder {
         spawn(element: HTMLElement, context: Threm.ThremContext): Promise<any>;
-        die(): Promise<any>;
     }
 
-    class RouteElement {
-        hash: string;
-        header: string;
-        page: IPageBuilder;
+    //should be internal
+    class TabElement {
         isActive: boolean = false;
-        constructor(hashStart: string, header: string, page: IPageBuilder) {
-            this.hash = hashStart;
-            this.header = header;
-            this.page = page;
+        constructor(public hashPart: string, public header: string, public page: IPageBuilder, public prefix: string) {
         }
     }
 
-    export class WindowManager {
-        private notfoundPage: RouteElement;
-        private indexPage: RouteElement;
-        private routes: any = {};
-        private builtMenuItems: Array<RouteElement>;
-        private currentPage: RouteElement;
-        private currentPageElement: HTMLElement;
-        private containerElement: HTMLElement;
-        private menuElement: HTMLElement;
-        private loader: Charting.Loader;
-        context: Threm.ThremContext;
+    export class TabsManager {
+        private tabTemplate: (any) => string;
+        private tabElements: TabElement[] = [];
+        private activeTab: TabElement;
 
-        constructor(context: Threm.ThremContext, element: HTMLElement, menuElement: HTMLElement, indexPage: IPageBuilder, notfoundPage: IPageBuilder) {
-            this.notfoundPage = new RouteElement(undefined, undefined, notfoundPage);
-            this.indexPage = new RouteElement("", "Home", indexPage);
-            this.routes["index"] = this.indexPage;
-            this.context = context;
-            this.containerElement = element;
-            this.menuElement = menuElement;
-            this.loader = context.loader;
-        }
-
-        addOrUpdateRoute(hashStart: string, header: string, page: IPageBuilder) {
-            console.log("Route added:", hashStart);
-            this.routes[hashStart] = new RouteElement(hashStart, header, page);
-        }
-
-        start() {
-            //window.onhashchange = (ev: HashChangeEvent) => { this.updateLocation(); };
-            d3.select(window).on('hashchange', this.updateLocation.bind(this));
-            this.loader.show();
-
-            //build menu
-            this.builtMenuItems = Object.keys(this.routes).map(key => this.routes[key]);
-
-            var chain = <any>Promise.resolve({});
-
-            for (var index in this.builtMenuItems) {
-                ((i)=> {
-                    chain = chain
-                        .then(p=> this.context.doT.render("global", "menuitem", this.builtMenuItems[i]))
-                        .then(p=> new Promise<any>((c, d)=> {
-                            this.menuElement.innerHTML += p;
-                            c();
-                        }));
-                })(index);
-            }
-
-            chain.then(p => {
-                console.log("all done");
-                this.updateLocation();
-            });
-        }
-
-        updateLocation() {
-            this.loader.show();
-
-            let hash = location.hash.trim().substr(1);
-            console.log(`handle location change: ${hash}`);
-
-            var handleNextPagePromise: Promise<any>;
-
-            if (!hash) hash = "index";
-
-            if (this.currentPage) {
-                this.currentPage.isActive = false;
-            }
-
-            for (let key in this.routes) {
-                if ((<any>hash).startsWith(key)) {
-                    handleNextPagePromise = this.handleNextPage(<RouteElement>this.routes[key]);
-                    break;
-                }
-            }
-
-            if (!handleNextPagePromise) handleNextPagePromise = this.handleNextPage(this.notfoundPage);
-
-            handleNextPagePromise
+        constructor(private context: Threm.ThremContext, private tabsElement: HTMLElement, private contentElement: HTMLElement, private prefix: string = "") {
+            this.context.doT.getTemplate("global", "tabitem")
                 .then(p => {
-                    d3.select(this.menuElement).selectAll("li")
-                        .data(this.builtMenuItems)
-                        .attr("class", d => {
-                            return (d.isActive ? "active" : "inactive");
-                        });
-                    this.loader.hide();
+                    this.tabTemplate = p;
+                    this.d3bind();
                 })
-                .catch(p => {
-                    this.context.onPromiseError(p);
-                    this.loader.hide();
-                });
+                .catch(context.onPromiseError);
+
+            d3.select(this.tabsElement).classed("tab-navigation", true).datum(this);
+            d3.select(this.contentElement).classed("tab-content", true).datum(this);
         }
 
-        private handleNextPage(nextRoute: RouteElement): Promise<any> {
+        addOrUpdateElement(hashPart: string, header: string, page: IPageBuilder) {
+            console.log("Tab added (" + this.prefix + "):", header);
+            this.tabElements.push(new TabElement(hashPart, header, page, this.prefix));
+            this.d3bind();
+        }
 
-            let newElement = <HTMLElement>d3.select(this.containerElement).append("div").classed("page", true)
+        handleCrumbs(crumbs: string[]): Promise<any> {
+            let currentLevelCrumb = crumbs.shift();
+            let selectedElements = currentLevelCrumb ? this.tabElements.filter(e => e.hashPart === currentLevelCrumb) : this.tabElements;
+
+            if (!selectedElements.length) {
+                return Promise.reject({ error: "Page not found '" + this.prefix + "." + currentLevelCrumb + "'" });
+            }
+            let tabElement = selectedElements[0];
+
+            console.log(crumbs, tabElement.header);
+
+            //hangle next element
+            let result: Promise<any> = Promise.resolve();
+            if (!this.activeTab || this.activeTab.hashPart !== tabElement.hashPart) {
+                if (this.activeTab) this.activeTab.isActive = false;
+                this.activeTab = undefined;
+                result = result
+                    .then(p => this.handleNextPage(tabElement.page))
+                    .then(p => {
+                        this.activeTab = tabElement;
+                        this.activeTab.isActive = true;
+                        this.d3bind();
+                    });
+
+            }
+            //check for subpages
+            return result.then(p => new Promise((c, d) => {
+                let menu = d3.select(this.contentElement).selectAll(".tab-navigation");
+                if (!menu.empty()) {
+                    menu.datum().handleCrumbs(crumbs).then(p => c());
+                } else if (crumbs.length) {
+                    console.log("unhandled crumbs:", crumbs);
+                    d({ error: "Unhandled crumbs" });
+                } else {
+                    c();
+                }
+            }));
+        }
+
+        handleNextPage(page: IPageBuilder): Promise<any> {
+            let currentElement = d3.select(this.contentElement).selectAll("div.page");
+            let newElement = <HTMLElement>d3.select(this.contentElement).append("div").classed("page", true)
                 .style('opacity', 0)
                 .transition()
                 .duration(500)
                 .style('opacity', 1)
                 .node();
-            return nextRoute.page.spawn(newElement, this.context)
-                .then(p => {
-                    if (this.currentPage) {
-                        return this.currentPage.page.die();
-                    } else {
-                        return Promise.resolve();
-                    }
-                })
-                .then(p => {
-                    if (this.currentPageElement) {
-                        d3.select(this.currentPageElement)
-                            .transition()
-                            .duration(500)
-                            .style('opacity', 0)
-                            .remove();
-                    }
-                    this.currentPageElement = newElement;
-                    this.currentPage = nextRoute;
-                    this.currentPage.isActive = true;
-                });
+
+            return page.spawn(newElement, this.context)
+                //.then(p => {
+                //    if (this.activeTab) {
+                //        return this.activeTab.page.die();
+                //    } else {
+                //        return Promise.resolve();
+                //    }
+                //})
+                .then(p => new Promise<any>((c,d)=>{
+                    currentElement
+                        .transition()
+                        .duration(500)
+                        .style('opacity', 0)
+                        .remove().call((d, i) => {
+                            c()
+                        });
+                }))
+                .catch(p => this.context.onPromiseError(p));
+        }
+
+        private d3bind() {
+            if (!this.tabTemplate) return;
+            var data = d3.select(this.tabsElement).selectAll("li").data(this.tabElements);
+            data.enter().append("li").html(d => this.tabTemplate(d));
+            data.exit().remove();
+            data.attr("class", d => {
+                return (d.isActive ? "active" : "inactive");
+            });
+        }
+    }
+
+    export class RouteManager {
+        constructor(private context: Threm.ThremContext) { }
+
+        start() {
+            //window.onhashchange = (ev: HashChangeEvent) => { this.updateLocation(); };
+            d3.select(window).on('hashchange', this.updateLocation.bind(this));
+            this.updateLocation();
+        }
+
+        private updateLocation() {
+            this.context.loader.show();
+            let hash = location.hash.trim().substr(1);
+            var crumbs = hash.split(".");
+            if (crumbs[0] === "") crumbs = [];
+            console.log("handle location change", crumbs);
+
+            var menu = <TabsManager>d3.select(".tab-navigation").datum();
+            menu.handleCrumbs(crumbs)
+                .then(p => this.context.loader.hide())
+                .catch(p => this.context.onPromiseError(p));
+
         }
     }
 }
