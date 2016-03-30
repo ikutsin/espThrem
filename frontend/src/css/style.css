@@ -18,6 +18,9 @@ ul.tab-navigation li a {
   text-decoration: none;
   color: #47c9af;
 }
+ul.tab-navigation li.active a {
+  color: #278371;
+}
 /*---------------------------------------------------
     LESS Elements 0.9
   ---------------------------------------------------
@@ -122,6 +125,63 @@ input[type=radio] {
   display: inline-block;
   width: 100px;
 }
+.dashboard {
+  width: 100%;
+  clear: both;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -moz-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-flex-wrap: wrap;
+  -moz-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-align-items: stretch;
+  -moz-align-items: stretch;
+  -ms-align-items: stretch;
+  align-items: stretch;
+}
+.dashboard .dashboard-item {
+  width: 200px;
+  height: 200px;
+  margin: 2px;
+  border: 1px solid gray;
+  overflow: hidden;
+  position: relative;
+}
+.dashboard .dashboard-item .title {
+  margin: 4px;
+  position: absolute;
+  color: white;
+}
+.dashboard .dashboard-item .big-number {
+  color: white;
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  vertical-align: middle;
+  text-align: center;
+  margin: 50px auto;
+  font-size: 80px;
+}
+.dashboard .dashboard-item .fill {
+  vertical-align: middle;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  position: absolute;
+  background-color: blue;
+}
+.dashboard .dashboard-item.x2 {
+  width: 406px;
+  height: 200px;
+}
 body {
   overflow-y: scroll;
   margin: 0;
@@ -147,6 +207,11 @@ body .overlay-loader {
 body .overlay-loader svg {
   float: right;
 }
+body .content {
+  width: 90%;
+  padding: 0 5px 35px 5px;
+  margin-top: 50px;
+}
 body .content .header,
 body .content .footer {
   width: 100%;
@@ -155,7 +220,6 @@ body .content .footer {
 }
 body .content .header {
   top: 0;
-  height: 30px;
 }
 body .content .footer {
   bottom: 0;
@@ -180,14 +244,16 @@ body .content .footer div.notification button.close {
   border: 0;
 }
 body .content .page {
-  margin-top: 30px;
   clear: none;
   display: block;
   position: absolute;
-  left: 5%;
-  width: 90%;
   min-height: 200px;
-  padding: 0 5px 35px 5px;
+  width: 100%;
+  margin-bottom: 50px;
+}
+body .page:first-child {
+  width: 90%;
+  left: 5%;
 }
 .kvp {
   clear: both;

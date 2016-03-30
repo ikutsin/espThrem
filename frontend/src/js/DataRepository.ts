@@ -1,17 +1,38 @@
 ﻿module DataRepository {
 
-    export interface IDataStreamProvider {
-        name: string;
-
+    export class DataStreamProvider {
+        constructor(public name: string) { }
     }
 
-    export class DataStreamElement {
-        value: number;
-        owner: IDataStreamProvider;
+    export class DataStreamElement implements Threm.INotifiable {
 
-        constructor(owner: IDataStreamProvider, value: number) {
-            this.value = value;
-            this.owner = owner;
+        constructor(private owner: DataStreamProvider, public value: number) {
+        }
+
+        getMessageName() {
+            return this.owner.name;
+        }
+    }
+
+    export class DataStreamBuffer implements Threm.INotifiable {
+        elements: DataStreamElement[];
+        constructor(private listeningMessage:string, private context:Threm.ThremContext, public maxSize: number = 1000, prefill:boolean=true) {
+            if (prefill) {
+                this.elements = d3.range(this.maxSize).map<DataStreamElement>((v, i, a) => {
+                    return new DataStreamElement(new DataStreamProvider(""), 0);
+                });
+            }
+            context.bus.subscribe(listeningMessage, p => this.addItem(p));
+        }
+
+        addItem(element: DataStreamElement) {
+            this.elements.push(element);
+            while (this.elements.length > this.maxSize) this.elements.shift();
+            this.context.busPublishNotifiable(this);
+        }
+
+        getMessageName() {
+            return this.listeningMessage + "Buffer";
         }
     }
 
@@ -92,7 +113,7 @@
         makeArray(obj: any): any[] {
             var result = []
             for (var prop in obj) {
-                if(obj.hasOwnProperty(prop)) result.push({ key: prop, value: obj[prop] });
+                if (obj.hasOwnProperty(prop)) result.push({ key: prop, value: obj[prop] });
             }
             return result;
         }

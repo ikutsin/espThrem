@@ -20,9 +20,28 @@ class Program {
         thremContext.plugins.registerPlugin(new ThremPlugins.AcknowledgePlugin(31)); //core api
         thremContext.plugins.registerPlugin(new ThremPlugins.AcknowledgePlugin(32)); //info api
 
+
+        setInterval(() => {
+            thremContext.busPublishNotifiable(new DataRepository.DataStreamElement(new DataRepository.DataStreamProvider("random"), Math.random()));
+        }, 1000);
+
+        var randomBuffer = new DataRepository.DataStreamBuffer("random", thremContext);
+        
+
+        var randomNumber = new PageBuilders.LastNumberWidgetBuilder("random", "Random", c => c);
+        var randomNumberSparkline = new PageBuilders.SparklineWidgetBuilder(randomBuffer, "Random");
         
         ////should move to plugins
-        rootMenu.addOrUpdateElement("index", "Home", new PageBuilders.DefaultPageBuilder());
+        var dashboard = new PageBuilders.DashboardPageBuilder(() => new Promise<ThremNavigation.IContentBuilder[]>((c, d) => {
+            c([
+                randomNumber,
+                randomNumberSparkline
+                //new PageBuilders.StaticTemplateBuilder("test", "widget", { text: 88 }),
+                //new PageBuilders.StaticTemplateBuilder("test", "widget", { text: 883, widgetType: "x2" }),
+                //new PageBuilders.StaticTemplateBuilder("test", "widget", { text: 88888 }),
+            ]);
+        }));
+        rootMenu.addOrUpdateElement("index", "Home", dashboard);
         rootMenu.addOrUpdateElement("setup", "Setup", new PageBuilders.TabsBuilder("setup",
             t => new Promise((c, d) => {
                 t.addOrUpdateElement("wifi", "Wifi setup", new PageBuilders.WifisetupBuilder());
@@ -40,6 +59,8 @@ class Program {
 
         thremContext.promiseStart()
             .then(p => new Promise<any>((c, d) => {
+                ((bus) => {
+                })(thremContext.bus);
             }))
             .catch(p => {
                 thremContext.onPromiseError(p);

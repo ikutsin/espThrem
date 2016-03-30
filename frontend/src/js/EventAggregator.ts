@@ -3,7 +3,7 @@
 module EventAggregator {
 
     class Subscription {
-        constructor (
+        constructor(
             public id: number,
             public callback: (payload?: any) => void) {
         }
@@ -17,29 +17,29 @@ module EventAggregator {
 
     class Message implements IMessage {
 
-        private _subscriptions: Subscription[];
-        private _nextId: number;
+        private subscriptions: Subscription[];
+        private nextId: number;
 
-        constructor (public message: string) {
-            this._subscriptions = [];
-            this._nextId = 0;
+        constructor(public message: string) {
+            this.subscriptions = [];
+            this.nextId = 0;
         }
 
         public subscribe(callback: (payload?: any) => void) {
-            var subscription = new Subscription(this._nextId++, callback);
-            this._subscriptions[subscription.id] = subscription;
+            var subscription = new Subscription(this.nextId++, callback);
+            this.subscriptions[subscription.id] = subscription;
             return subscription.id;
         }
 
         public unSubscribe(id: number) {
-            this._subscriptions[id] = undefined;
+            this.subscriptions[id] = undefined;
         }
 
         public notify(payload?: any) {
             var index;
-            for (index = 0; index < this._subscriptions.length; index++) {
-                if (this._subscriptions[index]) {
-                    this._subscriptions[index].callback(payload);
+            for (index = 0; index < this.subscriptions.length; index++) {
+                if (this.subscriptions[index]) {
+                    this.subscriptions[index].callback(payload);
                 }
             }
         }
@@ -50,11 +50,11 @@ module EventAggregator {
 
         private _messages: any;
 
-        constructor () {
+        constructor() {
             this._messages = {};
         }
 
-        subscribe(message: string, callback: (payload?: any) => void ) {
+        subscribe(message: string, callback: (payload?: any) => void): number {
             var msg: IMessage;
             msg = this._messages[message] ||
                 <IMessage>(this._messages[message] = new Message(message));

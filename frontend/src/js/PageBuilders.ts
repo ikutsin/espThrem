@@ -2,12 +2,35 @@
 
 module PageBuilders {
 
-    import PageBuilder = ThremNavigation.IPageBuilder;
+    import PageBuilder = ThremNavigation.IContentBuilder;
 
-    export class DefaultPageBuilder implements PageBuilder {
+    export class DashboardPageBuilder implements PageBuilder {
+        element: HTMLElement;
+        context: Threm.ThremContext;
+
+        constructor(private widgets: () => Promise<PageBuilder[]>) {
+
+        }
         spawn(element: HTMLElement, context: Threm.ThremContext): Promise<any> {
+            this.element = element;
+            this.context = context;
             var data = {};
-            return context.doT.renderTo(element, "basic", "index", data);
+            return context.doT.renderTo(element, "basic", "index", data)
+                .then(p => this.widgets())
+                .then(p => {
+                    this.d3bind(p);
+                });
+        }
+        private d3bind(w: PageBuilder[]) {
+            let data = d3.select(this.element).select(".dashboard").selectAll("div.dashboard-item").data(w);
+            data.enter().append("div").attr("class", d => "dashboard-item" + ((<any>d).data && (<any>d).data.widgetType ? " " + (<any>d).data.widgetType : ""));
+            
+            //bind manually because of the promise
+            let renderedSelection = d3.select(this.element).select(".dashboard").selectAll("div.dashboard-item");
+            let promiseChain = Promise.resolve();
+            renderedSelection.each((d, i, g) => {
+                promiseChain = promiseChain.then(() => d.spawn(renderedSelection[g][i], this.context));
+            });
         }
     }
 
@@ -155,6 +178,89 @@ module PageBuilders {
                     return { items: p };
                 })
                 .then(p => context.doT.renderTo(element, "basic", "infoFiles", p));
+        }
+    }
+
+    /*
+    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+    *  Widgets
+    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+    */
+
+    export class LastNumberWidgetBuilder implements PageBuilder {
+        element: HTMLElement;
+        context: Threm.ThremContext;
+        data: any = {};
+        template: (any) => string;
+        subscribtionId: number;
+
+        constructor(private ownerName: string, title: string, private formatter: (vstring) => string) {
+            this.data.title = title;
+            this.data.value = '-';
+        }
+        spawn(element: HTMLElement, context: Threm.ThremContext): Promise<any> {
+            this.element = element;
+            this.context = context;
+
+            this.subscribtionId = this.context.bus.subscribe(this.ownerName, p => {
+                this.data.value = this.formatter(p.value);
+                if (document.body.contains(this.element)) {
+                    this.render();
+                } else {
+                    console.log("LastNumberWidgetBuilder dead");
+                    this.context.bus.unSubscribe(this.ownerName, this.subscribtionId);
+                }
+            });
+
+            return context.doT.getTemplate("widget", "lastNumber")
+                .then(p => {
+                    this.template = p;
+                    this.render();
+                });
+        }
+        private render() {
+            if (!this.template || !this.element) {
+                console.log("failed to update widget");
+                return;
+            }
+            this.element.innerHTML = this.template(this.data);
+
+        }
+    }
+    export class SparklineWidgetBuilder implements PageBuilder {
+        element: HTMLElement;
+        context: Threm.ThremContext;
+        data: any = {};
+        template: (any) => string;
+        subscribtionId: number;
+        chart:Charting.StreamingLineChart;
+
+        constructor(private initialBuffer: DataRepository.DataStreamBuffer, title: string, private chartMax: number = 1, private chartMin: number = 0, private size: number = 60) {
+            this.data.title = title;
+            this.data.widgetType = "x2";
+        }
+        spawn(element: HTMLElement, context: Threm.ThremContext): Promise<any> {
+            this.element = element;
+            this.context = context;
+
+            this.subscribtionId = this.context.bus.subscribe(this.initialBuffer.getMessageName(), p => {
+                if (document.body.contains(this.element)) {
+                    if (!this.chart || !this.element) {
+                        console.log("failed to update widget");
+                        return;
+                    }
+                    this.chart.update(p);
+                } else {
+                    console.log("SparklineWidgetBuilder dead");
+                    this.context.bus.unSubscribe(this.initialBuffer.getMessageName(), this.subscribtionId);
+                }
+            });
+
+            return context.doT.renderTo(this.element, "widget", "sparkline", this.data)
+                .then(p => {
+                    var chartElement = <HTMLElement>d3.select(this.element).selectAll(".sparkline").node();
+                    this.chart = new Charting.StreamingLineChart(chartElement, this.initialBuffer, this.chartMax, this.chartMax, this.size);
+                });
         }
     }
 }

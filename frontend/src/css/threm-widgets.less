@@ -1,0 +1,58 @@
+﻿@import "flexbox.less";
+
+@itemWidth:200px;
+@itemHeight:200px;
+
+.dashboard {
+    width: 100%;
+    clear: both;
+    .flex-display();
+    .flex-direction(row);
+    .flex-wrap(wrap);
+    .align-items();
+
+    .dashboard-item {
+        width: @itemWidth;
+        height: @itemHeight;
+        margin: 2px;
+        border: 1px solid gray;
+        overflow: hidden;
+        position: relative;
+
+        .title {
+            margin:4px;
+            position: absolute;
+            color: white;
+        }
+
+        .big-number {
+            color: white;
+            position: absolute;
+            width:@itemWidth;
+            height: @itemHeight;
+            vertical-align:middle;
+            text-align:center;
+            margin:50px auto;
+            font-size:80px;
+        }
+
+        .fill {
+            vertical-align: middle;
+            left:0;
+            right:0;
+            top:0;
+            bottom:0;
+            position: absolute;
+            background-color: blue;
+        }
+
+        .sparkline {
+
+        }
+    }
+
+    .dashboard-item.x2 {
+        width: @itemWidth*2+6;
+        height: @itemHeight;
+    }
+}

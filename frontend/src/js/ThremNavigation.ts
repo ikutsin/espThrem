@@ -83,14 +83,14 @@ module ThremNavigation {
         }
     }
 
-    export interface IPageBuilder {
+    export interface IContentBuilder {
         spawn(element: HTMLElement, context: Threm.ThremContext): Promise<any>;
     }
 
     //should be internal
     class TabElement {
         isActive: boolean = false;
-        constructor(public hashPart: string, public header: string, public page: IPageBuilder, public prefix: string) {
+        constructor(public hashPart: string, public header: string, public page: IContentBuilder, public prefix: string) {
         }
     }
 
@@ -111,7 +111,7 @@ module ThremNavigation {
             d3.select(this.contentElement).classed("tab-content", true).datum(this);
         }
 
-        addOrUpdateElement(hashPart: string, header: string, page: IPageBuilder) {
+        addOrUpdateElement(hashPart: string, header: string, page: IContentBuilder) {
             console.log("Tab added (" + this.prefix + "):", header);
             this.tabElements.push(new TabElement(hashPart, header, page, this.prefix));
             this.d3bind();
@@ -125,8 +125,6 @@ module ThremNavigation {
                 return Promise.reject({ error: "Page not found '" + this.prefix + "." + currentLevelCrumb + "'" });
             }
             let tabElement = selectedElements[0];
-
-            console.log(crumbs, tabElement.header);
 
             //hangle next element
             let result: Promise<any> = Promise.resolve();
@@ -156,7 +154,7 @@ module ThremNavigation {
             }));
         }
 
-        handleNextPage(page: IPageBuilder): Promise<any> {
+        handleNextPage(page: IContentBuilder): Promise<any> {
             let currentElement = d3.select(this.contentElement).selectAll("div.page");
             let newElement = <HTMLElement>d3.select(this.contentElement).append("div").classed("page", true)
                 .style('opacity', 0)
@@ -173,14 +171,18 @@ module ThremNavigation {
                 //        return Promise.resolve();
                 //    }
                 //})
-                .then(p => new Promise<any>((c,d)=>{
-                    currentElement
-                        .transition()
-                        .duration(500)
-                        .style('opacity', 0)
-                        .remove().call((d, i) => {
-                            c()
-                        });
+                .then(p => new Promise<any>((c, d) => {
+                    if (currentElement.empty()) {
+                        c();
+                    } else {
+                        currentElement
+                            .transition()
+                            .duration(500)
+                            .style('opacity', 0)
+                            .remove().each("end", (dd, i) => {
+                                c();
+                            });
+                    }
                 }))
                 .catch(p => this.context.onPromiseError(p));
         }

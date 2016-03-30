@@ -53,10 +53,13 @@
     <Content Include="src\mocks\info\chip.json" />
     <Content Include="src\mocks\info\status.json" />
     <Content Include="src\mocks\info\wifi.json" />
+    <Content Include="src\css\threm-widgets.less" />
+    <Content Include="src\css\flexbox.less" />
     <None Include="src\mocks\info\threm.json" />
     <Content Include="src\templates\basic.html" />
     <Content Include="src\templates\setup.html" />
     <Content Include="src\templates\test.html" />
+    <Content Include="src\templates\widget.html" />
     <Content Include="webserver.js" />
     <Content Include="websocket.js" />
   </ItemGroup>
@@ -76,7 +79,7 @@
     <TypeScriptCompile Include="Scripts\typings\d3\plugins\d3.superformula.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\dot\dot.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\es6-promise\es6-promise.d.ts" />
-    <TypeScriptCompile Include="src-unused\EventAggregator.ts" />
+    <TypeScriptCompile Include="src\js\EventAggregator.ts" />
     <TypeScriptCompile Include="src\js\Charting.ts" />
     <TypeScriptCompile Include="src\js\DataRepository.ts" />
     <TypeScriptCompile Include="src\js\main.ts" />
@@ -117,7 +120,9 @@
       <DependentUpon>web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="src-unused\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
   </PropertyGroup>
