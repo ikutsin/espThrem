@@ -169,7 +169,7 @@ input[type=radio] {
   margin: 50px auto;
   font-size: 80px;
 }
-.dashboard .dashboard-item .fill {
+.dashboard .dashboard-item .fill-number {
   vertical-align: middle;
   left: 0;
   right: 0;
@@ -177,6 +177,21 @@ input[type=radio] {
   bottom: 0;
   position: absolute;
   background-color: blue;
+}
+.dashboard .dashboard-item .fill-chart {
+  vertical-align: middle;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  position: absolute;
+  background-color: white;
+}
+.dashboard .dashboard-item .title-chart {
+  margin: 4px;
+  position: absolute;
+  color: blue;
+  right: 0px;
 }
 .dashboard .dashboard-item.x2 {
   width: 406px;

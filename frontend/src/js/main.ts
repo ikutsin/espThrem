@@ -22,14 +22,14 @@ class Program {
 
 
         setInterval(() => {
-            thremContext.busPublishNotifiable(new DataRepository.DataStreamElement(new DataRepository.DataStreamProvider("random"), Math.random()));
-        }, 1000);
+            thremContext.busPublishNotifiable(new DataRepository.DataStreamElement(new DataRepository.DataStreamProvider("random"), Math.random()*1));
+        }, 500);
 
         var randomBuffer = new DataRepository.DataStreamBuffer("random", thremContext);
         
 
         var randomNumber = new PageBuilders.LastNumberWidgetBuilder("random", "Random", c => c);
-        var randomNumberSparkline = new PageBuilders.SparklineWidgetBuilder(randomBuffer, "Random");
+        var randomNumberSparkline = new PageBuilders.SparklineWidgetBuilder(randomBuffer, "Random", 1);
         
         ////should move to plugins
         var dashboard = new PageBuilders.DashboardPageBuilder(() => new Promise<ThremNavigation.IContentBuilder[]>((c, d) => {

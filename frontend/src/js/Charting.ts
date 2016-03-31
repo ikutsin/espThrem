@@ -30,7 +30,7 @@ module Charting {
                 .datum({ endAngle: 0.33 * tau })
                 .style("fill", "#4D4D4D")
                 .attr("d", arc)
-                .call(this.spin.bind(this), 1500);
+                .call(this.spin.bind(this), 500);
         }
         show() {
             d3.select(this.element).style("display", "block");
@@ -69,7 +69,7 @@ module Charting {
             console.log("constructing background");
 
 
-            var stack = d3.layout.stack().offset("wiggle");
+            let stack = d3.layout.stack().offset("wiggle");
             this.layers0 = stack(d3.range(this.n).map(() => this.bumpLayer(this.m)));
             this.layers1 = stack(d3.range(this.n).map(() => this.bumpLayer(this.m)));
 
@@ -84,7 +84,7 @@ module Charting {
                 .domain([0, d3.max(this.layers0.concat(this.layers1), layer => d3.max(<any[]>layer, d => (d.y0 + d.y)))])
                 .range([0, 200]);
 
-            var color = (<any>d3.scale.linear()).range(['#aad', '#556']);
+            let color = (<any>d3.scale.linear()).range(['#aad', '#556']);
             //var color = d3.scale.ordinal().range(['#aad', '#556']);
 
             this.area = d3.svg.area().interpolate("basis");
@@ -122,7 +122,7 @@ module Charting {
 
             console.log("BG transition");
 
-            d3.selectAll("path")
+            d3.select(this.element).selectAll("path")
                 .data(() => {
                     var d = this.layers1;
                     this.layers1 = this.layers0;
@@ -180,13 +180,13 @@ module Charting {
         private isPrepared: boolean = false;
 
         constructor(private element: HTMLElement, initialBuffer: DataRepository.DataStreamBuffer, private chartMax: number = 1, private chartMin: number = 0, private size: number = 60) {
-            this.prepareChart();
             this.data = initialBuffer.elements.slice(-size);
+            this.prepareChart();
         }
 
         // https://bost.ocks.org/mike/path/
         private prepareChart() {
-            var margin = { top: 10, right: 10, bottom: 20, left: 30 },
+            let margin = { top: 10, right: 10, bottom: 20, left: 30 },
                 width = 400 - margin.left - margin.right,
                 height = 200 - margin.top - margin.bottom;
 
@@ -216,10 +216,11 @@ module Charting {
             svg.append("g")
                 .attr("class", "x axis")
                 .attr("transform", "translate(0," + this.y(0) + ")")
-                .call(d3.svg.axis().scale(this.x).orient("bottom"));
+                .call(d3.svg.axis().scale(this.x).tickSize(1).orient("bottom"));
             svg.append("g")
                 .attr("class", "y axis")
-                .call(d3.svg.axis().scale(this.y).orient("left"));
+                .call(d3.svg.axis().scale(this.y).tickSize(1).orient("left")
+                );
 
             this.path = svg.append("g")
                 .attr("clip-path", "url(#clip)")
@@ -233,16 +234,15 @@ module Charting {
         }
 
         public update(buffer: DataRepository.DataStreamBuffer) {
-            this.data = this.data = buffer.elements.slice(-this.size);
+            this.data = buffer.elements.slice(-this.size-1);
 
-            console.log(this.data);
-
+            //console.log(this.data.map(d=>d.value));
             // redraw the line, and slide it to the left
-            this.path
+            this.path.datum(this.data)
                 .attr("d", this.line)
                 .attr("transform", null)
                 .transition()
-                .duration(500)
+                .duration(450)
                 .ease("linear")
                 .attr("transform", "translate(" + this.x(-1) + ",0)");
 

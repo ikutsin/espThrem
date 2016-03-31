@@ -245,7 +245,7 @@ module PageBuilders {
 
             this.subscribtionId = this.context.bus.subscribe(this.initialBuffer.getMessageName(), p => {
                 if (document.body.contains(this.element)) {
-                    if (!this.chart || !this.element) {
+                    if (!this.chart) {
                         console.log("failed to update widget");
                         return;
                     }
@@ -259,7 +259,7 @@ module PageBuilders {
             return context.doT.renderTo(this.element, "widget", "sparkline", this.data)
                 .then(p => {
                     var chartElement = <HTMLElement>d3.select(this.element).selectAll(".sparkline").node();
-                    this.chart = new Charting.StreamingLineChart(chartElement, this.initialBuffer, this.chartMax, this.chartMax, this.size);
+                    this.chart = new Charting.StreamingLineChart(chartElement, this.initialBuffer, this.chartMax, this.chartMin, this.size);
                 });
         }
     }
