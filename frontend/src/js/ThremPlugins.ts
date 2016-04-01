@@ -1,4 +1,5 @@
-﻿module ThremPlugins {
+﻿///<reference path="../../Scripts/typings/es6-promise/es6-promise.d.ts"/>
+module ThremPlugins {
     export interface IThremPlugin {
         id: number;
         data: IThremPluginData;

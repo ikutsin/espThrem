@@ -1,4 +1,5 @@
-﻿module DataRepository {
+﻿///<reference path="../../Scripts/typings/es6-promise/es6-promise.d.ts"/>
+module DataRepository {
 
     export class DataStreamProvider {
         constructor(public name: string) { }

@@ -1,3 +1,4 @@
+///<reference path="../../Scripts/typings/es6-promise/es6-promise.d.ts"/>
 class Program {
     main() {
         console.log("Starting program");

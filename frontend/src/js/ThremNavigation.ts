@@ -1,5 +1,6 @@
 ﻿///<reference path="../../Scripts/typings/d3/d3.d.ts" />
 ///<reference path="../../Scripts/typings/dot/dot.d.ts" />
+///<reference path="../../Scripts/typings/es6-promise/es6-promise.d.ts"/>
 import All = d3.selectAll;
 import Html = d3.html;
 
