@@ -1,4 +1,5 @@
 ﻿///<reference path="../../Scripts/typings/d3/d3.d.ts" />
+///<reference path="../../Scripts/typings/es6-promise/es6-promise.d.ts"/>
 module Threm {
     export interface INotifiable {
         getMessageName(): string;

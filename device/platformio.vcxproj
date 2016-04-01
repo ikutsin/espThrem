@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\ThremPlugins\SkeletonPlugin.h" />
+    <ClInclude Include="lib\ThremPlugins\ThremBufferPlugin.h" />
     <ClInclude Include="lib\ThremPlugins\ThremCaptivePortalPlugin.h" />
     <ClInclude Include="lib\ThremPlugins\ThremCoreApiPlugin.h" />
     <ClInclude Include="lib\ThremPlugins\ThremDiagPlugin.h" />

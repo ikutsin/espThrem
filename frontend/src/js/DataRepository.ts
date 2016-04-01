@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 ﻿
+=======
+﻿///<reference path="../../Scripts/typings/es6-promise/es6-promise.d.ts"/>
+>>>>>>> origin/master
 module DataRepository {
 
     export class DataStreamProvider {

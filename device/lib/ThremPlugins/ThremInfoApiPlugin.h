@@ -14,7 +14,7 @@ class ThremInfoApiPlugin : public IThremPlugin {
 	{
 		return 32;
 	}
-	virtual char* getName()
+	virtual String getName()
 	{
 		return "Info API";
 	}

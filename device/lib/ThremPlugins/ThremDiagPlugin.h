@@ -12,7 +12,7 @@ class ThremDiagPlugin : public IThremPlugin {
 	{
 		return 12;
 	}
-	virtual char* getName()
+	virtual String getName()
 	{
 		return "Serial diagnostics";
 	}
@@ -27,7 +27,7 @@ class ThremDiagPlugin : public IThremPlugin {
 	virtual void readData(ThremContext* context)
 	{
 #ifdef DEBUG
-		if ((lastMillis + 5000) < millis())
+		if ((lastMillis + 10000) < millis())
 		{
 			DEBUG << "ThremDiagPlugin readdata add notifications" << endl;
 			context->addNotification(getUniqueId(), 1, String(millis()));

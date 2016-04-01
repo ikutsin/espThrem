@@ -41,7 +41,7 @@ gulp.task('compile', [], function () {
     var p1 = gulp.src('./src/**/*.ts')
       .pipe(ts({
           //noImplicitAny: true,
-          target: "ES6",
+          target: "ES5",
           out: 'custom.js'
       }))
       .pipe(gulp.dest('./build/compiled/js'));

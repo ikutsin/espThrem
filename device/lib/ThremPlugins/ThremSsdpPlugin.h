@@ -12,7 +12,7 @@ class ThremSsdpPlugin : public IThremPlugin {
 	{
 		return 21;
 	}
-	virtual char* getName()
+	virtual String getName()
 	{
 		return "SSDP";
 	}

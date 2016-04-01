@@ -16,7 +16,7 @@ public:
 
 class ThremContext {
 private:
-	LinkedList < ThremNotification* >* _notifications = new LinkedList < ThremNotification* >();
+	LinkedList<ThremNotification*>* _notifications = new LinkedList<ThremNotification*>();
 	ESP8266WebServer* _server = new ESP8266WebServer(80);
 public:
 	bool isStarted = false;

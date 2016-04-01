@@ -22,7 +22,7 @@ class ThremCaptivePortalPlugin : public IThremPlugin {
 	{
 		return 3;
 	}
-	virtual char* getName()
+	virtual String getName()
 	{
 		return "CaptivePortal";
 	}

@@ -68,7 +68,7 @@ class ThremWebSocketPlugin : public IThremPlugin {
 	{
 		return 13;
 	}
-	virtual char* getName()
+	virtual String getName()
 	{
 		return "WebSocket";
 	}

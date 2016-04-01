@@ -15,7 +15,7 @@ class ThremSpiffsPlugin : public IThremPlugin {
 	{
 		return 6;
 	}
-	virtual char* getName()
+	virtual String getName()
 	{
 		return "Spiffs";
 	}

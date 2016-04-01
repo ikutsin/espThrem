@@ -18,6 +18,8 @@ Threm* threm = new Threm();
 
 void setup() {
 	Serial.begin(115200);
+	Serial.print("Free heap -> ");
+	Serial.print(ESP.getFreeHeap());
 	Serial.print("\n");
 	Serial.setDebugOutput(true);
 

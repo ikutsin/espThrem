@@ -21,7 +21,7 @@ public:
 	{
 		return 31;
 	}
-	virtual char* getName()
+	virtual String getName()
 	{
 		return "Core API";
 	}
