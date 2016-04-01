@@ -1,4 +1,5 @@
-﻿module DataRepository {
+﻿
+module DataRepository {
 
     export class DataStreamProvider {
         constructor(public name: string) { }

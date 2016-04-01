@@ -31,7 +31,7 @@ gulp.task('compile-ts', [], function () {
     return gulp.src('./src/**/*.ts')
       .pipe(ts({
           //noImplicitAny: true,
-          target: "ES6",
+          target: "ES5",
       }))
       .pipe(gulp.dest('./src/'));
 });
