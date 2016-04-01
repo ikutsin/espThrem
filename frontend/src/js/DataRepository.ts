@@ -123,7 +123,8 @@
         //ip: string = "192.168.1.104";
         ip: string = "localhost";
 
-        httpBase: string = "http://"+this.ip+":56609/src/mocks";
+        httpBase: string = "http://"+this.ip+":8080/src/mocks";
+        //httpBase: string = "http://"+this.ip+":56609/src/mocks";
 
         buildAddres(path: string, query: any) {
             var p = this.httpBase + path;

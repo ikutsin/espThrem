@@ -172,7 +172,7 @@
         }
 
         register(context: Threm.ThremContext): Promise<ThremPluginRegistration> {
-            return Promise.resolve();
+            return Promise.resolve(<ThremPluginRegistration>undefined);
         }
     }
 
@@ -309,7 +309,7 @@
         }
 
         register(context: Threm.ThremContext): Promise<ThremPluginRegistration> {
-            return Promise.resolve();
+            return Promise.resolve(<ThremPluginRegistration>undefined);
         }
     }
 } 

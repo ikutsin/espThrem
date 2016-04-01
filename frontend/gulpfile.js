@@ -15,9 +15,11 @@ var useref = require('gulp-useref');
 var clean = require('gulp-clean');
 var stripDebug = require('gulp-strip-debug');
 
+var merge = require('merge-stream');
+
 // copy 3rd party deps
 gulp.task('clean', function () {
-    gulp.src(['./build/compiled', './build/compressed'], {
+    return gulp.src(['./build/compiled', './build/compressed'], {
             read: false
         })
         .pipe(clean({
@@ -25,9 +27,18 @@ gulp.task('clean', function () {
         }));
 });
 
+gulp.task('compile-ts', [], function () {
+    return gulp.src('./src/**/*.ts')
+      .pipe(ts({
+          //noImplicitAny: true,
+          target: "ES6",
+      }))
+      .pipe(gulp.dest('./src/'));
+});
+
 //slightly compile elements into Compiled
 gulp.task('compile', [], function () {
-    gulp.src('./src/**/*.ts')
+    var p1 = gulp.src('./src/**/*.ts')
       .pipe(ts({
           //noImplicitAny: true,
           target: "ES6",
@@ -35,40 +46,44 @@ gulp.task('compile', [], function () {
       }))
       .pipe(gulp.dest('./build/compiled/js'));
 
-    gulp.src('./src/**/style.less')
+    var p2 = gulp.src('./src/**/style.less')
       .pipe(less({
           paths: [path.join(__dirname, 'less', 'includes')]
       }))
       .pipe(gulp.dest('./build/compiled'));
 
-    gulp.src('./src/js/lib/*.js')
+    var p3 = gulp.src('./src/js/lib/*.js')
       .pipe(concat("combined.js"))
       .pipe(gulp.dest('./build/compiled/js/'));
 
-    gulp.src('./src/*.html')
+    var p4 = gulp.src('./src/*.html')
       .pipe(useref())
       .pipe(gulp.dest('./build/compiled/'));
 
-    gulp.src('./src/templates/*.html')
+    var p5 = gulp.src('./src/templates/*.html')
       .pipe(gulp.dest('./build/compiled/templates/'));
+	  
 
-
+	return merge(p1,p2,p3,p4,p5);
 });
 
 gulp.task('compress', ['compile'], function () {
-    gulp.src('./build/compiled/**/*.html')
-      .pipe(gulp.dest('./build/compressed/'));
+	var pipes = [];
+    pipes.push(gulp.src('./build/compiled/**/*.html')
+      .pipe(gulp.dest('./build/compressed/')));
 
-    gulp.src('./build/compiled/css/*.css')
-        .pipe(gulp.dest('./build/compressed/css'));
-    gulp.src('./build/compiled/js/*.js')
+    pipes.push(gulp.src('./build/compiled/css/*.css')
+        .pipe(gulp.dest('./build/compressed/css')));
+    pipes.push(gulp.src('./build/compiled/js/*.js')
       .pipe(stripDebug())
-      .pipe(gulp.dest('./build/compressed/js'));
+      .pipe(gulp.dest('./build/compressed/js')));
+	  
+	  return merge(pipes);
 });
 
 //gulp.task('gzip', ['compress'], function () {
 gulp.task('gzip', function () {
-    gulp.src('./build/compressed/**/*.*')
+    return gulp.src('./build/compressed/**/*.*')
       .pipe(pako.gzip())
       //.pipe(rename({extname: ""}))
       .pipe(gulp.dest("./build/gziped/"));
