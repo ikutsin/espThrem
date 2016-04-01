@@ -239,36 +239,14 @@ body .content .header {
 body .content .footer {
   bottom: 0;
 }
-body .content .footer div.notification {
-  border: 1px solid rgba(100, 100, 100, 0.5);
-  background: white;
-  margin: 0 20px 6px 0px;
-  padding: 2px;
-  overflow: hidden;
-}
-body .content .footer div.notification div {
-  display: inline;
-  clear: none;
-}
-body .content .footer div.notification button {
-  clear: none;
-}
-body .content .footer div.notification button.close {
-  float: right;
-  background: 0;
-  border: 0;
-}
 body .content .page {
   clear: none;
   display: block;
   position: absolute;
   min-height: 200px;
-  width: 100%;
-  margin-bottom: 50px;
-}
-body .page:first-child {
   width: 90%;
   left: 5%;
+  margin-bottom: 50px;
 }
 .kvp {
   clear: both;
@@ -277,4 +255,27 @@ body .page:first-child {
 .kvp span:first-child {
   display: inline-block;
   min-width: 200px;
+}
+div.notification {
+  border: 1px solid rgba(100, 100, 100, 0.5);
+  background: white;
+  margin: 0 20px 25px 0;
+  padding: 2px;
+  overflow: hidden;
+  position: relative;
+}
+div.notification div {
+  display: inline;
+  clear: none;
+}
+div.notification button {
+  clear: none;
+}
+div.notification button.close {
+  padding: 0;
+  margin: 0;
+  right: 0;
+  position: absolute;
+  background: 0;
+  border: 0;
 }

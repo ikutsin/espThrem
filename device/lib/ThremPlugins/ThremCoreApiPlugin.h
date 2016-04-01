@@ -82,13 +82,13 @@ public:
 	{
 		if (isResetRequest)
 		{
-			context->addNotification(getUniqueId(), 1, 25);
+			context->addNotification(getUniqueId(), 1, "reset");
 			isResetRequest = false;
 		}
 
 		if (isRestartRequest)
 		{
-			context->addNotification(getUniqueId(), 1, 10);
+			context->addNotification(getUniqueId(), 1, "restart");
 			isRestartRequest = false;
 		}
 	}
@@ -98,11 +98,8 @@ public:
 		{
 			if (notification->type == 1)
 			{
-				int ntype = notification->value;
-				switch (ntype)
-				{
-				case 25:
-				{
+				String ntype = notification->value;
+				if (ntype == "reset") {
 					//delete config
 					Dir dir = SPIFFS.openDir("/config");
 					while (dir.next()) {
@@ -114,9 +111,9 @@ public:
 					WiFi.disconnect(true);
 					//what does it do?
 					ESP.reset();
-					break;
 				}
-				case 10:
+				else if (ntype == "restart")
+				{
 					ESP.restart();
 					//ESP.reset();
 					break;

@@ -30,14 +30,14 @@ class ThremDiagPlugin : public IThremPlugin {
 		if ((lastMillis + 5000) < millis())
 		{
 			DEBUG << "ThremDiagPlugin readdata add notifications" << endl;
-			context->addNotification(getUniqueId(), 1, millis());
+			context->addNotification(getUniqueId(), 1, String(millis()));
 			lastMillis = millis();
 		}
 #endif
 #ifdef LOG
 		int heapSize = ESP.getFreeHeap();
 		if (lastHeapSize != heapSize) {
-			context->addNotification(getUniqueId(), 2, heapSize);
+			context->addNotification(getUniqueId(), 2, String(heapSize));
 			lastHeapSize = heapSize;
 		}
 #endif

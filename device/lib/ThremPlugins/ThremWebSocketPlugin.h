@@ -85,8 +85,10 @@ class ThremWebSocketPlugin : public IThremPlugin {
 		output += notification->senderId;
 		output += ",\"type\":";
 		output += notification->type;
-		output += ",\"value\":";
+		output += ",\"value\":\"";
 		output += notification->value;
+		output += "\",\"time\":";
+		output += millis();
 		output += "}";
 		webSocket.broadcastTXT(output);
 	}

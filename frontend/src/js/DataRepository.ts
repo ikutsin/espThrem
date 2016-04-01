@@ -120,11 +120,13 @@
     }
 
     export class Communication {
-        //baseAddr: string = "192.168.1.104";
-        baseAddr: string = "localhost:56609/src/mocks";
+        //ip: string = "192.168.1.104";
+        ip: string = "localhost";
+
+        httpBase: string = "http://"+this.ip+":56609/src/mocks";
 
         buildAddres(path: string, query: any) {
-            var p = "http://" + this.baseAddr + path;
+            var p = this.httpBase + path;
             if (query) p += "?" + this.toQueryString(query);
             return p;
         }

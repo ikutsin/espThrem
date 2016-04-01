@@ -1,8 +1,9 @@
 ﻿///<reference path="../../Scripts/typings/d3/d3.d.ts" />
 ///<reference path="../../Scripts/typings/dot/dot.d.ts" />
+import All = d3.selectAll;
+import Html = d3.html;
 
 module ThremNavigation {
-    //documenation
     //https://github.com/olado/doT/blob/master/examples/browsersample.html
     //https://github.com/olado/doT/blob/master/examples/advancedsnippet.txt
     //http://olado.github.io/doT/index.html
@@ -84,22 +85,28 @@ module ThremNavigation {
     }
 
     export interface IContentBuilder {
-        spawn(element: HTMLElement, context: Threm.ThremContext): Promise<any>;
+        spawn(element: HTMLElement): Promise<any>;
+    }
+
+    export interface ITabManager {
+        prefix:string;
+        addElement(element: TabElement);
     }
 
     //should be internal
-    class TabElement {
+    export class TabElement {
         isActive: boolean = false;
-        constructor(public hashPart: string, public header: string, public page: IContentBuilder, public prefix: string) {
+        public prefix: string;
+        constructor(public hashPart: string, public header: string, public page: IContentBuilder) {
         }
     }
 
-    export class TabsManager {
+    export class TabsManager implements ITabManager {
         private tabTemplate: (any) => string;
         private tabElements: TabElement[] = [];
         private activeTab: TabElement;
 
-        constructor(private context: Threm.ThremContext, private tabsElement: HTMLElement, private contentElement: HTMLElement, private prefix: string = "") {
+        constructor(private context: Threm.ThremContext, private tabsElement: HTMLElement, private contentElement: HTMLElement, public prefix: string = "") {
             this.context.doT.getTemplate("global", "tabitem")
                 .then(p => {
                     this.tabTemplate = p;
@@ -111,10 +118,15 @@ module ThremNavigation {
             d3.select(this.contentElement).classed("tab-content", true).datum(this);
         }
 
-        addOrUpdateElement(hashPart: string, header: string, page: IContentBuilder) {
-            console.log("Tab added (" + this.prefix + "):", header);
-            this.tabElements.push(new TabElement(hashPart, header, page, this.prefix));
+        addElement(element: TabElement) {
+            console.log("Tab added (" + this.prefix + "):", element.header);
+            element.prefix = this.prefix;
+            this.tabElements.push(element);
             this.d3bind();
+        }
+
+        add(hashPart: string, header: string, page: IContentBuilder) {
+            this.addElement(new TabElement(hashPart, header, page));
         }
 
         handleCrumbs(crumbs: string[]): Promise<any> {
@@ -125,11 +137,11 @@ module ThremNavigation {
                 return Promise.reject({ error: "Page not found '" + this.prefix + "." + currentLevelCrumb + "'" });
             }
             let tabElement = selectedElements[0];
+            for (let i in this.tabElements) this.tabElements[i].isActive = false;
 
             //hangle next element
             let result: Promise<any> = Promise.resolve();
             if (!this.activeTab || this.activeTab.hashPart !== tabElement.hashPart) {
-                if (this.activeTab) this.activeTab.isActive = false;
                 this.activeTab = undefined;
                 result = result
                     .then(p => this.handleNextPage(tabElement.page))
@@ -144,7 +156,9 @@ module ThremNavigation {
             return result.then(p => new Promise((c, d) => {
                 let menu = d3.select(this.contentElement).selectAll(".tab-navigation");
                 if (!menu.empty()) {
-                    menu.datum().handleCrumbs(crumbs).then(p => c());
+                    menu.datum().handleCrumbs(crumbs)
+                        .then(p => c())
+                        .catch(p => d(p));
                 } else if (crumbs.length) {
                     console.log("unhandled crumbs:", crumbs);
                     d({ error: "Unhandled crumbs" });
@@ -163,14 +177,7 @@ module ThremNavigation {
                 .style('opacity', 1)
                 .node();
 
-            return page.spawn(newElement, this.context)
-                //.then(p => {
-                //    if (this.activeTab) {
-                //        return this.activeTab.page.die();
-                //    } else {
-                //        return Promise.resolve();
-                //    }
-                //})
+            return page.spawn(newElement)
                 .then(p => new Promise<any>((c, d) => {
                     if (currentElement.empty()) {
                         c();

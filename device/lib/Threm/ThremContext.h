@@ -11,7 +11,7 @@ class ThremNotification {
 public:
 	int senderId;
 	int type;
-	float value;
+	String value;
 };
 
 class ThremContext {
@@ -33,7 +33,7 @@ public:
 		return _server;
 	}
 
-	void addNotification(int senderId, int type, int value)
+	void addNotification(int senderId, int type, String value)
 	{
 #ifdef DEBUG
 		DEBUG << "Add notification " << senderId << " " << type << " "  << value << " "  << endl;
