@@ -121,7 +121,8 @@
 
     export class Communication {
         //ip: string = "192.168.1.104";
-        ip: string = "localhost";
+        //ip: string = "localhost";
+        ip: string = "tarcona.cloudapp.net";
 
         httpBase: string = "http://"+this.ip+":8080/src/mocks";
         //httpBase: string = "http://"+this.ip+":56609/src/mocks";
