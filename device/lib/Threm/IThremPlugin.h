@@ -11,7 +11,7 @@ public:
 	virtual bool init(ThremContext* context, JsonObject& root);
 
     virtual int getUniqueId();
-    virtual char* getName();
+    virtual String getName();
 	
 	virtual void readData(ThremContext* context) {
 

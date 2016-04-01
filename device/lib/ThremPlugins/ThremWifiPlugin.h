@@ -20,7 +20,7 @@ class ThremWifiPlugin : public IThremPlugin {
 	{
 		return 1;
 	}
-	virtual char* getName()
+	virtual String getName()
 	{
 		return "Wifi connection";
 	}
