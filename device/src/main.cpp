@@ -12,9 +12,15 @@
 #include "ThremInfoApiPlugin.h"
 #include "ThremCaptivePortalPlugin.h"
 #include "ThremSpiffsPlugin.h"
+#include "ThremThermPlugin.h"
+#include "ThremBufferPlugin.h"
 
 
 Threm* threm = new Threm();
+
+bool buffer0filter(int senderId, int type) {
+
+}
 
 void setup() {
 	Serial.begin(115200);
@@ -48,6 +54,15 @@ void setup() {
 	threm->addPlugin(plugin);
 
 	plugin = new ThremInfoApiPlugin();
+	threm->addPlugin(plugin);
+
+	plugin = new ThremThermPlugin();
+	threm->addPlugin(plugin);
+
+	plugin = new ThremInfoApiPlugin();
+	threm->addPlugin(plugin);
+
+	plugin = new ThremBufferPlugin("Therm", 0, &buffer0filter);
 	threm->addPlugin(plugin);
 
 	threm->start();

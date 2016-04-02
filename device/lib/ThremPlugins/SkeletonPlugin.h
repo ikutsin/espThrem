@@ -14,7 +14,7 @@ class ThremNamePluginPlugin : public IThremPlugin {
 	{
 		return uniqueid;
 	}
-	virtual char* getName()
+	virtual String getName()
 	{
 		return "NamePlugin";
 	}

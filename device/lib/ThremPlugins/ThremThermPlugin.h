@@ -15,7 +15,7 @@ struct lastMeasure{
 };
 class ThremThermPlugin : public IThremPlugin {
 
-	DHT dht(Therm_IO, DHT22);
+	DHT* dht;
 	int _interval = 10000;
 	int _intervalmillis;
 
@@ -25,7 +25,7 @@ class ThremThermPlugin : public IThremPlugin {
 	{
 		return 40;
 	}
-	virtual char* getName()
+	virtual String getName()
 	{
 		return "Therm";
 	}
@@ -36,6 +36,7 @@ class ThremThermPlugin : public IThremPlugin {
 		LOG << "ThremThermPlugin init" << endl;
 #endif
 		ESP8266WebServer* server = context->getServer();
+		dht = new DHT(THERM_PIN, DHT22);
 
 		server->on("/therm.json", HTTP_GET, [=](){
 			String s = "{\"h\":";
@@ -49,8 +50,8 @@ class ThremThermPlugin : public IThremPlugin {
 			s += "}";
 			server->send(200, "text/json", s);
 		});
-
-		_interval = max(interval, root["isec"]);
+		int isec = root["isec"];
+		_interval = std::max(_interval, isec);
 		_intervalmillis = millis();
 		return true;
 	}
@@ -60,11 +61,11 @@ class ThremThermPlugin : public IThremPlugin {
 		if (milliz > _intervalmillis + _interval * 1000) {
 			_intervalmillis = milliz;
 
-			_lastMeasure.h = dht.readHumidity();
-			_lastMeasure.t = dht.readTemperature();
+			_lastMeasure.h = dht->readHumidity();
+			_lastMeasure.t = dht->readTemperature();
 			//float f = dht.readTemperature(true);
 
-			if (isnan(h) || isnan(t)) {// || isnan(f)) {
+			if (isnan(_lastMeasure.h) || isnan(_lastMeasure.t)) {// || isnan(f)) {
 #ifdef LOG
 				LOG << "Failed to read from DHT sensor!" << endl;
 #endif
@@ -74,13 +75,13 @@ class ThremThermPlugin : public IThremPlugin {
 				// Compute heat index in Fahrenheit (the default)
 				//float hif = dht.computeHeatIndex(f, h);
 				// Compute heat index in Celsius (isFahreheit = false)
-				_lastMeasure.hic = dht.computeHeatIndex(t, h, false);
+				_lastMeasure.hic = dht->computeHeatIndex(_lastMeasure.t, _lastMeasure.h, false);
 				_lastMeasure.millis = milliz;
 			}
 
-			context->addNotification(getUniqueId(), 1, _lastMeasure.t);
-			context->addNotification(getUniqueId(), 2, _lastMeasure.h);
-			context->addNotification(getUniqueId(), 3, _lastMeasure.hic);
+			context->addNotification(getUniqueId(), 1, String(_lastMeasure.t));
+			context->addNotification(getUniqueId(), 2, String(_lastMeasure.h));
+			context->addNotification(getUniqueId(), 3, String(_lastMeasure.hic));
 		}
 	}
 

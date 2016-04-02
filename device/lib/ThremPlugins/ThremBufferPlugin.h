@@ -4,7 +4,7 @@
 #include "IThremPlugin.h"
 #include "Streaming.h"
 
-typedef bool(* bufferFilter)(int,int);
+typedef bool(*bufferFilter)(int, int);
 
 class ThremBufferPlugin : public IThremPlugin {
 	String _name;
@@ -14,7 +14,7 @@ class ThremBufferPlugin : public IThremPlugin {
 	ESP8266WebServer* server;
 	int size = 50;
 
-
+public:
 	ThremBufferPlugin(String name, int bufferIndex, bufferFilter filterFunc) {
 		this->_name = name + "Buffer";
 		_bufferIndex = bufferIndex;
@@ -49,11 +49,16 @@ class ThremBufferPlugin : public IThremPlugin {
 #ifdef LOG
 		LOG << "ThremBufferPlugin (" << getUniqueId() << ") init" << endl;
 #endif
-		size = max(root["size"], size);
+		int jsize = root["size"];
+		size = std::max(jsize, size);
 
 		server = context->getServer();
-		server->on(String("/buffer/") + String(getUniqueId()), std::bind(&ThremBufferPlugin::handleBufferConent, this));
-		server->on(String("/buffer/") + getName(), std::bind(&ThremBufferPlugin::handleBufferConent, this));
+
+		String s1 = String("/buffer/") + String(getUniqueId());
+		String s2 = String("/buffer/") + getName();
+
+		server->on(s1.c_str(), std::bind(&ThremBufferPlugin::handleBufferConent, this));
+		server->on(s2.c_str(), std::bind(&ThremBufferPlugin::handleBufferConent, this));
 
 		return true;
 	}
@@ -64,8 +69,8 @@ class ThremBufferPlugin : public IThremPlugin {
 	virtual void writeData(ThremNotification* notification)
 	{
 		//TODO: http://www.cplusplus.com/forum/articles/18757/
-		if (_filterFunc(notification->senderId, notification->type) {
-			ThremNotification nn = new ThremNotification();
+		if (_filterFunc(notification->senderId, notification->type)) {
+			ThremNotification* nn = new ThremNotification();
 			nn->senderId = notification->senderId;
 			nn->type = notification->type;
 			nn->value = notification->value;
@@ -76,7 +81,7 @@ class ThremBufferPlugin : public IThremPlugin {
 #endif
 		}
 
-		while (_notifications->size()>size)
+		while (_notifications->size() > size)
 		{
 			_notifications->shift();
 		}
