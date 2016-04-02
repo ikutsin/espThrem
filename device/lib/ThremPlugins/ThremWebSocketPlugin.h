@@ -79,18 +79,8 @@ class ThremWebSocketPlugin : public IThremPlugin {
 	}
 	virtual void writeData(ThremNotification* notification)
 	{
-		String output = "{";
-
-		output += "\"senderId\":";
-		output += notification->senderId;
-		output += ",\"type\":";
-		output += notification->type;
-		output += ",\"value\":\"";
-		output += notification->value;
-		output += "\",\"time\":";
-		output += millis();
-		output += "}";
-		webSocket.broadcastTXT(output);
+		String data = notification->toJson();
+		webSocket.broadcastTXT(data);
 	}
 };
 

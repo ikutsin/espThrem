@@ -115,8 +115,6 @@ public:
 				else if (ntype == "restart")
 				{
 					ESP.restart();
-					//ESP.reset();
-					break;
 				}
 			}
 		}

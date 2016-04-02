@@ -12,6 +12,19 @@ public:
 	int senderId;
 	int type;
 	String value;
+	String toJson() {
+		String output = "{";
+
+		output += "\"senderId\":";
+		output += senderId;
+		output += ",\"type\":";
+		output += type;
+		output += ",\"value\":\"";
+		output += value;
+		output += "\",\"time\":";
+		output += millis();
+		output += "}";
+	}
 };
 
 class ThremContext {

@@ -121,7 +121,7 @@ class ThremWifiPlugin : public IThremPlugin {
 	{
 		while (WiFi.status() != WL_CONNECTED)
 		{
-			context->addNotification(getUniqueId(), 1, WiFi.status());
+			context->addNotification(getUniqueId(), 1, String(WiFi.status()));
 		}
 	}
 

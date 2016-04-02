@@ -77,6 +77,7 @@
     <ClInclude Include="lib\ThremPlugins\ThremInfoApiPlugin.h" />
     <ClInclude Include="lib\ThremPlugins\ThremSpiffsPlugin.h" />
     <ClInclude Include="lib\ThremPlugins\ThremSsdpPlugin.h" />
+    <ClInclude Include="lib\ThremPlugins\ThremThermPlugin.h" />
     <ClInclude Include="lib\ThremPlugins\ThremWebSocketPlugin.h" />
     <ClInclude Include="lib\ThremPlugins\ThremWifiPlugin.h" />
     <ClInclude Include="lib\Threm\IThremPlugin.h" />
