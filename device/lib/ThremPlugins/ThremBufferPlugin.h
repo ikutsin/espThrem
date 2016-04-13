@@ -16,7 +16,7 @@ class ThremBufferPlugin : public IThremPlugin {
 
 public:
 	ThremBufferPlugin(String name, int bufferIndex, bufferFilter filterFunc) {
-		this->_name = name + "Buffer";
+		this->_name = name;
 		_bufferIndex = bufferIndex;
 		_filterFunc = filterFunc;
 	}
@@ -27,7 +27,7 @@ public:
 	}
 	virtual String getName()
 	{
-		return _name;
+		return _name + "Buffer";
 	}
 
 	void handleBufferConent() {
@@ -54,8 +54,11 @@ public:
 
 		server = context->getServer();
 
-		String s1 = String("/buffer/") + String(getUniqueId());
-		String s2 = String("/buffer/") + getName();
+		String prefix = String("/buffer/");
+		String postfix = String(".json");
+
+		String s1 = prefix + String(_bufferIndex) + postfix;
+		String s2 = prefix + _name + postfix;
 
 		server->on(s1.c_str(), std::bind(&ThremBufferPlugin::handleBufferConent, this));
 		server->on(s2.c_str(), std::bind(&ThremBufferPlugin::handleBufferConent, this));
@@ -73,11 +76,14 @@ public:
 			ThremNotification* nn = new ThremNotification();
 			nn->senderId = notification->senderId;
 			nn->type = notification->type;
-			nn->value = notification->value;
+			nn->value = String(notification->value);
 			_notifications->add(nn);
-
 #ifdef DEBUG
-			DEBUG << "ThremBuffer new size" << _notifications->size() << endl;
+			DEBUG << "Buffer " << getName() << " new size " << _notifications->size() << endl;
+		}
+		else 
+		{
+			DEBUG << "Buffer " << getName() << " skip" << endl;
 #endif
 		}
 

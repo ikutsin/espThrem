@@ -26,15 +26,12 @@ class ThremDiagPlugin : public IThremPlugin {
 	}
 	virtual void readData(ThremContext* context)
 	{
-#ifdef DEBUG
-		if ((lastMillis + 10000) < millis())
+#ifdef LOG
+		if ((lastMillis + 15000) < millis())
 		{
-			DEBUG << "ThremDiagPlugin readdata add notifications" << endl;
 			context->addNotification(getUniqueId(), 1, String(millis()));
 			lastMillis = millis();
 		}
-#endif
-#ifdef LOG
 		int heapSize = ESP.getFreeHeap();
 		if (lastHeapSize != heapSize) {
 			context->addNotification(getUniqueId(), 2, String(heapSize));
@@ -44,8 +41,8 @@ class ThremDiagPlugin : public IThremPlugin {
 	}
 	virtual void writeData(ThremNotification* notification)
 	{
-#ifdef LOG
-		LOG << "writeData: " << notification->senderId << " " << notification->type << " " << notification->value << endl;
+#ifdef DEBUG
+		DEBUG << "writeData: " << notification->senderId << " " << notification->type << " " << notification->value << endl;
 #endif
 	}
 

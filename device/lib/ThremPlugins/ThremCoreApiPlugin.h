@@ -110,7 +110,7 @@ public:
 					//as in wifimanager
 					WiFi.disconnect(true);
 					//what does it do?
-					ESP.reset();
+					//ESP.reset();
 				}
 				else if (ntype == "restart")
 				{

@@ -18,8 +18,12 @@
 
 Threm* threm = new Threm();
 
-bool buffer0filter(int senderId, int type) {
+bool bufferTherm(int senderId, int type) {
+	return senderId == 40;
+}
 
+bool bufferNotTherm(int senderId, int type) {
+	return senderId != 40;
 }
 
 void setup() {
@@ -47,8 +51,8 @@ void setup() {
 	plugin = new ThremSsdpPlugin();
 	threm->addPlugin(plugin);
 
-	plugin = new ThremWebSocketPlugin();
-	threm->addPlugin(plugin);
+	//plugin = new ThremWebSocketPlugin();
+	//threm->addPlugin(plugin);
 
 	plugin = new ThremCoreApiPlugin(threm);
 	threm->addPlugin(plugin);
@@ -62,7 +66,10 @@ void setup() {
 	plugin = new ThremInfoApiPlugin();
 	threm->addPlugin(plugin);
 
-	plugin = new ThremBufferPlugin("Therm", 0, &buffer0filter);
+	plugin = new ThremBufferPlugin("Therm", 0, &bufferTherm);
+	threm->addPlugin(plugin);
+
+	plugin = new ThremBufferPlugin("Diag", 1, &bufferNotTherm);
 	threm->addPlugin(plugin);
 
 	threm->start();

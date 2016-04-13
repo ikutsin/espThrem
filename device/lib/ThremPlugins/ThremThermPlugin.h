@@ -58,7 +58,10 @@ class ThremThermPlugin : public IThremPlugin {
 	virtual void readData(ThremContext* context)
 	{
 		long milliz = millis();
-		if (milliz > _intervalmillis + _interval * 1000) {
+		if (milliz > _intervalmillis + _interval) {
+#ifdef DEBUG
+			DEBUG << "Reading DHT" << endl;
+#endif
 			_intervalmillis = milliz;
 
 			_lastMeasure.h = dht->readHumidity();
@@ -77,11 +80,11 @@ class ThremThermPlugin : public IThremPlugin {
 				// Compute heat index in Celsius (isFahreheit = false)
 				_lastMeasure.hic = dht->computeHeatIndex(_lastMeasure.t, _lastMeasure.h, false);
 				_lastMeasure.millis = milliz;
-			}
 
-			context->addNotification(getUniqueId(), 1, String(_lastMeasure.t));
-			context->addNotification(getUniqueId(), 2, String(_lastMeasure.h));
-			context->addNotification(getUniqueId(), 3, String(_lastMeasure.hic));
+				context->addNotification(getUniqueId(), 1, String(_lastMeasure.t));
+				context->addNotification(getUniqueId(), 2, String(_lastMeasure.h));
+				context->addNotification(getUniqueId(), 3, String(_lastMeasure.hic));
+			}
 		}
 	}
 

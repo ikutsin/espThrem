@@ -24,6 +24,8 @@ public:
 		output += "\",\"time\":";
 		output += millis();
 		output += "}";
+
+		return output;
 	}
 };
 

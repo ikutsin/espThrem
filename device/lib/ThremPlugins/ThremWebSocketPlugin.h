@@ -58,8 +58,8 @@ class ThremWebSocketPlugin : public IThremPlugin {
 		LOG << "ThremWebSocketPlugin init" << endl;
 #endif
 
-		webSocket.onEvent(webSocketEvent);
 		webSocket.begin();
+		webSocket.onEvent(webSocketEvent);
 
 		return true;
 	}
@@ -75,14 +75,16 @@ class ThremWebSocketPlugin : public IThremPlugin {
 
 	virtual void readData(ThremContext* context)
 	{
+		yield();
 		webSocket.loop();
 	}
 	virtual void writeData(ThremNotification* notification)
 	{
+		yield();
 		String data = notification->toJson();
 		webSocket.broadcastTXT(data);
 	}
 };
 
 
-#endif /* !FILE_DIAGPLUGIN_SEEN */
+#endif /* !FILE_WEBSOCKET_PLUGIN_SEEN */
