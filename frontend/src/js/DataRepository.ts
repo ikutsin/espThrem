@@ -121,6 +121,7 @@ module DataRepository {
     }
 
     export class Communication {
+        //ip: string = "192.168.4.1";
         ip: string = "192.168.1.107";
         //ip: string = "localhost";
         //ip: string = "tarcona.cloudapp.net";
