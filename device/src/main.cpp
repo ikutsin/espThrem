@@ -51,8 +51,8 @@ void setup() {
 	plugin = new ThremSsdpPlugin();
 	threm->addPlugin(plugin);
 
-	//plugin = new ThremWebSocketPlugin();
-	//threm->addPlugin(plugin);
+	plugin = new ThremWebSocketPlugin();
+	threm->addPlugin(plugin);
 
 	plugin = new ThremCoreApiPlugin(threm);
 	threm->addPlugin(plugin);

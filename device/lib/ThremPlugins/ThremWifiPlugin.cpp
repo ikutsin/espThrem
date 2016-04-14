@@ -2,7 +2,7 @@
 
 int ThremWifiPlugin::connectWifi(const char* ssid, const char* pass) {
 #ifdef LOG
-	LOG << "Connecting as wifi client..." << endl;
+	LOG << "wifi connecting... " << endl;
 #endif
 	if (ssid) {
 		WiFi.begin(ssid, pass);

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-﻿
-=======
-﻿///<reference path="../../Scripts/typings/es6-promise/es6-promise.d.ts"/>
->>>>>>> origin/master
+///<reference path="../../Scripts/typings/es6-promise/es6-promise.d.ts"/>
 module DataRepository {
 
     export class DataStreamProvider {
@@ -125,11 +121,12 @@ module DataRepository {
     }
 
     export class Communication {
-        //ip: string = "192.168.1.104";
+        ip: string = "192.168.1.107";
         //ip: string = "localhost";
-        ip: string = "tarcona.cloudapp.net";
+        //ip: string = "tarcona.cloudapp.net";
 
-        httpBase: string = "http://"+this.ip+":8080/src/mocks";
+        httpBase: string = "http://"+this.ip+":80";
+        //httpBase: string = "http://"+this.ip+":8080/src/mocks";
         //httpBase: string = "http://"+this.ip+":56609/src/mocks";
 
         buildAddres(path: string, query: any) {

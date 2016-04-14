@@ -200,8 +200,8 @@ module PageBuilders {
     export class FileListBuilder implements PageBuilder {
         constructor(private context: Threm.ThremContext) { }
         spawn(element: HTMLElement): Promise<any> {
-            //return context.communication.getJson("/list", { dir: "/" })
-            return this.context.communication.getJson("/listRoot.json")
+            return this.context.communication.getJson("/list", { dir: "/" })
+            //return this.context.communication.getJson("/listRoot.json")
                 .then(p => {
                     return { items: p };
                 })

@@ -23,6 +23,11 @@ class ThremSsdpPlugin : public IThremPlugin {
 		LOG << "ThremSsdpPlugin init" << endl;
 #endif
 
+		if (WiFi.getMode() != WIFI_STA || !WiFi.status() == WL_CONNECTED)
+		{
+			return false;
+		}
+
 		ESP8266WebServer* server = context->getServer();
 
 		server->on("/description.xml", HTTP_GET, [=](){

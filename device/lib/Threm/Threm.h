@@ -18,6 +18,7 @@ private:
 	ThremContext *_thremContext = new ThremContext();
 	LinkedList<IThremPlugin*> *_plugins = new LinkedList<IThremPlugin*>();
 	LinkedList<PluginMeta*>* _pluginMeta = new LinkedList<PluginMeta*>();
+	bool spiffsOk = false;
 public:
 
 	void addPlugin(IThremPlugin* pPlugin);

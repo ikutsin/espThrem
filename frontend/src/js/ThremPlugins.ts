@@ -203,10 +203,10 @@ module ThremPlugins {
         }
 
         restartDevice(communication: DataRepository.Communication): Promise<string> {
-            return communication.postText("/reset", {});
+            return communication.postText("/restart", {});
         }
         resetDevice(communication: DataRepository.Communication): Promise<string> {
-            return communication.postText("/restart", {});
+            return communication.postText("/reset", {});
         }
     }
 
@@ -283,14 +283,12 @@ module ThremPlugins {
                     } catch (error) {
                         console.log("WS skip:", d);
                     }
-
-                    setInterval(() => {
-                        context.busPublishNotifiable(new DataRepository.DataStreamElement(new DataRepository.DataStreamProvider("messageRate"), this.messagesRate));
-                        this.messagesRate = 0;
-                    }, 10000);
-
-
                 });
+                setInterval(() => {
+                    context.busPublishNotifiable(new DataRepository.DataStreamElement(new DataRepository.DataStreamProvider("messageRate"), this.messagesRate));
+                    this.messagesRate = 0;
+                    console.log("interval");
+                }, 10000);
                 listener.start();
 
                 let registration: ThremPluginRegistration = new ThremPluginRegistration();

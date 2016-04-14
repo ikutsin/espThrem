@@ -58,6 +58,11 @@ class ThremWebSocketPlugin : public IThremPlugin {
 		LOG << "ThremWebSocketPlugin init" << endl;
 #endif
 
+		if (WiFi.getMode() != WIFI_STA || !WiFi.status() == WL_CONNECTED)
+		{
+			return false;
+		}
+
 		webSocket.begin();
 		webSocket.onEvent(webSocketEvent);
 

@@ -50,8 +50,8 @@ class ThremThermPlugin : public IThremPlugin {
 			s += "}";
 			server->send(200, "text/json", s);
 		});
-		int isec = root["isec"];
-		_interval = std::max(_interval, isec);
+		int delay = root["delay"];
+		_interval = std::max(_interval, delay);
 		_intervalmillis = millis();
 		return true;
 	}
@@ -93,8 +93,8 @@ class ThremThermPlugin : public IThremPlugin {
 	//}
 
 	virtual void finalizeConfig(JsonObject& jsonObject) {
-		if (!jsonObject.containsKey("isec")) {
-			jsonObject["isec"] = _interval;
+		if (!jsonObject.containsKey("delay")) {
+			jsonObject["delay"] = _interval;
 		}
 	}
 

@@ -11,9 +11,12 @@ class Program {
         thremContext.plugins.addPlugin(new ThremPlugins.InfoApiPlugin()); //info api=32
         thremContext.plugins.addPlugin(new ThremPlugins.SpiffsPlugin()); //spiffs=6
         thremContext.plugins.addPlugin(new ThremPlugins.SsdpPlugin()); //ssdp=21
-
         thremContext.plugins.addPlugin(new ThremPlugins.AcknowledgePlugin(3)); //captive
-        //thremContext.registerPlugin(new ThremPlugins.WebSocketPlugin()); //websocket=13
+        thremContext.plugins.addPlugin(new ThremPlugins.WebSocketPlugin()); //websocket=13
+
+        thremContext.plugins.addPlugin(new ThremPlugins.AcknowledgePlugin(40)); //therm
+        thremContext.plugins.addPlugin(new ThremPlugins.AcknowledgePlugin(100)); //ThermBuffer
+        thremContext.plugins.addPlugin(new ThremPlugins.AcknowledgePlugin(101)); //DiagBuffer
 
         thremContext.promiseStart()
             .then(p => new Promise<any>((c, d) => {

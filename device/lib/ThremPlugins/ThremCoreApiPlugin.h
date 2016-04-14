@@ -100,13 +100,15 @@ public:
 			{
 				String ntype = notification->value;
 				if (ntype == "reset") {
-					//delete config
+#ifdef LOG
+					LOG << "RESETING" << endl;
+#endif					//delete config
 					Dir dir = SPIFFS.openDir("/config");
 					while (dir.next()) {
 						SPIFFS.remove(dir.fileName());
 					}
 					//reset
-					ESP.eraseConfig();
+					//ESP.eraseConfig();
 					//as in wifimanager
 					WiFi.disconnect(true);
 					//what does it do?
@@ -114,7 +116,11 @@ public:
 				}
 				else if (ntype == "restart")
 				{
-					ESP.restart();
+#ifdef LOG
+					LOG << "RESTARTING" << endl;
+#endif
+					ESP.reset();
+					//ESP.restart();
 				}
 			}
 		}

@@ -21,7 +21,9 @@ void Threm::start() {
 	LOG << "Free heap " << ESP.getFreeHeap() << endl;
 #endif
 
-	if (!SPIFFS.begin()) {
+	spiffsOk = SPIFFS.begin();
+
+	if (!spiffsOk) {
 #ifdef LOG
 		LOG << "SPIFFS failed" << endl;
 #endif
@@ -63,8 +65,8 @@ void Threm::start() {
 
 		meta = _pluginMeta->get(i);
 		meta->isEnabled = canEnable;
-#ifdef LOG
-		LOG << String(plugin->getName()) << " enabled=" << canEnable << endl;
+#ifdef DEBUG
+		DEBUG << String(plugin->getName()) << " enabled=" << canEnable << endl;
 #endif
 		_pluginMeta->set(i, meta);
 
@@ -72,6 +74,10 @@ void Threm::start() {
 	}
 #ifdef DEBUG
 	DEBUG << "Plugins declared: " << _plugins->size() << endl;
+#endif
+
+#ifdef LOG
+	LOG << getJsonState() << endl;
 #endif
 
 	server->onNotFound([=](){
@@ -114,7 +120,7 @@ void Threm::start() {
 #ifdef DEBUG
 	DEBUG << "Web server started." << endl;
 #endif
-}
+	}
 
 
 void Threm::loop() {
@@ -164,7 +170,9 @@ String Threm::getJsonStateFor(int id) {
 	String configLocation = "/config/";
 	configLocation += id;
 	configLocation += ".json";
-
+	if (!spiffsOk) {
+		return String("'SPIFFS failure'");
+	}
 	if (SPIFFS.exists(configLocation)) {
 		File file = SPIFFS.open(configLocation, "r");
 		content = file.readString();
@@ -196,7 +204,7 @@ String Threm::getJsonStateFor(int id) {
 #endif
 
 			plugin->finalizeConfig(root);
-		}
+}
 		root.prettyPrintTo(result);
 	}
 	return result;
@@ -245,7 +253,7 @@ IThremPlugin* Threm::getPluginById(int id) {
 			DEBUG << "found: " << String(plugin->getName()) << endl;
 #endif
 			return plugin;
-		}
+	}
 	}
 
 #ifdef LOG

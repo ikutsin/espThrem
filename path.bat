@@ -1,1 +1,1 @@
-set PATH=%PATH%;c:\Users\Oleg\.platformio\packages\toolchain-xtensa\bin\
+set PATH=%PATH%;c:\Users\Oleg\.platformio\packages\toolchain-xtensa\bin\;c:\Users\Oleg\Downloads\_esp\esptool-master\
