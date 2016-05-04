@@ -46,4 +46,4 @@ class ThremNamePluginPlugin : public IThremPlugin {
 };
 
 
-#endif /* !FILE_DIAGPLUGIN_SEEN */
+#endif /* !FILE_NAMEPLUGIN_PLUGIN_SEEN */

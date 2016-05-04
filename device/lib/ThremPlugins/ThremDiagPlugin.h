@@ -14,7 +14,7 @@ class ThremDiagPlugin : public IThremPlugin {
 	}
 	virtual String getName()
 	{
-		return "Serial diagnostics";
+		return "Diagnostics";
 	}
 
 	virtual bool init(ThremContext* context, JsonObject& root)
