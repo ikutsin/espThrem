@@ -14,7 +14,7 @@ class Program {
         thremContext.plugins.addPlugin(new ThremPlugins.AcknowledgePlugin(3)); //captive
         thremContext.plugins.addPlugin(new ThremPlugins.WebSocketPlugin()); //websocket=13
 
-        thremContext.plugins.addPlugin(new ThremPlugins.AcknowledgePlugin(40)); //therm
+        thremContext.plugins.addPlugin(new ThremPlugins.ThermPlugin()); //therm=40
         thremContext.plugins.addPlugin(new ThremPlugins.AcknowledgePlugin(100)); //ThermBuffer
         thremContext.plugins.addPlugin(new ThremPlugins.AcknowledgePlugin(101)); //DiagBuffer
 

@@ -49,6 +49,12 @@
     </Content>
     <Content Include="src\index.html" />
     <Content Include="src\js\lib\d3.min.js" />
+    <Content Include="src\js\lib\doT.min.es5.js">
+      <DependentUpon>doT.min.js</DependentUpon>
+    </Content>
+    <Content Include="src\js\lib\doT.min.es5.min.js">
+      <DependentUpon>doT.min.es5.js</DependentUpon>
+    </Content>
     <Content Include="src\js\lib\doT.min.js" />
     <Content Include="src\mocks\info\chip.json" />
     <Content Include="src\mocks\info\status.json" />

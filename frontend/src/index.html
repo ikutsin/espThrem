@@ -3,19 +3,20 @@
 
 <head>
     <title>-- esp8622 dasboard --</title>
-    <!-- build:css css/style.css -->
-    <link href="css/style.css" rel="stylesheet">
-    <!-- endbuild -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- replace:includes:css -->
+    <link href="css/style.css" rel="stylesheet">
+    <!-- endreplace:includes:css -->
 </head>
 
 <body>
-    <!-- build:js js/combined.js -->
+    <!-- <script src="http://jsconsole.com/js/remote.js?threm"></script> -->
+    <!-- replace:includes:js -->
     <script type="text/javascript" src="js/lib/d3.min.js"></script>
     <script type="text/javascript" src="js/lib/doT.min.js"></script>
     <script type="text/javascript" src="js/lib/es6-promise.min.js"></script>
-    <!-- endbuild -->
-	<!-- <script src="http://jsconsole.com/js/remote.js?threm"></script> -->
+    <!-- endreplace:includes:js -->
 
     <div class="content">
         <div class="header">
@@ -49,8 +50,10 @@
             <div class="tab-content"></div>
         </script>
     </div>
+    <!-- inject:includes:html -->
+    <!-- endinject:includes:html -->
 
-    <!-- build:js js/custom.js -->
+    <!-- replace:includes:logic -->
     <script type="text/javascript" src="js/DataRepository.js"></script>
     <script type="text/javascript" src="js/EventAggregator.js"></script>
     <script type="text/javascript" src="js/Charting.js"></script>
@@ -61,7 +64,7 @@
     <script type="text/javascript" src="js/ThremPlugins.js"></script>
     <script type="text/javascript" src="js/PageBuilders.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
-    <!-- endbuild -->
+    <!-- endreplace:includes:logic -->
 </body>
 
 </html>

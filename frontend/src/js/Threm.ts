@@ -76,6 +76,8 @@ module Threm {
                 this.notifications.addNotification(new ThremNotification.ThremNotificaiton("ERROR:" + p.error));
             } else if (ptype === "[object XMLHttpRequest]") {
                 this.notifications.addNotification(new ThremNotification.ThremNotificaiton("ERROR in request:" + p.responseURL + " " + p.status + " " + p.statusText));
+            } else if (ptype === "[object Exception]") {
+                this.notifications.addNotification(new ThremNotification.ThremNotificaiton("Exception:" + p));
             } else {
                 this.notifications.addNotification(new ThremNotification.ThremNotificaiton("UNKNOWN ERROR: of type" + ptype));
             }
