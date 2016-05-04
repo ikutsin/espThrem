@@ -79,5 +79,8 @@
     <ClInclude Include="lib\ThremPlugins\ThremThermPlugin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="lib\ThremPlugins\ThremMqttPlugin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
