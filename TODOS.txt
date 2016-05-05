@@ -1,0 +1,6 @@
+slowdown background
+remove random
+websocket trace
+mqtt
+dont' scan at start
+therm

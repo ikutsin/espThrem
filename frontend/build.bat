@@ -1,1 +1,2 @@
-gulp compress
+::gulp compress
+gulp gzip
