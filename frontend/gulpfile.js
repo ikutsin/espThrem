@@ -92,8 +92,8 @@ gulp.task('pre-compress', ['compile'], function () {
     return merge(pipes);
 });
 
-gulp.task('compress', [], function () {
-//gulp.task('compress', ['pre-compress'], function () {
+//gulp.task('compress', [], function () {
+gulp.task('compress', ['pre-compress'], function () {
     var pipes = [];
 
     pipes.push(gulp.src('./build/pre-compressed/index.html')
