@@ -4,3 +4,5 @@ websocket trace
 mqtt
 dont' scan at start
 therm
+list spiffs at start
+heap size widget
