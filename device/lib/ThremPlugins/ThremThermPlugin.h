@@ -70,7 +70,7 @@ class ThremThermPlugin : public IThremPlugin {
 
 			if (isnan(_lastMeasure.h) || isnan(_lastMeasure.t)) {// || isnan(f)) {
 #ifdef LOG
-				LOG << "Failed to read from DHT sensor!" << endl;
+				LOG << "Failed to read from DHT sensor! pin:" << THERM_PIN << endl;
 #endif
 			}
 			else

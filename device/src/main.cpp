@@ -7,7 +7,7 @@
 #include "ThremDiagPlugin.h"
 #include "ThremSsdpPlugin.h"
 #include "ThremWifiPlugin.h"
-#include "ThremWebSocketPlugin.h"
+//#include "ThremWebSocketPlugin.h"
 #include "ThremCoreApiPlugin.h"
 #include "ThremInfoApiPlugin.h"
 #include "ThremCaptivePortalPlugin.h"
@@ -52,8 +52,8 @@ void setup() {
 	plugin = new ThremSsdpPlugin();
 	threm->addPlugin(plugin);
 
-	plugin = new ThremWebSocketPlugin();
-	threm->addPlugin(plugin);
+	//plugin = new ThremWebSocketPlugin();
+	//threm->addPlugin(plugin);
 
 	plugin = new ThremCoreApiPlugin(threm);
 	threm->addPlugin(plugin);
@@ -67,8 +67,8 @@ void setup() {
 	plugin = new ThremInfoApiPlugin();
 	threm->addPlugin(plugin);
 
-	//plugin = new ThremMqttPlugin();
-	//threm->addPlugin(plugin);
+	plugin = new ThremMqttPlugin();
+	threm->addPlugin(plugin);
 
 	plugin = new ThremBufferPlugin("Therm", 0, &bufferTherm);
 	threm->addPlugin(plugin);

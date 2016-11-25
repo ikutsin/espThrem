@@ -1,6 +1,9 @@
 //'use strict';
 //sample: https://github.com/ChiperSoft/express-boilerplate/blob/master/gulpfile.js
 
+//require("any-promise/register")
+require("any-promise/register/bluebird")
+
 var endOfLine = require('os').EOL;
 var path = require('path');
 

@@ -12,11 +12,12 @@ class Program {
         thremContext.plugins.addPlugin(new ThremPlugins.SpiffsPlugin()); //spiffs=6
         thremContext.plugins.addPlugin(new ThremPlugins.SsdpPlugin()); //ssdp=21
         thremContext.plugins.addPlugin(new ThremPlugins.AcknowledgePlugin(3)); //captive
-        thremContext.plugins.addPlugin(new ThremPlugins.WebSocketPlugin()); //websocket=13
+        //thremContext.plugins.addPlugin(new ThremPlugins.WebSocketPlugin()); //websocket=13
 
         thremContext.plugins.addPlugin(new ThremPlugins.ThermPlugin()); //therm=40
-        thremContext.plugins.addPlugin(new ThremPlugins.AcknowledgePlugin(100)); //ThermBuffer
-        thremContext.plugins.addPlugin(new ThremPlugins.AcknowledgePlugin(101)); //DiagBuffer
+        thremContext.plugins.addPlugin(new ThremPlugins.BufferPlugin("Therm", 0)); //ThermBuffer
+        thremContext.plugins.addPlugin(new ThremPlugins.BufferPlugin("Diag", 1)); //DiagBuffer
+        thremContext.plugins.addPlugin(new ThremPlugins.MqttPlugin()); //mqtt=14
 
         thremContext.promiseStart()
             .then(p => new Promise<any>((c, d) => {

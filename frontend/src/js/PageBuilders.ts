@@ -124,7 +124,6 @@ module PageBuilders {
         private element: HTMLElement;
         constructor(private context: Threm.ThremContext) { }
 
-
         spawn(element: HTMLElement): Promise<any> {
             var data = {};
             this.element = element;
@@ -208,6 +207,45 @@ module PageBuilders {
                 .then(p => this.context.doT.renderTo(element, "basic", "infoFiles", p));
         }
     }
+
+    export class SetupMqttBuilder implements PageBuilder {
+        constructor(private context: Threm.ThremContext) { }
+        spawn(element: HTMLElement): Promise<any> {
+            var data = {};
+            return this.context.doT.renderTo(element, "setup", "mqtt", data)
+                .then(p => this.context.plugins.bindConfigForm(14/*ID_MQTT*/, element));
+        }
+    }
+
+    export class SetupBufferBuilder implements PageBuilder {
+        constructor(private context: Threm.ThremContext, private name: string, private index: number) { }
+        spawn(element: HTMLElement): Promise<any> {
+            var data = { name: this.name };
+            return this.context.doT.renderTo(element, "setup", "buffer", data)
+                .then(p => this.context.plugins.bindConfigForm(100 + this.index, element));
+        }
+    }
+
+    export class SetupThermBuilder implements PageBuilder {
+        constructor(private context: Threm.ThremContext) { }
+        spawn(element: HTMLElement): Promise<any> {
+            var data = {};
+            return this.context.doT.renderTo(element, "setup", "therm", data)
+                .then(p => this.context.plugins.bindConfigForm(40, element));
+        }
+    }
+    
+    export class ThermInfoBuilder implements PageBuilder {
+        constructor(private context: Threm.ThremContext) { }
+        spawn(element: HTMLElement): Promise<any> {
+            var data = {};
+            return this.context.communication.getJson("/therm.json")
+                .then(p => {
+                    return { items: this.context.mixer.makeArray(p) };
+                })
+                .then(p => this.context.doT.renderTo(element, "info", "therm", p));
+        }
+    }    
 
     /*
     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

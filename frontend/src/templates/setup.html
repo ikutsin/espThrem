@@ -62,16 +62,48 @@
     </form>
 </script>
 
+<script id="mqtt" type="text/x-dot-template">
+    <h1>MQTT setup</h1>
+    <form class="form-mqtt">
+        <fieldset>
+            <legend>Connection</legend>
+            <input type="hidden" name="off" />
+            <div class="pair">
+                <label for="name">Client name</label><input name="name" />
+            </div>
+            <div class="pair">
+                <label for="name">Server IP</label><input name="server" />
+            </div>
+            <div class="pair">
+                <label for="name">Type (1,2,3)</label><input name="type" />
+            </div>
+            <input type="submit" value="Send" />
+        </fieldset>
+    </form>
+</script>
 
-<script id="ssdp" type="text/x-dot-template">
-    <h1>Thermo setup</h1>
+<script id="buffer" type="text/x-dot-template">
+    <h1>Buffer {{=it.name}} setup</h1>
     <form class="form-thermo">
         <fieldset>
             <legend>Description</legend>
             <input type="hidden" name="off" />
             <div class="pair">
-                <label for="name">Interval</label><input name="interval" />
                 <label for="name">Buffer Size</label><input name="size" />
+            </div>
+            <input type="submit" value="Send" />
+        </fieldset>
+    </form>
+</script>
+
+<script id="therm" type="text/x-dot-template">
+    <h1>Thermometer</h1>
+    <form class="form-therm">
+        <fieldset>
+            <legend>Settings</legend>
+            <input type="hidden" name="off" />
+            <div class="pair">
+                <label for="name">Interval</label><input name="delay" />
             </div>
             <input type="submit" value="Send" />
         </fieldset>

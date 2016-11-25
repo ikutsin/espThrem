@@ -49,7 +49,6 @@ module Threm {
             var promise: Promise<any>;
 
             if (isReset) {
-
                 promise = corePlugin.resetDevice(this.communication)
                     .then(p => this.notifications.addNotification(new ThremNotification.ThremNotificaiton("Reset done. Will reload soon.")));
             } else {

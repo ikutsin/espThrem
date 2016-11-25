@@ -264,51 +264,46 @@ module ThremPlugins {
         }
     }
 
-    export class WebSocketPlugin implements IThremPlugin {
-        id: number = 13;
-        data: IThremPluginData;
-
-        private messagesRate = 0;
-
-        register(context: Threm.ThremContext): Promise<ThremPluginRegistration> {
-            return new Promise<ThremPluginRegistration>((c, d) => {
-                let el = <HTMLElement>d3.select("body").node();
-                var listener = new WebSockets.EspSocketListener(el, "ws://" + context.communication.ip + ":81/threm");
-                el.addEventListener('onSocketData', d => {
-                    this.messagesRate++;
-                    try {
-                        var json = JSON.parse((<any>d).data);
-                        var n = new DataRepository.DataStreamElement(new DataRepository.DataStreamProvider(json.senderId + "_" + json.type), json.value);
-                        context.busPublishNotifiable(n);
-                    } catch (error) {
-                        console.log("WS skip:", d);
-                    }
-                });
-                setInterval(() => {
-                    context.busPublishNotifiable(new DataRepository.DataStreamElement(new DataRepository.DataStreamProvider("messageRate"), this.messagesRate));
-                    this.messagesRate = 0;
-                    console.log("interval");
-                }, 10000);
-                listener.start();
-
-                let registration: ThremPluginRegistration = new ThremPluginRegistration();
-
-                registration.widgets.push(new PageBuilders.LastNumberWidgetBuilder(context, "messageRate", "Message rate", c => c));
-                c(registration);
-            });
-        }
-    }
 
     export class ThermPlugin implements IThremPlugin {
         id: number = 40;
         data: IThremPluginData;
 
-        constructor() {
+        register(context: Threm.ThremContext): Promise<ThremPluginRegistration> {
+            let registration: ThremPluginRegistration = new ThremPluginRegistration();
 
+            registration.routes.push(new ThremPluginRoute("setup.therm", "Thermometer", new PageBuilders.SetupThermBuilder(context)));
+            registration.routes.push(new ThremPluginRoute("info.therm", "Thermometer", new PageBuilders.ThermInfoBuilder(context)));
+            return Promise.resolve(registration);
+        }
+    }
+
+    export class MqttPlugin implements IThremPlugin {
+        id: number = 14;
+        data: IThremPluginData;
+
+        register(context: Threm.ThremContext): Promise<ThremPluginRegistration> {
+            let registration: ThremPluginRegistration = new ThremPluginRegistration();
+
+            registration.routes.push(new ThremPluginRoute("setup.mqtt", "MQTT", new PageBuilders.SetupMqttBuilder(context)));
+            return Promise.resolve(registration);
+        }
+    }
+
+    export class BufferPlugin implements IThremPlugin {
+        id: number;
+        data: IThremPluginData;
+
+        constructor(public name:string, public bufferIndex: number) {
+            this.id = 100 + bufferIndex;
         }
 
         register(context: Threm.ThremContext): Promise<ThremPluginRegistration> {
-            return Promise.resolve(<ThremPluginRegistration>undefined);
+            let registration: ThremPluginRegistration = new ThremPluginRegistration();
+
+            registration.routes.push(new ThremPluginRoute("setup.buffer-" + this.name.toLowerCase(), this.name + " Buffer",
+                new PageBuilders.SetupBufferBuilder(context, this.name, this.bufferIndex)));
+            return Promise.resolve(registration);
         }
     }
 } 

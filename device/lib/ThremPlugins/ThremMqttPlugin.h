@@ -14,6 +14,11 @@ class ThremMqttPlugin : public IThremPlugin {
 	PubSubClient* client;
 	String deviceName;
 
+	int lastMillis = 0;
+	int testInterval = 5000;
+
+	int type = 0x1;
+
 	virtual int getUniqueId()
 	{
 		return 14;
@@ -31,11 +36,17 @@ class ThremMqttPlugin : public IThremPlugin {
 
 		//ESP8266WebServer* server = context->getServer();
 
-		if (!root.containsKey("server")) {
+		if (WiFi.getMode() != WIFI_STA || !WiFi.status() == WL_CONNECTED)
+		{
 			return false;
 		}
+
 		String serverAddr = root["server"];
 		String rootName = root["name"];
+
+		int jtype = root["type"];
+		type = std::max(jtype, type);
+
 		deviceName = rootName;
 		IPAddress addr = IPAddress();
 		addr.fromString(serverAddr.c_str());
@@ -43,16 +54,24 @@ class ThremMqttPlugin : public IThremPlugin {
 		client->set_callback(callback);
 
 		bool status = client->connect(deviceName);
-		return status;
+#ifdef LOG
+		LOG << "MQTTstatus" << status << endl;
+#endif
+		return true;
 	}
 	virtual void readData(ThremContext* context)
 	{
 		if (!client->connected()) {
-			if (client->connect(deviceName)) {
-				context->addNotification(getUniqueId(), 1, String(""));
-			}
-			else {
-				context->addNotification(getUniqueId(), 2, String(""));
+			if ((lastMillis + testInterval) < millis()) {
+				if (client->connect(deviceName)) {
+					context->addNotification(getUniqueId(), 1, String("OK"));
+					testInterval = 5000;
+				}
+				else {
+					context->addNotification(getUniqueId(), 1, String("ERR"));
+					testInterval += 500;
+				}
+				lastMillis = millis();
 			}
 		}
 		else {
@@ -63,8 +82,19 @@ class ThremMqttPlugin : public IThremPlugin {
 	virtual void writeData(ThremNotification* notification)
 	{
 		if (client->connected()) {
-			String data = notification->toJson();
-			client->publish(deviceName, data);
+
+			if ((type & (1 << 0)) >> 0) {
+				String data = notification->toJson();
+				client->publish(deviceName, data);
+			}
+			if ((type & (1 << 1)) >> 1) {
+				String topic = String(deviceName);
+				topic += "/";
+				topic += notification->senderId;
+				topic += "/";
+				topic += notification->type;
+				client->publish(topic, notification->value);
+			}
 		}
 	}
 
@@ -73,6 +103,10 @@ class ThremMqttPlugin : public IThremPlugin {
 			String chipid = String(ESP.getChipId(), HEX);
 			String name = "Sensor_" + chipid;
 			jsonObject["name"] = name;
+		}
+
+		if (!jsonObject.containsKey("type")) {
+			jsonObject["type"] = 0;
 		}
 	}
 };
