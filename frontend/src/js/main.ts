@@ -13,6 +13,7 @@ class Program {
         thremContext.plugins.addPlugin(new ThremPlugins.SsdpPlugin()); //ssdp=21
         thremContext.plugins.addPlugin(new ThremPlugins.AcknowledgePlugin(3)); //captive
         //thremContext.plugins.addPlugin(new ThremPlugins.WebSocketPlugin()); //websocket=13
+        thremContext.plugins.addPlugin(new ThremPlugins.AcknowledgePlugin(2)); //led
 
         thremContext.plugins.addPlugin(new ThremPlugins.ThermPlugin(0)); //therm=40
         thremContext.plugins.addPlugin(new ThremPlugins.BufferPlugin("Therm", 0)); //ThermBuffer

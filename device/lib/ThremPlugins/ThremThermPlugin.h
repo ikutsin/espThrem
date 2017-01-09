@@ -36,7 +36,7 @@ class ThremThermPlugin : public IThremPlugin {
 		LOG << "ThremThermPlugin init" << endl;
 #endif
 		ESP8266WebServer* server = context->getServer();
-		dht = new DHT(THERM_PIN, DHT22);
+		dht = new DHT(PIN_THERM, DHT22);
 
 		server->on("/therm.json", HTTP_GET, [=](){
 			String s = "{\"h\":";
@@ -70,7 +70,7 @@ class ThremThermPlugin : public IThremPlugin {
 
 			if (isnan(_lastMeasure.h) || isnan(_lastMeasure.t)) {// || isnan(f)) {
 #ifdef LOG
-				LOG << "Failed to read from DHT sensor! pin:" << THERM_PIN << endl;
+				LOG << "Failed to read from DHT sensor! pin:" << PIN_THERM << endl;
 #endif
 			}
 			else

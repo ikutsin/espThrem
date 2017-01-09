@@ -12,10 +12,10 @@ public:
 	int senderId;
 	int type;
 	String value;
-	long millis;
+	long milliss;
 
 	ThremNotification() {
-		millis = millis();
+		milliss = millis();
 	}
 
 	String toJson() {
@@ -28,7 +28,7 @@ public:
 		output += ",\"value\":\"";
 		output += value;
 		output += "\",\"time\":";
-		output += millis;
+		output += milliss;
 		output += "}";
 
 		return output;
