@@ -14,14 +14,17 @@ class Program {
         thremContext.plugins.addPlugin(new ThremPlugins.AcknowledgePlugin(3)); //captive
         //thremContext.plugins.addPlugin(new ThremPlugins.WebSocketPlugin()); //websocket=13
 
-        thremContext.plugins.addPlugin(new ThremPlugins.ThermPlugin()); //therm=40
+        thremContext.plugins.addPlugin(new ThremPlugins.ThermPlugin(0)); //therm=40
         thremContext.plugins.addPlugin(new ThremPlugins.BufferPlugin("Therm", 0)); //ThermBuffer
         thremContext.plugins.addPlugin(new ThremPlugins.BufferPlugin("Diag", 1)); //DiagBuffer
         thremContext.plugins.addPlugin(new ThremPlugins.MqttPlugin()); //mqtt=14
 
+        thremContext.loader.show();
         thremContext.promiseStart()
             .then(p => new Promise<any>((c, d) => {
                 ((bus) => {
+                    console.log("thremStarted")
+                    thremContext.loader.hide();
                 })(thremContext.bus);
             }))
             .catch(p => {

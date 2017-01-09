@@ -1,4 +1,4 @@
-﻿<script id="props" class="def" type="text/x-dot-template">    
+﻿<script id="props" class="def" type="text/x-dot-template">
     {{~ it.items:kvp}}
     <div class="kvp">
         <span>
@@ -9,6 +9,41 @@
         </span>
     </div>
     {{~}}
+</script>
+
+<script id="buffer" type="text/x-dot-template">
+    <table class="grid-header">
+        <tr>
+            <td>
+                Time
+            </td>
+            <td>
+                SenderId
+            </td>
+            <td>
+                Type
+            </td>
+            <td>
+                Value
+            </td>
+        </tr>
+        {{~ it:kvp}}
+        <tr>
+            <td>
+                {{=kvp.value.time}}
+            </td>
+            <td>
+                {{=kvp.value.senderId}}
+            </td>
+            <td>
+                {{=kvp.value.type}}
+            </td>
+            <td>
+                {{=kvp.value.value}}
+            </td>
+        </tr>
+        {{~}}
+    </table>
 </script>
 
 <script id="therm" type="text/x-dot-template">

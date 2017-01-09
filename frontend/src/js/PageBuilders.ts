@@ -226,6 +226,15 @@ module PageBuilders {
         }
     }
 
+    export class InfoBufferBuilder implements PageBuilder {
+        constructor(private context: Threm.ThremContext, private name: string, private index: number) { }
+        spawn(element: HTMLElement): Promise<any> {
+            return this.context.communication.getJson("/buffer/" + this.index + ".json")
+                .then(data => this.context.mixer.makeArray(data))
+                .then(data => this.context.doT.renderTo(element, "info", "buffer", data));
+        }
+    }
+
     export class SetupThermBuilder implements PageBuilder {
         constructor(private context: Threm.ThremContext) { }
         spawn(element: HTMLElement): Promise<any> {
@@ -295,7 +304,9 @@ module PageBuilders {
         subscribtionId: number;
         chart: Charting.StreamingLineChart;
 
-        constructor(private context: Threm.ThremContext, private initialBuffer: DataRepository.DataStreamBuffer, title: string, private chartMax: number = 1, private chartMin: number = 0, private size: number = 60) {
+        constructor(private context: Threm.ThremContext, private initialBuffer: DataRepository.DataStreamBuffer, title: string,
+            private chartMax: number = 1, private chartMin: number = 0, private size: number = 60)
+        {
             this.data.title = title;
             this.data.widgetType = "x2";
         }

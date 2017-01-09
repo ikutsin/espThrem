@@ -269,11 +269,90 @@ module ThremPlugins {
         id: number = 40;
         data: IThremPluginData;
 
+        constructor(private bufferindex: number) {
+
+        }
+
         register(context: Threm.ThremContext): Promise<ThremPluginRegistration> {
             let registration: ThremPluginRegistration = new ThremPluginRegistration();
 
             registration.routes.push(new ThremPluginRoute("setup.therm", "Thermometer", new PageBuilders.SetupThermBuilder(context)));
             registration.routes.push(new ThremPluginRoute("info.therm", "Thermometer", new PageBuilders.ThermInfoBuilder(context)));
+
+            //widget
+            let isLastWasHandled = true;
+            let intervalThermId;
+
+            let hProvider = new DataRepository.DataStreamProvider("thermH")
+            let cProvider = new DataRepository.DataStreamProvider("thermC")
+            let tProvider = new DataRepository.DataStreamProvider("thermT")
+
+            let startThermWidgetsUpdate = () => {
+                let dpThermUpdate = () => {
+                    if (!isLastWasHandled) {
+                        console.log("isLastWasHandled return. newver should happen")
+                        return;
+                    }
+                    isLastWasHandled = false;
+                    context.communication.getJson("/therm.json")
+                        .then(p => {
+                            isLastWasHandled = true;
+                            let items = context.mixer.makeArray(p)
+
+                            context.busPublishNotifiable(new DataRepository.DataStreamElement(hProvider, p["h"]));
+                            context.busPublishNotifiable(new DataRepository.DataStreamElement(tProvider, p["hic"]));
+                            context.busPublishNotifiable(new DataRepository.DataStreamElement(cProvider, p["t"]));
+                        });
+                }
+                clearInterval(intervalThermId);
+                dpThermUpdate();
+                intervalThermId = setInterval(dpThermUpdate, 15*1000);
+            }
+
+
+            //read all and prefill buffer
+            var thermHBuffer = new DataRepository.DataStreamBuffer(hProvider.name, context);
+            var thermTBuffer = new DataRepository.DataStreamBuffer(tProvider.name, context);
+            var thermCBuffer = new DataRepository.DataStreamBuffer(cProvider.name, context);
+
+
+            var promise = context.communication.getJson("/buffer/" + this.bufferindex + ".json")
+                .then(data => context.mixer.makeArray(data))
+                .then(data => {
+                   
+                    for (var item of data) {
+                        console.log("--", item.value);
+                        switch (item.value.type) {
+                            case 1:
+                                thermCBuffer.addItem(new DataRepository.DataStreamElement(cProvider, item.value.value));
+                                break;
+                            case 2:
+                                thermHBuffer.addItem(new DataRepository.DataStreamElement(hProvider, item.value.value));
+                                break;
+                            case 3:
+                                thermTBuffer.addItem(new DataRepository.DataStreamElement(tProvider, item.value.value));
+                                break;
+                        }
+                    }
+
+                    startThermWidgetsUpdate();
+                }).catch(p => {
+                    context.onPromiseError(p);
+                });
+            
+
+            //todo: if all good init interval
+            setTimeout(startThermWidgetsUpdate, 30*1000);
+
+
+            registration.widgets.push(new PageBuilders.LastNumberWidgetBuilder(context, hProvider.name, "Humidity", c => c));
+            registration.widgets.push(new PageBuilders.LastNumberWidgetBuilder(context, tProvider.name, "Feel", c => c));
+            registration.widgets.push(new PageBuilders.LastNumberWidgetBuilder(context, cProvider.name, "Celsius", c => c));
+
+            registration.widgets.push(new PageBuilders.SparklineWidgetBuilder(context, thermTBuffer, "Feel", 40, -20));
+            registration.widgets.push(new PageBuilders.SparklineWidgetBuilder(context, thermHBuffer, "Humidity", 80));
+            registration.widgets.push(new PageBuilders.SparklineWidgetBuilder(context, thermCBuffer, "Celsius", 40, -20));
+
             return Promise.resolve(registration);
         }
     }
@@ -300,6 +379,9 @@ module ThremPlugins {
 
         register(context: Threm.ThremContext): Promise<ThremPluginRegistration> {
             let registration: ThremPluginRegistration = new ThremPluginRegistration();
+
+            registration.routes.push(new ThremPluginRoute("info.buffer-" + this.name.toLowerCase(), this.name + " Buffer",
+                new PageBuilders.InfoBufferBuilder(context, this.name, this.bufferIndex)));
 
             registration.routes.push(new ThremPluginRoute("setup.buffer-" + this.name.toLowerCase(), this.name + " Buffer",
                 new PageBuilders.SetupBufferBuilder(context, this.name, this.bufferIndex)));

@@ -17,8 +17,8 @@ module DataRepository {
 
     export class DataStreamBuffer implements Threm.INotifiable {
         elements: DataStreamElement[];
-        constructor(private listeningMessage:string, private context:Threm.ThremContext, public maxSize: number = 1000, prefill:boolean=true) {
-            if (prefill) {
+        constructor(private listeningMessage:string, private context:Threm.ThremContext, public maxSize: number = 1000, prefillZeroes:boolean=true) {
+            if (prefillZeroes) {
                 this.elements = d3.range(this.maxSize).map<DataStreamElement>((v, i, a) => {
                     return new DataStreamElement(new DataStreamProvider(""), 0);
                 });
@@ -122,7 +122,7 @@ module DataRepository {
 
     export class Communication {
         //ip: string = "192.168.4.1";
-        ip: string = "192.168.1.106";
+        ip: string = "192.168.1.104";
         //ip: string = "localhost";
         //ip: string = window.location.hostname;
 
@@ -161,9 +161,13 @@ module DataRepository {
         getJson(path: string, query: any = null): Promise<any> {
             var addr = this.buildAddres(path, query);
             return new Promise<string>((c, d) => {
-                d3.json(addr, (err, data) => {
+                d3.text(addr, (err, data) => {
                     if (err) d(err);
-                    else c(data);
+                    else {
+                        var data2 = data.replace(/(:nan)([\},]+)/g, ':"--NAN--"$2');
+                        console.log(data2);
+                        c(JSON.parse(data2));
+                    }
                 });
             });
         }

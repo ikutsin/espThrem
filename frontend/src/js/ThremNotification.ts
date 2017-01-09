@@ -31,7 +31,6 @@
         }
 
         private render() {
-
             if (!this.notificationTemplate) {
                 return;
             }
