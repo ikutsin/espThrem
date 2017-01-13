@@ -179,7 +179,7 @@ module Charting {
 
         private isPrepared: boolean = false;
 
-        constructor(private element: HTMLElement, initialBuffer: DataRepository.DataStreamBuffer, private chartMax: number = 1, private chartMin: number = 0, private size: number = 60) {
+        constructor(private element: HTMLElement, initialBuffer: DataRepository.IDataStreamBuffer, private chartMax: number = 1, private chartMin: number = 0, private size: number = 60) {
             this.data = initialBuffer.elements.slice(-size);
             this.prepareChart();
         }
@@ -233,7 +233,7 @@ module Charting {
                 .attr("fill", "none");
         }
 
-        public update(buffer: DataRepository.DataStreamBuffer) {
+        public update(buffer: DataRepository.IDataStreamBuffer) {
             this.data = buffer.elements.slice(-this.size-1);
 
             //console.log(this.data.map(d=>d.value));

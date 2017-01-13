@@ -15,9 +15,29 @@ module DataRepository {
         }
     }
 
-    export class DataStreamBuffer implements Threm.INotifiable {
+	export interface IDataStreamBuffer extends Threm.INotifiable {
+		elements: DataStreamElement[];
+	}
+
+	export class SimpleDataStreamBuffer implements IDataStreamBuffer {
+		constructor(private listeningMessage: string, private context: Threm.ThremContext) {
+			
+		}
+		getMessageName() {
+            return this.listeningMessage + "Buffer";
+        }
+
+		setItems(elements: DataStreamElement[]) {
+			this.elements = elements;
+            this.context.busPublishNotifiable(this);
+        }
+
+		elements: DataStreamElement[];
+	}
+
+	export class ListeningDataStreamBuffer implements IDataStreamBuffer {
         elements: DataStreamElement[];
-        constructor(private listeningMessage:string, private context:Threm.ThremContext, public maxSize: number = 1000, prefillZeroes:boolean=true) {
+        constructor(private listeningMessage: string, private context: Threm.ThremContext, public maxSize: number = 1000, prefillZeroes: boolean = true) {
             if (prefillZeroes) {
                 this.elements = d3.range(this.maxSize).map<DataStreamElement>((v, i, a) => {
                     return new DataStreamElement(new DataStreamProvider(""), 0);
@@ -127,8 +147,8 @@ module DataRepository {
         ip: string = window.location.hostname;
 
         //httpBase: string = "";
-        httpBase: string = "http://"+this.ip+":80";
-        //httpBase: string = "http://"+this.ip+":8080/src/mocks";
+        //httpBase: string = "http://"+this.ip+":80";
+        httpBase: string = "http://" + this.ip + ":8080/src/mocks";
         //httpBase: string = "http://"+this.ip+":56609/src/mocks";
 
         buildAddres(path: string, query: any) {
@@ -161,6 +181,7 @@ module DataRepository {
         getJson(path: string, query: any = null): Promise<any> {
             var addr = this.buildAddres(path, query);
             return new Promise<string>((c, d) => {
+	            console.log("getJson", addr);
                 d3.text(addr, (err, data) => {
                     if (err) d(err);
                     else {

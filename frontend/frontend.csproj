@@ -62,6 +62,7 @@
     <Content Include="src\css\threm-widgets.less" />
     <Content Include="src\css\flexbox.less" />
     <Content Include="packages.config" />
+    <Content Include="src\mocks\therm.json" />
     <None Include="src\mocks\info\threm.json" />
     <Content Include="src\templates\info.html" />
     <Content Include="src\templates\basic.html" />

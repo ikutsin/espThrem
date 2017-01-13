@@ -304,7 +304,7 @@ module PageBuilders {
         subscribtionId: number;
         chart: Charting.StreamingLineChart;
 
-        constructor(private context: Threm.ThremContext, private initialBuffer: DataRepository.DataStreamBuffer, title: string,
+        constructor(private context: Threm.ThremContext, private initialBuffer: DataRepository.IDataStreamBuffer, title: string,
             private chartMax: number = 1, private chartMin: number = 0, private size: number = 60)
         {
             this.data.title = title;

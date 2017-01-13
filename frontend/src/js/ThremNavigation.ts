@@ -1,8 +1,6 @@
 ﻿///<reference path="../../Scripts/typings/d3/d3.d.ts" />
 ///<reference path="../../Scripts/typings/dot/dot.d.ts" />
 ///<reference path="../../Scripts/typings/es6-promise/es6-promise.d.ts"/>
-import All = d3.selectAll;
-import Html = d3.html;
 
 module ThremNavigation {
     //https://github.com/olado/doT/blob/master/examples/browsersample.html
@@ -29,7 +27,7 @@ module ThremNavigation {
         getTemplate(namespace: string, name: string): Promise<(any) => string> {
             return this.ensureNamespace(namespace)
                 .then(p => new Promise<Function>((resolve, reject) => {
-                    if (!this.templateRepo[name]) {
+                    if (!this.templateRepo[namespace + "_" + name]) {
                         var namespaceSelector = d3.select("body").select(`div.templates.${namespace}`);
                         var defs = {};
 
@@ -53,14 +51,14 @@ module ThremNavigation {
                         var templtaHtml = namespaceSelector.select("#" + name);
                         if (!templtaHtml.empty()) {
                             var tempFn = doT.template(templtaHtml.html(), undefined, defs);
-                            this.templateRepo[name] = tempFn;
+                            this.templateRepo[namespace+"_"+name] = tempFn;
                         }
                     }
-                    if (!this.templateRepo[name]) {
+                    if (!this.templateRepo[namespace + "_" + name]) {
                         reject({ error: `Template not found: ${namespace}.${name}` });
                         return;
                     }
-                    resolve(this.templateRepo[name]);
+                    resolve(this.templateRepo[namespace + "_" + name]);
                 }));
         }
 
@@ -134,9 +132,13 @@ module ThremNavigation {
             let currentLevelCrumb = crumbs.shift();
             let selectedElements = currentLevelCrumb ? this.tabElements.filter(e => e.hashPart === currentLevelCrumb) : this.tabElements;
 
+			console.log("crumbs", currentLevelCrumb, crumbs);
+
             if (!selectedElements.length) {
                 return Promise.reject({ error: "Page not found '" + this.prefix + "." + currentLevelCrumb + "'" });
             }
+
+
             let tabElement = selectedElements[0];
             for (let i in this.tabElements) this.tabElements[i].isActive = false;
 
@@ -144,14 +146,15 @@ module ThremNavigation {
             let result: Promise<any> = Promise.resolve();
             if (!this.activeTab || this.activeTab.hashPart !== tabElement.hashPart) {
                 this.activeTab = undefined;
-                result = result
-                    .then(p => this.handleNextPage(tabElement.page))
-                    .then(p => {
-                        this.activeTab = tabElement;
-                        this.activeTab.isActive = true;
-                        this.d3bind();
-                    });
-
+	            result = result
+		            .then(p => this.handleNextPage(tabElement.page))
+		            .then(p =>
+			            new Promise((c, d) => {
+				            this.activeTab = tabElement;
+				            this.activeTab.isActive = true;
+				            this.d3bind();
+				            c(p);
+			            }));
             }
             //check for subpages
             return result.then(p => new Promise((c, d) => {
@@ -177,6 +180,8 @@ module ThremNavigation {
                 .duration(500)
                 .style('opacity', 1)
                 .node();
+
+	        console.log(page);
 
             return page.spawn(newElement)
                 .then(p => new Promise<any>((c, d) => {
