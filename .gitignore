@@ -1,25 +1,8 @@
 .vs
-.pioenvs
-.clang_complete
-.gcc-flags.json
-.piolibdeps
-device/Debug
-device/data
-device/foo.map
-frontend/build
-frontend/node_modules
-frontend/bin
-frontend/obj
-frontend/.vs
-frontend/**/*.js
-frontend/**/*.map
 
+Debug
 *.cache
 *.suo
-*.user
 packages
-node_modules
-out.txt
-
+*.user
 espThrem.VC.db
-espThrem.VC.VC.opendb

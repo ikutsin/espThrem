@@ -1,0 +1,9 @@
+build
+node_modules
+bin
+obj
+src/js/*.js
+src/js/*.map
+src-unused/*.js
+src-unused/*.map
+Scripts/typings

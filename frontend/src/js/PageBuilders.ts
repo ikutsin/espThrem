@@ -1,5 +1,4 @@
-﻿///<reference path="../../Scripts/typings/Custom.d.ts"/>
-///<reference path="../../Scripts/typings/es6-promise/es6-promise.d.ts"/>
+﻿///<reference path="../../Scripts/typings/es6-promise/es6-promise.d.ts"/>
 module PageBuilders {
 
     import PageBuilder = ThremNavigation.IContentBuilder;

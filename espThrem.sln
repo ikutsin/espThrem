@@ -1,23 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "frontend", "frontend\frontend.csproj", "{B9913CEB-3B04-47B7-8B98-2FF42680ED8F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "platformio", "device\platformio.vcxproj", "{0FA9C3A8-452B-41EF-A418-9102B170F49F}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Batches", "Batches", "{29520511-9187-47BB-9D07-FCF63F61AA35}"
-	ProjectSection(SolutionItems) = preProject
-		decodeerror.bat = decodeerror.bat
-		here.bat = here.bat
-		path.bat = path.bat
-		serialmonitor.bat = serialmonitor.bat
-		serialtofile.bat = serialtofile.bat
-		upload.bat = upload.bat
-		uploadSpiffs.bat = uploadSpiffs.bat
-		uploadwatch.bat = uploadwatch.bat
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
