@@ -4,17 +4,15 @@
 #include <ESP8266WebServer.h>
 
 #include "Threm.h"
-#include "ThremDiagPlugin.h"
-#include "ThremSsdpPlugin.h"
-#include "ThremWifiPlugin.h"
-//#include "ThremWebSocketPlugin.h"
-#include "ThremCoreApiPlugin.h"
-#include "ThremInfoApiPlugin.h"
-#include "ThremCaptivePortalPlugin.h"
-#include "ThremSpiffsPlugin.h"
-#include "ThremThermPlugin.h"
-#include "ThremBufferPlugin.h"
-#include "ThremMqttPlugin.h"
+#include "ThremPlugins\ThremDiagPlugin.h"
+#include "ThremPlugins\ThremWifiPlugin.h"
+#include "ThremPlugins\ThremCoreApiPlugin.h"
+#include "ThremPlugins\ThremInfoApiPlugin.h"
+#include "ThremPlugins\ThremCaptivePortalPlugin.h"
+#include "ThremPlugins\ThremSpiffsPlugin.h"
+#include "ThremPlugins\ThremThermPlugin.h"
+#include "ThremPlugins\ThremBufferPlugin.h"
+#include "ThremPlugins\ThremMqttPlugin.h"
 
 
 Threm* threm = new Threm();
@@ -48,12 +46,6 @@ void setup() {
 
 	plugin = new ThremSpiffsPlugin();
 	threm->addPlugin(plugin);
-
-	plugin = new ThremSsdpPlugin();
-	threm->addPlugin(plugin);
-
-	//plugin = new ThremWebSocketPlugin();
-	//threm->addPlugin(plugin);
 
 	plugin = new ThremCoreApiPlugin(threm);
 	threm->addPlugin(plugin);

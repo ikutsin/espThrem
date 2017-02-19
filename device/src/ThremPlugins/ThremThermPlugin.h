@@ -6,6 +6,8 @@
 #include "IThremPlugin.h"
 #include "Streaming.h"
 
+#define PIN_THERM 14
+
 
 struct lastMeasure{
 	float t;

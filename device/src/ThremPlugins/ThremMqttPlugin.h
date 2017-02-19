@@ -5,8 +5,15 @@
 #include "Streaming.h"
 #include <PubSubClient.h>
 
-void callback(const MQTT::Publish& pub) {
+void callback(char* topic, byte* payload, unsigned int length) {
 	// handle message arrived
+#ifdef DEBUG
+	DEBUG << "Message arrived [" << topic << "] " << endl;
+	for (int i = 0; i < length; i++) {
+		DEBUG << (char)payload[i];
+	}
+	DEBUG << endl;
+#endif
 }
 
 class ThremMqttPlugin : public IThremPlugin {
@@ -50,10 +57,10 @@ class ThremMqttPlugin : public IThremPlugin {
 		deviceName = rootName;
 		IPAddress addr = IPAddress();
 		addr.fromString(serverAddr.c_str());
-		client = new PubSubClient(wclient, addr);
-		client->set_callback(callback);
+		client = new PubSubClient(addr, 1883, wclient);
+		client->setCallback(callback);
 
-		bool status = client->connect(deviceName);
+		bool status = client->connect(deviceName.c_str());
 #ifdef LOG
 		LOG << "MQTTstatus" << status << endl;
 #endif
@@ -63,7 +70,7 @@ class ThremMqttPlugin : public IThremPlugin {
 	{
 		if (!client->connected()) {
 			if ((lastMillis + testInterval) < millis()) {
-				if (client->connect(deviceName)) {
+				if (client->connect(deviceName.c_str())) {
 					context->addNotification(getUniqueId(), 1, String("OK"));
 					testInterval = 5000;
 				}
@@ -85,7 +92,7 @@ class ThremMqttPlugin : public IThremPlugin {
 
 			if ((type & (1 << 0)) >> 0) {
 				String data = notification->toJson();
-				client->publish(deviceName, data);
+				client->publish(deviceName.c_str(), data.c_str());
 			}
 			if ((type & (1 << 1)) >> 1) {
 				String topic = String(deviceName);
@@ -93,7 +100,7 @@ class ThremMqttPlugin : public IThremPlugin {
 				topic += notification->senderId;
 				topic += "/";
 				topic += notification->type;
-				client->publish(topic, notification->value);
+				client->publish(topic.c_str(), notification->value.c_str());
 			}
 		}
 	}
