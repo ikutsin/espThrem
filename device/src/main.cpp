@@ -59,8 +59,8 @@ void setup() {
 	plugin = new ThremInfoApiPlugin();
 	threm->addPlugin(plugin);
 
-	plugin = new ThremMqttPlugin();
-	threm->addPlugin(plugin);
+//	plugin = new ThremMqttPlugin();
+//	threm->addPlugin(plugin);
 
 	plugin = new ThremBufferPlugin("Therm", 0, &bufferTherm);
 	threm->addPlugin(plugin);
