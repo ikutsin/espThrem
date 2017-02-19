@@ -1,6 +1,8 @@
+.vs
 .pioenvs
 .clang_complete
 .gcc-flags.json
+.piolibdeps
 device/Debug
 device/data
 device/foo.map
@@ -11,9 +13,13 @@ frontend/obj
 frontend/.vs
 frontend/**/*.js
 frontend/**/*.map
+
 *.cache
 *.suo
 *.user
 packages
 node_modules
 out.txt
+
+espThrem.VC.db
+espThrem.VC.VC.opendb

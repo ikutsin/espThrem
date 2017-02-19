@@ -23,6 +23,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="gulpfile.js" />
+    <Content Include="src-exclude\ThremPlugins-Unused.js" />
+    <Content Include="src-exclude\WebSockets.js" />
     <Content Include="src\css\menu - Copy.css">
       <DependentUpon>threm-forms.less</DependentUpon>
     </Content>
@@ -88,7 +90,8 @@
     <TypeScriptCompile Include="Scripts\typings\d3\plugins\d3.superformula.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\dot\dot.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\es6-promise\es6-promise.d.ts" />
-    <None Include="src-unused\ThremPlugins-Unused.ts_" />
+    <TypeScriptCompile Include="src-exclude\ThremPlugins-Unused.ts" />
+    <TypeScriptCompile Include="src-exclude\WebSockets.ts" />
     <TypeScriptCompile Include="src\js\EventAggregator.ts" />
     <TypeScriptCompile Include="src\js\Charting.ts" />
     <TypeScriptCompile Include="src\js\DataRepository.ts" />
@@ -97,7 +100,6 @@
     <TypeScriptCompile Include="src\js\Threm.ts" />
     <TypeScriptCompile Include="src\js\ThremNotification.ts" />
     <TypeScriptCompile Include="src\js\ThremPlugins.ts" />
-    <None Include="src-unused\WebSockets.ts_" />
     <TypeScriptCompile Include="src\js\ThremNavigation.ts" />
   </ItemGroup>
   <ItemGroup>
