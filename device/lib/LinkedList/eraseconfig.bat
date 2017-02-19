@@ -1,2 +1,0 @@
-call path.bat
-cmd

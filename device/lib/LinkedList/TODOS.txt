@@ -1,3 +1,0 @@
-ERR: from diag
-BUILD: FRONTEND SCRIPT SHOULD COPY OUTPUT TO DEVICE DATA FOLDER
-environment configurations: for  export class Communication { //ip: string = "192.168.4.1";
