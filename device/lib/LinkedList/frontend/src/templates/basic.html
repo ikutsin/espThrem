@@ -1,0 +1,50 @@
+﻿<script id="index" type="text/x-dot-template">
+    <h1>Dashboard</h1>
+    <div class="dashboard">
+
+    </div>
+</script>
+
+<script id="props" class="def" type="text/x-dot-template">    
+    {{~ it.items:kvp}}
+    <div class="kvp">
+        <span>
+            {{=kvp.key}}
+        </span>
+        <span>
+            {{=kvp.value}}
+        </span>
+    </div>
+    {{~}}
+</script>
+
+<script id="infoStatus" type="text/x-dot-template">
+    <h1>Status</h1>
+    {{#def.props}}
+</script>
+
+<script id="infoChip" type="text/x-dot-template">
+    <h1>Chip</h1>
+    {{#def.props}}
+</script>
+
+
+<script id="infoWifi" type="text/x-dot-template">
+    <h1>Wifi</h1>
+    {{#def.props}}
+</script>
+
+<script id="infoFiles" type="text/x-dot-template">
+    <h1>Files</h1>
+    {{~ it.items:kvp}}
+    <div class="kvp">
+        <span>
+            {{=kvp.name}}
+        </span>
+        <span>
+            {{=kvp.size}}
+        </span>
+    </div>
+    {{~}}
+</script>
+
