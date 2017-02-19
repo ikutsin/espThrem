@@ -1,0 +1,27 @@
+﻿[{"id":"12","name":"Serial diagnostics","running":"1","config":{
+  "off": 0
+}},{"id":"1","name":"Wifi connection","running":"1","config":{
+  "off": 0,
+  "pwd": 0
+}},{"id":"3","name":"CaptivePortal","running":"0","config":{
+  "off": 0
+}},{"id":"6","name":"Spiffs","running":"1","config":{
+  "off": 0
+}},{"id":"21","name":"SSDP","running":"1","config":{
+  "off": 0,
+  "name": "Sensor_f2d492"
+}},{"id":"3","name":"WebSocket","running":"1","config":{
+  "off": 0
+}},{"id":"31","name":"Core API","running":"1","config":{
+  "off": 0
+}},{"id":"32","name":"Info API","running":"1","config":{
+  "off": 0
+}},{"id":"40","name":"Therm","running":"1","config":{
+  "off": 0
+}},{"id":"100","name":"Buff 0","running":"1","config":{
+  "off": 0
+}},{"id":"101","name":"Buff 1","running":"1","config":{
+  "off": 0
+}},{"id":"14","name":"mqtt","running":"0","config":{
+  "off": 1
+}}]

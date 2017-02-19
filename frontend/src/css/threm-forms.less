@@ -1,0 +1,80 @@
+﻿@import "elements.less";
+
+fieldset {
+    background-color: white;
+    .rounded(5px);
+    border: 2px #47c9af solid;
+    margin-top: 4px;
+
+    legend {
+        padding: 5px;
+        background: white;
+        border-left: 2px #47c9af solid;
+        border-right: 2px #47c9af solid;
+        border-top: 2px #47c9af solid;
+        .rounded(3px);
+    }
+}
+
+select, input:not([type=checkbox]):not([type=radio]):not([type=submit]):not([type=reset]), textarea {
+    .rounded(5px);
+    outline: none;
+    border: 2px #47c9af solid;
+    padding: 5px;
+    margin: 5px;
+    .inner-shadow(2px, 2px, 10px, 0.5);
+}
+
+select:hover, input:hover:not([type=checkbox]):not([type=radio]), textarea:hover {
+    .inner-shadow(2px, 5px, 10px, 0.5);
+}
+
+button,
+input[type=submit],
+input[type=reset] {
+    .gradient(#6CB1EE, #4F85B2, #BCE6FF);
+    .rounded(5px);
+    outline: none;
+    border: 0;
+    min-height: 30px;
+    min-width: 80px;
+    margin: 5px;
+}
+
+button:hover,
+input[type=submit]:hover,
+input[type=reset]:hover {
+    .gradient(#6CB1EE, #4F85B2, #bcfbff);
+}
+
+button:active,
+input[type=submit]:active,
+input[type=reset]:active {
+    .gradient(#6CB1EE, #BCE6FF, #4F85B2);
+}
+
+input[type=checkbox] {
+    width: 20px;
+    height: 20px;
+    margin-bottom: 10px;
+    vertical-align: bottom;
+}
+
+input[type=radio] {
+    width: 20px;
+    height: 20px;
+    vertical-align: bottom;
+}
+
+.pair {
+    white-space: nowrap;
+}
+
+.vertical .pair {
+    display: inline;
+}
+
+.pair > label:first-child {
+    display: inline-block;
+    width: 100px;
+}

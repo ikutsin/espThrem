@@ -1,0 +1,281 @@
+﻿/*---------------------------------------------------
+    Threm styles
+  ---------------------------------------------------
+*/
+ul.tab-navigation {
+  border-bottom: 3px solid #47c9af;
+  height: 30px;
+  padding: 0;
+}
+ul.tab-navigation li {
+  margin: 0 10px;
+  border: 0;
+  list-style: none;
+  display: inline;
+  float: left;
+}
+ul.tab-navigation li a {
+  text-decoration: none;
+  color: #47c9af;
+}
+ul.tab-navigation li.active a {
+  color: #278371;
+}
+/*---------------------------------------------------
+    LESS Elements 0.9
+  ---------------------------------------------------
+    A set of useful LESS mixins
+    More info at: http://lesselements.com
+  ---------------------------------------------------*/
+fieldset {
+  background-color: white;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  border: 2px #47c9af solid;
+  margin-top: 4px;
+}
+fieldset legend {
+  padding: 5px;
+  background: white;
+  border-left: 2px #47c9af solid;
+  border-right: 2px #47c9af solid;
+  border-top: 2px #47c9af solid;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+select,
+input:not([type=checkbox]):not([type=radio]):not([type=submit]):not([type=reset]),
+textarea {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  outline: none;
+  border: 2px #47c9af solid;
+  padding: 5px;
+  margin: 5px;
+  -webkit-box-shadow: inset 2px 2px 10px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: inset 2px 2px 10px rgba(0, 0, 0, 0.5);
+  box-shadow: inset 2px 2px 10px rgba(0, 0, 0, 0.5);
+}
+select:hover,
+input:hover:not([type=checkbox]):not([type=radio]),
+textarea:hover {
+  -webkit-box-shadow: inset 2px 5px 10px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: inset 2px 5px 10px rgba(0, 0, 0, 0.5);
+  box-shadow: inset 2px 5px 10px rgba(0, 0, 0, 0.5);
+}
+button,
+input[type=submit],
+input[type=reset] {
+  background: #6CB1EE;
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #4F85B2), color-stop(1, #BCE6FF));
+  background: -ms-linear-gradient(bottom, #4F85B2, #BCE6FF);
+  background: -moz-linear-gradient(center bottom, #4F85B2 0%, #BCE6FF 100%);
+  background: -o-linear-gradient(#BCE6FF, #4F85B2);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#BCE6FF', endColorstr='#4F85B2', GradientType=0);
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  outline: none;
+  border: 0;
+  min-height: 30px;
+  min-width: 80px;
+  margin: 5px;
+}
+button:hover,
+input[type=submit]:hover,
+input[type=reset]:hover {
+  background: #6CB1EE;
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #4F85B2), color-stop(1, #bcfbff));
+  background: -ms-linear-gradient(bottom, #4F85B2, #bcfbff);
+  background: -moz-linear-gradient(center bottom, #4F85B2 0%, #bcfbff 100%);
+  background: -o-linear-gradient(#bcfbff, #4F85B2);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#bcfbff', endColorstr='#4F85B2', GradientType=0);
+}
+button:active,
+input[type=submit]:active,
+input[type=reset]:active {
+  background: #6CB1EE;
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #BCE6FF), color-stop(1, #4F85B2));
+  background: -ms-linear-gradient(bottom, #BCE6FF, #4F85B2);
+  background: -moz-linear-gradient(center bottom, #BCE6FF 0%, #4F85B2 100%);
+  background: -o-linear-gradient(#4F85B2, #BCE6FF);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4F85B2', endColorstr='#BCE6FF', GradientType=0);
+}
+input[type=checkbox] {
+  width: 20px;
+  height: 20px;
+  margin-bottom: 10px;
+  vertical-align: bottom;
+}
+input[type=radio] {
+  width: 20px;
+  height: 20px;
+  vertical-align: bottom;
+}
+.pair {
+  white-space: nowrap;
+}
+.vertical .pair {
+  display: inline;
+}
+.pair > label:first-child {
+  display: inline-block;
+  width: 100px;
+}
+.dashboard {
+  width: 100%;
+  clear: both;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -moz-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-flex-wrap: wrap;
+  -moz-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-align-items: stretch;
+  -moz-align-items: stretch;
+  -ms-align-items: stretch;
+  align-items: stretch;
+}
+.dashboard .dashboard-item {
+  width: 200px;
+  height: 200px;
+  margin: 2px;
+  border: 1px solid gray;
+  overflow: hidden;
+  position: relative;
+}
+.dashboard .dashboard-item .title {
+  margin: 4px;
+  position: absolute;
+  color: white;
+}
+.dashboard .dashboard-item .big-number {
+  color: white;
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  vertical-align: middle;
+  text-align: center;
+  margin: 50px auto;
+  font-size: 80px;
+}
+.dashboard .dashboard-item .fill-number {
+  vertical-align: middle;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  position: absolute;
+  background-color: blue;
+}
+.dashboard .dashboard-item .fill-chart {
+  vertical-align: middle;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  position: absolute;
+  background-color: white;
+}
+.dashboard .dashboard-item .title-chart {
+  margin: 4px;
+  position: absolute;
+  color: blue;
+  right: 0px;
+}
+.dashboard .dashboard-item.x2 {
+  width: 406px;
+  height: 200px;
+}
+body {
+  overflow-y: scroll;
+  margin: 0;
+}
+body .overlay-background {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -100;
+}
+body .overlay-loader {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  background-color: rgba(100, 100, 100, 0.5);
+  display: none;
+}
+body .overlay-loader svg {
+  float: right;
+}
+body .content {
+  width: 90%;
+  padding: 0 5px 35px 5px;
+  margin-top: 50px;
+}
+body .content .header,
+body .content .footer {
+  width: 100%;
+  position: fixed;
+  z-index: 100;
+}
+body .content .header {
+  top: 0;
+}
+body .content .footer {
+  bottom: 0;
+}
+body .content .page {
+  clear: none;
+  display: block;
+  position: absolute;
+  min-height: 200px;
+  width: 90%;
+  left: 5%;
+  margin-bottom: 50px;
+}
+.kvp {
+  clear: both;
+  width: 100%;
+}
+.kvp span:first-child {
+  display: inline-block;
+  min-width: 200px;
+}
+div.notification {
+  border: 1px solid rgba(100, 100, 100, 0.5);
+  background: white;
+  margin: 0 20px 25px 0;
+  padding: 2px;
+  overflow: hidden;
+  position: relative;
+}
+div.notification div {
+  display: inline;
+  clear: none;
+}
+div.notification button {
+  clear: none;
+}
+div.notification button.close {
+  padding: 0;
+  margin: 0;
+  right: 0;
+  position: absolute;
+  background: 0;
+  border: 0;
+}

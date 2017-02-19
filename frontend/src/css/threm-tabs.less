@@ -1,0 +1,24 @@
+﻿@mainColor: #47c9af;
+
+ul.tab-navigation {
+    border-bottom: 3px solid @mainColor;
+    height: 30px;
+    padding: 0;
+
+    li {
+        margin: 0 10px;
+        border: 0;
+        list-style: none;
+        display: inline;
+        float: left;
+
+        a {
+            text-decoration: none;
+            color: @mainColor;
+        }
+    }
+
+    li.active a {
+        color: darken(@mainColor, 20%)
+    }
+}
