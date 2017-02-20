@@ -80,6 +80,10 @@ void Threm::start() {
 	LOG << getJsonState() << endl;
 #endif
 
+#ifdef DEBUG
+	DEBUG << "default callbacks setup." << endl;
+#endif
+
 	server->onNotFound([=](){
 		IThremPlugin*plugin;
 		PluginMeta* meta;
@@ -115,7 +119,9 @@ void Threm::start() {
 		server->sendHeader("Expires", "-1");
 		server->send(404, "text/plain", message);
 	});
-
+#ifdef DEBUG
+	DEBUG << "Starting webserver." << endl;
+#endif
 	server->begin();
 #ifdef DEBUG
 	DEBUG << "Web server started." << endl;
@@ -142,7 +148,7 @@ void Threm::loop() {
 		}
 	}
 	yield();
-	LinkedList < ThremNotification* >* notifications = _thremContext->getNotifications();
+	LinkedList < ThremNotification >* notifications = _thremContext->getNotifications();
 
 	for (int i = 0; i < _plugins->size(); i++) {
 		plugin = _plugins->get(i);
