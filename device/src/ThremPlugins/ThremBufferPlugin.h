@@ -81,7 +81,7 @@ public:
 #ifdef DEBUG
 			DEBUG << "Buffer " << getName() << " new size " << _notifications->size() << endl;
 		}
-		else 
+		else
 		{
 			DEBUG << "Buffer " << getName() << " skip" << endl;
 #endif
@@ -89,7 +89,8 @@ public:
 
 		while (_notifications->size() > size)
 		{
-			_notifications->shift();
+			ThremNotification *notif = _notifications->shift();
+			delete notif;
 		}
 
 	}

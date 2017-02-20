@@ -7,14 +7,13 @@
 
 //#ifdef ESP8266
 #include <functional>
-//#define MQTT_CALLBACK_SIGNATURE std::function<void(char*, uint8_t*, unsigned int)> callback
 //#endif
 
 class ThremMqttInput {
 public:
 	String payload;
 	String topic;
-	ThremMqttInput(String p, String t) {
+	ThremMqttInput(String t, String p) {
 		payload = p;
 		topic = t;
 	}
@@ -64,30 +63,41 @@ class ThremMqttPlugin : public IThremPlugin {
 		IPAddress addr = IPAddress();
 		addr.fromString(serverAddr.c_str());
 		client = new PubSubClient(addr, 1883, wclient);
-		
+
 		std::function<void(char*, uint8_t*, unsigned int)> callback =
 			std::bind(&ThremMqttPlugin::callback, this,
 				std::placeholders::_1,
 				std::placeholders::_2,
 				std::placeholders::_3);
 
-		client->setCallback(callback);		
-
-		String topic = getInTopicPart();
-		topic += "#";
-		client->subscribe(topic.c_str());
-
-		int status = client->connect(deviceName.c_str());
-#ifdef LOG
-		LOG << "MQTTstatus" << status << endl;
-#endif
+		client->setCallback(callback);
+		reconnect();
 		return true;
 	}
+
+	bool reconnect() {
+		bool status = client->connect(deviceName.c_str());
+	#ifdef LOG
+			LOG << "MQTTstatus" << status << endl;
+	#endif
+		if(status) {
+			String topic = getInTopicPart();
+			topic += "#";
+			client->subscribe(topic.c_str());
+		#ifdef LOG
+				LOG << "Callback on " << topic << endl;
+		#endif
+		}
+
+
+		return status;
+	}
+
 	virtual void readData(ThremContext* context)
 	{
 		if (!client->connected()) {
 			if ((lastMillis + testInterval) < millis()) {
-				if (client->connect(deviceName.c_str())) {
+				if (reconnect()) {
 					context->addNotification(getUniqueId(), 1, String("OK"));
 					testInterval = 5000;
 				}
@@ -100,21 +110,24 @@ class ThremMqttPlugin : public IThremPlugin {
 		}
 		else {
 			String topic = getInTopicPart();
-			while (ThremMqttInput* input = _callbacks->pop())
+			while (_callbacks->size()>0)
 			{
-				String recipientStr = input->topic.substring(0, topic.length());
+				ThremMqttInput* input = _callbacks->pop();
+
+				String recipientStr = input->topic.substring(topic.length());
 				int recipientId = recipientStr.toInt();
 				if (recipientId > 0) {
-					context->addNotification(getUniqueId(), 2, input->payload);
+					context->addNotification(getUniqueId(), recipientId, input->payload);
 				}
 				else {
 #ifdef LOG
-					LOG << "failed to parse input" << endl;
+					LOG << "failed to parse input: " << recipientStr << endl;
 					LOG << input->topic << endl;
 					LOG << input->payload << endl;
 #endif
 				}
-			}			
+				delete input;
+			}
 
 			client->loop();
 		}
@@ -161,22 +174,18 @@ class ThremMqttPlugin : public IThremPlugin {
 	}
 
 	void callback(char* topic, uint8_t* payload, unsigned int length) {
-		// handle message arrived
-#ifdef DEBUG
-		DEBUG << "Message arrived [" << topic << "] " << endl;
-		for (int i = 0; i < length; i++) {
-			DEBUG << (char)payload[i];
-		}
-		DEBUG << endl;
-#endif
 		String pstr = String();
 		for (int i = 0; i < length; i++) {
 			pstr += (char)payload[i];
 		}
-		ThremMqttInput* notif = new ThremMqttInput(String(topic), pstr);
-		//_callbacks->add(notif);
-	}
+		#ifdef DEBUG
+				DEBUG << "Message arrived [" << topic << "] " << endl;
+				DEBUG << pstr << endl;
+		#endif
 
+		ThremMqttInput* notif = new ThremMqttInput(String(topic), pstr);
+		_callbacks->add(notif);
+	}
 };
 
 

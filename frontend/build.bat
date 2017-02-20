@@ -1,3 +1,3 @@
 ::gulp compress
-::gulp gzip
+call gulp gzip
 copy build\gziped\*.* ..\device\data\ /Y

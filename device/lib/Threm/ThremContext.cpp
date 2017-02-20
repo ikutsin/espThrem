@@ -15,9 +15,12 @@ void ThremContext::afterLoop() {
 #ifdef LOG
 	int32_t freeheap = ESP.getFreeHeap();
 	if(freeheap<10*1000) {
-		DEBUG << "Heap size " << freeheap << endl;
+		LOG << "Heap size " << freeheap << endl;
 	}
 #endif
-
-	_notifications->clear();
+	while (_notifications->size()>0)
+	{
+		ThremNotification* input = _notifications->pop();
+		delete input;
+	}
 }

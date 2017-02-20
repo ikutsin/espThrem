@@ -148,7 +148,7 @@ void Threm::loop() {
 		}
 	}
 	yield();
-	LinkedList < ThremNotification >* notifications = _thremContext->getNotifications();
+	LinkedList < ThremNotification* >* notifications = _thremContext->getNotifications();
 
 	for (int i = 0; i < _plugins->size(); i++) {
 		plugin = _plugins->get(i);

@@ -23,7 +23,7 @@ void ThremCaptivePortalPlugin::handleRedirect() {
 bool ThremCaptivePortalPlugin::captivePortal() {
 	if (!isIp(server->hostHeader())) {
 #ifdef LOG
-		LOG << "Request redirected to captive portal" << endl;
+		LOG << "Request redirected to captive portal " << server->hostHeader() << endl;
 #endif
 		server->sendHeader("Location", String("http://") + toStringIp(server->client().localIP()), true);
 		server->send(302, "text/plain", ""); // Empty content inhibits Content-length header so we have to close the socket ourselves.

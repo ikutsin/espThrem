@@ -8,7 +8,7 @@ class Program {
         thremContext.plugins.addPlugin(new ThremPlugins.CoreApiPlugin()); //core api=31
         thremContext.plugins.addPlugin(new ThremPlugins.WifiPlugin()); //wifi=1
         thremContext.plugins.addPlugin(new ThremPlugins.SpiffsPlugin()); //spiffs=6
-        thremContext.plugins.addPlugin(new ThremPlugins.SsdpPlugin()); //ssdp=21
+        //thremContext.plugins.addPlugin(new ThremPlugins.SsdpPlugin()); //ssdp=21
         thremContext.plugins.addPlugin(new ThremPlugins.AcknowledgePlugin(3)); //captive
 
         thremContext.plugins.addPlugin(new ThremPlugins.ThermPlugin(0)); //therm=40

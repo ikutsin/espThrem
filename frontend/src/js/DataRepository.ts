@@ -146,9 +146,9 @@ module DataRepository {
         //ip: string = "localhost";
         ip: string = window.location.hostname;
 
-        //httpBase: string = "";
+        httpBase: string = "";
         //httpBase: string = "http://"+this.ip+":80";
-        httpBase: string = "http://" + this.ip + ":8080/src/mocks";
+        //httpBase: string = "http://" + this.ip + ":8080/src/mocks";
         //httpBase: string = "http://"+this.ip+":56609/src/mocks";
 
         buildAddres(path: string, query: any) {
