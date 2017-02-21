@@ -57,7 +57,7 @@ class ThremMqttPlugin : public IThremPlugin {
 		String rootName = root["name"];
 
 		int jtype = root["type"];
-		type = std::max(jtype, type);
+		type = ((jtype)>(type)?(jtype):(type)); //std::max(jtype, type);
 
 		deviceName = rootName;
 		IPAddress addr = IPAddress();
@@ -72,6 +72,8 @@ class ThremMqttPlugin : public IThremPlugin {
 
 		client->setCallback(callback);
 		reconnect();
+
+		lastMillis = millis();
 		return true;
 	}
 
@@ -114,6 +116,7 @@ class ThremMqttPlugin : public IThremPlugin {
 			{
 				ThremMqttInput* input = _callbacks->pop();
 
+				// sensor\in\[recipient]\[value] format
 				String recipientStr = input->topic.substring(topic.length());
 				int recipientId = recipientStr.toInt();
 				if (recipientId > 0) {
@@ -136,14 +139,7 @@ class ThremMqttPlugin : public IThremPlugin {
 	virtual void writeData(ThremNotification* notification)
 	{
 		if (client->connected()) {
-			if ((type & (1 << 0)) >> 0) {
-				String topic = String(deviceName);
-				topic += "/out/";
-
-				String data = notification->toJson();
-				client->publish(topic.c_str(), data.c_str());
-			}
-			if ((type & (1 << 1)) >> 1) {
+			if (type & 0b1 == 0b1) {
 				String topic = String(deviceName);
 				topic += "/out/";
 				topic += notification->senderId;
@@ -151,6 +147,13 @@ class ThremMqttPlugin : public IThremPlugin {
 				topic += notification->type;
 
 				client->publish(topic.c_str(), notification->value.c_str());
+			}
+			if (type & 0b10 == 0b10) {
+				String topic = String(deviceName);
+				topic += "/out/";
+
+				String data = notification->toJson();
+				client->publish(topic.c_str(), data.c_str());
 			}
 		}
 	}

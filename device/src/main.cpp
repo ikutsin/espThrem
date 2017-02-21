@@ -8,11 +8,14 @@
 #include "ThremPlugins\ThremWifiPlugin.h"
 #include "ThremPlugins\ThremCoreApiPlugin.h"
 #include "ThremPlugins\ThremInfoApiPlugin.h"
-#include "ThremPlugins\ThremCaptivePortalPlugin.h"
+#include "ThremPlugins\ThremCaptivePortalPlugin.h" //needs ssdp?
 #include "ThremPlugins\ThremSpiffsPlugin.h"
 #include "ThremPlugins\ThremThermPlugin.h"
 #include "ThremPlugins\ThremBufferPlugin.h"
 #include "ThremPlugins\ThremMqttPlugin.h"
+
+#include "ThremPlugins\ThremRoutePlugin.h"
+#include "ThremPlugins\ThremSwitchPlugin.h"
 
 
 Threm* threm = new Threm();
@@ -22,7 +25,23 @@ bool bufferTherm(int senderId, int type) {
 }
 
 bool bufferNotTherm(int senderId, int type) {
-	return senderId != 40;
+	return senderId != 40 && senderId<100;
+}
+
+ThremNotification* pinSwitch(ThremNotification* notiff) {
+	if(notiff->senderId==14) {
+		if(notiff->type == 1) { //mqtt errors at 1
+			return 0;
+		}
+		ThremNotification * notif =  new ThremNotification();
+
+		notif->type = notiff->type;
+		notif->value = String(notiff->value);
+		notif->senderId = 2; //switch
+
+		return notif;
+	}
+	return 0;
 }
 
 void setup() {
@@ -67,6 +86,13 @@ void setup() {
 
 	plugin = new ThremBufferPlugin("Diag", 1, &bufferNotTherm);
 	threm->addPlugin(plugin);
+
+	plugin = new ThremRoutePlugin("Switch", 0, &pinSwitch);
+	threm->addPlugin(plugin);
+
+	plugin = new ThremSwitchPlugin();
+	threm->addPlugin(plugin);
+
 
 	threm->start();
 

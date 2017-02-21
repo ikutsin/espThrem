@@ -40,16 +40,21 @@ module ThremPlugins {
                     for (var api of this.plugins) {
                         var item1 = result.filter(conf => conf.id == api.id)[0];
                         if (!item1) {
-                            d({ error: "Plugin not found on device:" + api.id });
-                            return;
+                            var err = "Plugin not found on device:" + api.id;
+                            //d({ error: err });
+                            //return;
+                            alert(err);
+
                         }
                         api.data = item1;
                     }
                     for (var conf of result) {
                         var item2 = this.plugins.filter(api => conf.id == api.id)[0];
                         if (!item2) {
-                            d({ error: "Plugin not found on frontend:" + conf.id + " " + conf.name });
-                            return;
+                            var err = "Plugin not found on frontend:" + conf.id + " " + conf.name
+                            //d({ error: err });
+                            //return;
+                            alert(err);
                         }
                     }
 
@@ -421,6 +426,19 @@ module ThremPlugins {
             registration.routes.push(new ThremPluginRoute("setup.buffer-" + this.name.toLowerCase(), this.name + " Buffer",
                 new PageBuilders.SetupBufferBuilder(context, this.name, this.bufferIndex)));
             return Promise.resolve(registration);
+        }
+    }
+
+    export class RoutePlugin implements IThremPlugin {
+        id: number;
+        data: IThremPluginData;
+
+        constructor(public name: string, public routeIndex: number) {
+            this.id = 200 + routeIndex;
+        }
+
+        register(context: Threm.ThremContext): Promise<ThremPluginRegistration> {
+            return Promise.resolve(<ThremPluginRegistration>undefined);
         }
     }
 } 

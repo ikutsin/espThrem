@@ -190,7 +190,7 @@ String Threm::getJsonStateFor(int id) {
 	}
 	String result;
 
-	{
+
 #ifdef DEBUG
 		DEBUG << "Start parsing" << endl;
 #endif
@@ -201,18 +201,16 @@ String Threm::getJsonStateFor(int id) {
 #ifdef LOG
 			LOG << "Parse failure:  " << configLocation << endl;
 			LOG << content << endl;
+			JsonObject& root = jsonBuffer.parseObject("{\"off\":0}");
 #endif
 		}
-		else {
-			IThremPlugin* plugin = getPluginById(id);
-#ifdef DEBUG
-			DEBUG << "Finalizing config: " << plugin->getName() << endl;
-#endif
-
-			plugin->finalizeConfig(root);
-}
+		IThremPlugin* plugin = getPluginById(id);
+		#ifdef DEBUG
+					DEBUG << "Finalizing config: " << plugin->getName() << endl;
+		#endif
+		plugin->finalizeConfig(root);
 		root.prettyPrintTo(result);
-	}
+
 	return result;
 }
 

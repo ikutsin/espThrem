@@ -5,7 +5,7 @@
 #include "Streaming.h"
 
 class ThremDiagPlugin : public IThremPlugin {
-	int lastMillis = 0;
+	unsigned long lastMillis = 0;
 	int lastHeapSize = 0;
 
 	virtual int getUniqueId()
@@ -19,6 +19,7 @@ class ThremDiagPlugin : public IThremPlugin {
 
 	virtual bool init(ThremContext* context, JsonObject& root)
 	{
+		 lastMillis = millis();
 #ifdef LOG
 		LOG << "ThremDiagPlugin init" << endl;
 #endif

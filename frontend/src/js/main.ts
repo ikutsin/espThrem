@@ -5,23 +5,25 @@ class Program {
 
         var thremContext = new Threm.ThremContext();
 
-        thremContext.plugins.addPlugin(new ThremPlugins.CoreApiPlugin()); //core api=31
-        thremContext.plugins.addPlugin(new ThremPlugins.WifiPlugin()); //wifi=1
-        thremContext.plugins.addPlugin(new ThremPlugins.SpiffsPlugin()); //spiffs=6
-        //thremContext.plugins.addPlugin(new ThremPlugins.SsdpPlugin()); //ssdp=21
-        thremContext.plugins.addPlugin(new ThremPlugins.AcknowledgePlugin(3)); //captive
+        thremContext.plugins.addPlugin(new ThremPlugins.CoreApiPlugin());       //core api=31
+        thremContext.plugins.addPlugin(new ThremPlugins.WifiPlugin());          //wifi=1
+        thremContext.plugins.addPlugin(new ThremPlugins.SpiffsPlugin());        //spiffs=6
+        //thremContext.plugins.addPlugin(new ThremPlugins.SsdpPlugin());        //ssdp=21
+        thremContext.plugins.addPlugin(new ThremPlugins.DiagPlugin());        //diag=12
+        thremContext.plugins.addPlugin(new ThremPlugins.AcknowledgePlugin(3));  //captive
 
-        thremContext.plugins.addPlugin(new ThremPlugins.ThermPlugin(0)); //therm=40
-        thremContext.plugins.addPlugin(new ThremPlugins.InfoApiPlugin(1)); //info api=32
+        thremContext.plugins.addPlugin(new ThremPlugins.ThermPlugin(0));        //therm=40
+        thremContext.plugins.addPlugin(new ThremPlugins.InfoApiPlugin(1));      //info api=32
 
         thremContext.plugins.addPlugin(new ThremPlugins.BufferPlugin("Therm", 0)); //ThermBuffer
-        thremContext.plugins.addPlugin(new ThremPlugins.BufferPlugin("Diag", 1)); //DiagBuffer
-        thremContext.plugins.addPlugin(new ThremPlugins.MqttPlugin()); //mqtt=14
+        thremContext.plugins.addPlugin(new ThremPlugins.BufferPlugin("Diag", 1));   //DiagBuffer
+        thremContext.plugins.addPlugin(new ThremPlugins.MqttPlugin());          //mqtt=14
 
-        thremContext.plugins.addPlugin(new ThremPlugins.DiagPlugin()); //diag=12
+        thremContext.plugins.addPlugin(new ThremPlugins.RoutePlugin("Switch", 0)); //route=200
 
         //thremContext.plugins.addPlugin(new ThremPlugins.WebSocketPlugin()); //websocket=13
-        //thremContext.plugins.addPlugin(new ThremPlugins.AcknowledgePlugin(2)); //led
+
+        thremContext.plugins.addPlugin(new ThremPlugins.AcknowledgePlugin(2)); //led=2
 
         thremContext.loader.show();
         thremContext.promiseStart()

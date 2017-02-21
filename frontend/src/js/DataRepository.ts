@@ -142,12 +142,12 @@ module DataRepository {
 
     export class Communication {
         //ip: string = "192.168.4.1";
-        //ip: string = "192.168.1.109";
+        ip: string = "192.168.1.107";
         //ip: string = "localhost";
-        ip: string = window.location.hostname;
+        //ip: string = window.location.hostname;
 
-        httpBase: string = "";
-        //httpBase: string = "http://"+this.ip+":80";
+        //httpBase: string = "";
+        httpBase: string = "http://"+this.ip+":80";
         //httpBase: string = "http://" + this.ip + ":8080/src/mocks";
         //httpBase: string = "http://"+this.ip+":56609/src/mocks";
 
