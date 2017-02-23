@@ -16,6 +16,7 @@
 
 #include "ThremPlugins\ThremRoutePlugin.h"
 #include "ThremPlugins\ThremSwitchPlugin.h"
+#include "ThremPlugins\ThremButtonPlugin.h"
 
 
 Threm* threm = new Threm();
@@ -41,6 +42,7 @@ ThremNotification* pinSwitch(ThremNotification* notiff) {
 
 		return notif;
 	}
+
 	return 0;
 }
 
@@ -93,6 +95,8 @@ void setup() {
 	plugin = new ThremSwitchPlugin();
 	threm->addPlugin(plugin);
 
+	plugin = new ThremButtonPlugin();
+	threm->addPlugin(plugin);
 
 	threm->start();
 

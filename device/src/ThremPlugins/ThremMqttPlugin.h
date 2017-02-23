@@ -139,7 +139,7 @@ class ThremMqttPlugin : public IThremPlugin {
 	virtual void writeData(ThremNotification* notification)
 	{
 		if (client->connected()) {
-			if (type & 0b1 == 0b1) {
+			if (type & 0b0001 == 0b0001) {
 				String topic = String(deviceName);
 				topic += "/out/";
 				topic += notification->senderId;
@@ -148,7 +148,7 @@ class ThremMqttPlugin : public IThremPlugin {
 
 				client->publish(topic.c_str(), notification->value.c_str());
 			}
-			if (type & 0b10 == 0b10) {
+			if (type & 0b0010 == 0b0010) {
 				String topic = String(deviceName);
 				topic += "/out/";
 
