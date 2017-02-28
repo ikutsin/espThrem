@@ -1,3 +1,5 @@
+#ifndef UNIT_TEST
+
 #include <Arduino.h>
 #include "user_interface.h"
 
@@ -18,3 +20,5 @@ void loop() {
     Serial.print("available: ");
     delay(5000);
 }
+
+#endif //UNIT_TEST

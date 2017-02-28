@@ -1,3 +1,4 @@
+#ifndef UNIT_TEST
 #include <Arduino.h>
 
 #include <ESP8266WiFi.h>
@@ -110,3 +111,4 @@ void loop()
 	//delay(500);
 	//Serial.println("loop");
 }
+#endif

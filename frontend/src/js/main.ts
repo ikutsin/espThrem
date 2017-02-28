@@ -10,7 +10,7 @@ class Program {
         thremContext.plugins.addPlugin(new ThremPlugins.SpiffsPlugin());        //spiffs=6
         //thremContext.plugins.addPlugin(new ThremPlugins.SsdpPlugin());        //ssdp=21
         thremContext.plugins.addPlugin(new ThremPlugins.DiagPlugin());        //diag=12
-        thremContext.plugins.addPlugin(new ThremPlugins.AcknowledgePlugin(3));  //captive
+        thremContext.plugins.addPlugin(new ThremPlugins.AcknowledgePlugin(3));  //captive=3
 
         thremContext.plugins.addPlugin(new ThremPlugins.ThermPlugin(0));        //therm=40
         thremContext.plugins.addPlugin(new ThremPlugins.InfoApiPlugin(1));      //info api=32
@@ -24,6 +24,7 @@ class Program {
         //thremContext.plugins.addPlugin(new ThremPlugins.WebSocketPlugin()); //websocket=13
 
         thremContext.plugins.addPlugin(new ThremPlugins.AcknowledgePlugin(2)); //led=2
+        thremContext.plugins.addPlugin(new ThremPlugins.AcknowledgePlugin(4)); //button=4
 
         thremContext.loader.show();
         thremContext.promiseStart()
